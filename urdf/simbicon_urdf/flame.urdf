@@ -1,58 +1,6 @@
 <?xml version="1.0" ?>
 <robot name="humanoid">
 
-    <!--<link name="waist">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.093 0.034"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 0" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor">-->
-                <!--<color rgba="0.3 0.3 0.3 1.0"/>-->
-            <!--</material>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.116"/>-->
-            <!--<inertia ixx="9.478166666666668e-05" ixy="0.0" ixz="0.0" iyy="1.902641666666667e-05" iyz="0.0" izz="9.145875000000002e-05"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.093 0.034"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 0" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_waist" type="fixed">-->
-        <!--<parent link="waist"/>-->
-        <!--<child link="body"/>-->
-        <!--<origin xyz="0 0 0.092" rpy="0 0 0"/>-->
-    <!--</joint>-->
-
-    <!--<link name="body">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.050 0.11 0.150"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 0" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="blue">-->
-                <!--<color rgba="0.2 0.2 1 1"/>-->
-            <!--</material>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.8"/>-->
-            <!--<inertia ixx="0.0023066666666666665" ixy="0.0" ixz="0.0" iyy="0.001666666666666667" iyz="0.0" izz="0.0009733333333333334"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.050 0.11 0.150"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 0" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
     <link name="torso">
         <visual>
             <geometry>
@@ -77,7 +25,7 @@
         <parent link="torso"/>
         <child link="hipCylinderR"/>
         <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
-        <axis xyz="0 0 1"/>
+        <axis xyz="1 0 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
         <dynamics damping="0"/>
     </joint>
@@ -104,7 +52,7 @@
         <parent link="hipCylinderR"/>
         <child link="upperLegCylinderR"/>
         <origin xyz="0 -0.0830 -0.0250" rpy="0 0 0"/>
-        <axis xyz="1 0 0"/>
+        <axis xyz="0 1 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
         <dynamics damping="0"/>
     </joint>
@@ -176,7 +124,7 @@
         <parent link="ankleCylinderR"/>
         <child link="footCylinderR"/>
         <origin xyz="0 0 -0.0115" rpy="0 0 0"/>
-        <axis xyz="0 1 0"/>
+        <axis xyz="1 0 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
         <dynamics damping="0"/>
     </joint>
@@ -204,7 +152,7 @@
         <parent link="torso"/>
         <child link="hipCylinderL"/>
         <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
-        <axis xyz="0 0 1"/>
+        <axis xyz="1 0 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
         <dynamics damping="0"/>
     </joint>
@@ -231,7 +179,7 @@
         <parent link="hipCylinderL"/>
         <child link="upperLegCylinderL"/>
         <origin xyz="0 0.0830 -0.0250" rpy="0 0 0"/>
-        <axis xyz="1 0 0"/>
+        <axis xyz="0 1 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
         <dynamics damping="0"/>
     </joint>
@@ -303,7 +251,7 @@
         <parent link="ankleCylinderL"/>
         <child link="footCylinderL"/>
         <origin xyz="0 0 -0.0115" rpy="0 0 0"/>
-        <axis xyz="0 1 0"/>
+        <axis xyz="1 0 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
         <dynamics damping="0"/>
     </joint>
@@ -329,10 +277,10 @@
     <!-- **************************************Decorations Right leg **********************************************-->
 
 
-    <!--<joint name="fixed_hipBridgeR" type="fixed">-->
-        <!--<parent link="hipCylinderR"/>-->
-        <!--<child link="hipBridgeR"/>-->
-    <!--</joint>-->
+    <joint name="fixed_hipBridgeR" type="fixed">
+        <parent link="hipCylinderR"/>
+        <child link="hipBridgeR"/>
+    </joint>
 
     <link name="hipBridgeR">
         <visual>
@@ -357,61 +305,61 @@
         </collision>
     </link>
 
-    <!--<joint name="fixed_upperLegBridgeR" type="fixed">-->
-        <!--<parent link="upperLegCylinderR"/>-->
-        <!--<child link="upperLegBridgeR"/>-->
-    <!--</joint>-->
+    <joint name="fixed_upperLegBridgeR" type="fixed">
+        <parent link="upperLegCylinderR"/>
+        <child link="upperLegBridgeR"/>
+    </joint>
 
-    <!--<link name="upperLegBridgeR">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.1 0.05 0.3155"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>-->
-            <!--<material name="linkColor">-->
-                <!--<color rgba="1 1 1 1"/>-->
-            <!--</material>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="1.94"/>-->
-            <!--<inertia ixx="10.4" ixy="-0.00195" ixz="0.0231" iyy="9.33" iyz="-0.127" izz="1.61"/>-->
-            <!--<origin xyz="-0.00154  -0.00421 -0.111" rpy="0 0 0"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.1 0.05 0.3155"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
+    <link name="upperLegBridgeR">
+        <visual>
+            <geometry>
+                <box size="0.1 0.05 0.3155"/>
+            </geometry>
+            <origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="1.94"/>
+            <inertia ixx="10.4" ixy="-0.00195" ixz="0.0231" iyy="9.33" iyz="-0.127" izz="1.61"/>
+            <origin xyz="-0.00154  -0.00421 -0.111" rpy="0 0 0"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.1 0.05 0.3155"/>
+            </geometry>
+            <origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>
+        </collision>
+    </link>
 
-    <!--<joint name="fixed_lowerLegBridgeR" type="fixed">-->
-        <!--<parent link="lowerLegCylinderR"/>-->
-        <!--<child link="lowerLegBridgeR"/>-->
-    <!--</joint>-->
+    <joint name="fixed_lowerLegBridgeR" type="fixed">
+        <parent link="lowerlegCylinderR"/>
+        <child link="lowerLegBridgeR"/>
+    </joint>
 
-    <!--<link name="lowerLegBridgeR">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.1 0.05 0.28"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>-->
-            <!--<material name="linkColor">-->
-                <!--<color rgba="1 1 1 1"/>-->
-            <!--</material>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.267"/>-->
-            <!--<inertia ixx="2.52" ixy="-0.000411" ixz="-0.0238" iyy="2.45" iyz="0.0366" izz="0.110"/>-->
-            <!--<origin xyz="0.00135  0.00496 -0.105" rpy="0 0 0"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.1 0.05 0.28"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
+    <link name="lowerLegBridgeR">
+        <visual>
+            <geometry>
+                <box size="0.1 0.05 0.28"/>
+            </geometry>
+            <origin xyz="0.05 0 -0.14" rpy="0 0 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="0.267"/>
+            <inertia ixx="2.52" ixy="-0.000411" ixz="-0.0238" iyy="2.45" iyz="0.0366" izz="0.110"/>
+            <origin xyz="0.00135  0.00496 -0.105" rpy="0 0 0"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.1 0.05 0.28"/>
+            </geometry>
+            <origin xyz="0.05 0 -0.14" rpy="0 0 0"/>
+        </collision>
+    </link>
 
     <!--<joint name="fixed_hipMotorRF" type="fixed">-->
         <!--<parent link="hipCylinderRX"/>-->
