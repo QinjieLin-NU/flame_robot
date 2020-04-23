@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <robot name="humanoid">
 
+
     <link name="torso">
         <visual>
             <geometry>
@@ -13,9 +14,37 @@
             </material>
         </visual>
         <inertial>
-            <mass value="0"/>
+            <mass value="1.0"/>
             <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
         </inertial>
+    </link>
+
+    <joint name="torsoBody" type="fixed">
+        <parent link="torso"/>
+        <child link="body"/>
+    </joint>
+
+    <link name="body">
+        <visual>
+            <geometry>
+                <box size="0.05 0.2 0.3"/>
+            </geometry>
+            <origin xyz="0.0 0 0.15" rpy="0 0 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="5.6"/>
+            <inertia ixx="190" ixy="-0.237" ixz="2.20" iyy="194" iyz="1.42" izz="30.8"/>
+            <origin xyz="0.00135  0.00496 -0.105" rpy="0 0 0"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.05 0.2 0.3"/>
+            </geometry>
+            <origin xyz="0.0 0 0.15" rpy="0 0 0"/>
+        </collision>
     </link>
 
 
@@ -99,7 +128,7 @@
     <joint name="jointAnkleR" type="revolute">
         <parent link="lowerlegCylinderR"/>
         <child link="ankleCylinderR"/>
-        <origin xyz="0.00300 0 -0.28" rpy="0 0 0"/>
+        <origin xyz="0.00300 0 -0.2915" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
         <dynamics damping="0"/>
@@ -119,7 +148,7 @@
             <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
         </inertial>
     </link>
-
+<!-- 
     <joint name="jointfootR" type="revolute">
         <parent link="ankleCylinderR"/>
         <child link="footCylinderR"/>
@@ -142,7 +171,7 @@
             <mass value="0"/>
             <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
         </inertial>
-    </link>
+    </link> -->
 
 
     <!--************************************ Left leg joints **********************************************-->
@@ -226,7 +255,7 @@
     <joint name="jointAnkleL" type="revolute">
         <parent link="lowerlegCylinderL"/>
         <child link="ankleCylinderL"/>
-        <origin xyz="0.00300 0 -0.28" rpy="0 0 0"/>
+        <origin xyz="0.00300 0 -0.2915" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
         <dynamics damping="0"/>
@@ -247,7 +276,7 @@
         </inertial>
     </link>
 
-    <joint name="jointfootL" type="revolute">
+    <!-- <joint name="jointfootL" type="revolute">
         <parent link="ankleCylinderL"/>
         <child link="footCylinderL"/>
         <origin xyz="0 0 -0.0115" rpy="0 0 0"/>
@@ -269,7 +298,7 @@
             <mass value="0"/>
             <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
         </inertial>
-    </link>
+    </link> -->
 
 
 
@@ -287,7 +316,7 @@
             <geometry>
                 <box size="0.02 0.0830 0.0250"/>
             </geometry>
-            <origin xyz="-0.01 -0.0415 0.0125" rpy="0 0 0"/>
+            <origin xyz="0 -0.0415 0.0125" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -301,7 +330,7 @@
             <geometry>
                 <box size="0.02 0.0830 0.0250"/>
             </geometry>
-            <origin xyz="-0.01 -0.415 0.0125" rpy="0 0 0"/>
+            <origin xyz="0 -0.0415 0.0125" rpy="0 0 0"/>
         </collision>
     </link>
 
@@ -315,7 +344,7 @@
             <geometry>
                 <box size="0.1 0.05 0.3155"/>
             </geometry>
-            <origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>
+            <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -329,7 +358,7 @@
             <geometry>
                 <box size="0.1 0.05 0.3155"/>
             </geometry>
-            <origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>
+            <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
         </collision>
     </link>
 
@@ -341,9 +370,9 @@
     <link name="lowerLegBridgeR">
         <visual>
             <geometry>
-                <box size="0.1 0.05 0.28"/>
+                <box size="0.05 0.05 0.28"/>
             </geometry>
-            <origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="-0.0015 0 -0.14" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -355,9 +384,9 @@
         </inertial>
         <collision>
             <geometry>
-                <box size="0.1 0.05 0.28"/>
+                <box size="0.05 0.05 0.28"/>
             </geometry>
-            <origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="0.0015 0 -0.14" rpy="0 0 0"/>
         </collision>
     </link>
 
@@ -370,9 +399,9 @@
     <link name="ankleBridgeR">
         <visual>
             <geometry>
-                <box size="0.1 0.05 0.02"/>
+                <box size="0.16 0.13 0.02"/>
             </geometry>
-            <origin xyz="0.05 0 -0.01" rpy="0 0 0"/>
+            <origin xyz="0.04 0 -0.01" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -384,9 +413,9 @@
         </inertial>
         <collision>
             <geometry>
-                <box size="0.1 0.05 0.02"/>
+                <box size="0.16 0.13 0.02"/>
             </geometry>
-            <origin xyz="0.05 0 -0.01" rpy="0 0 0"/>
+            <origin xyz="0.04 0 -0.01" rpy="0 0 0"/>
         </collision>
     </link>
 
@@ -402,7 +431,7 @@
             <geometry>
                 <box size="0.02 0.0830 0.0250"/>
             </geometry>
-            <origin xyz="-0.01 0.0415 0.0125" rpy="0 0 0"/>
+            <origin xyz="0 0.0415 0.0125" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -416,7 +445,7 @@
             <geometry>
                 <box size="0.02 0.0830 0.0250"/>
             </geometry>
-            <origin xyz="-0.01 0.415 0.0125" rpy="0 0 0"/>
+            <origin xyz="0 0.0415 0.0125" rpy="0 0 0"/>
         </collision>
     </link>
 
@@ -430,7 +459,7 @@
             <geometry>
                 <box size="0.1 0.05 0.3155"/>
             </geometry>
-            <origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>
+            <origin xyz="0.0005 -0.007 -0.15" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -444,7 +473,7 @@
             <geometry>
                 <box size="0.1 0.05 0.3155"/>
             </geometry>
-            <origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>
+            <origin xyz="0.0005 -0.007 -0.15" rpy="0 0 0"/>
         </collision>
     </link>
 
@@ -456,9 +485,9 @@
     <link name="lowerLegBridgeL">
         <visual>
             <geometry>
-                <box size="0.1 0.05 0.28"/>
+                <box size="0.05 0.05 0.28"/>
             </geometry>
-            <origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="0.0015 0 -0.14" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -470,9 +499,9 @@
         </inertial>
         <collision>
             <geometry>
-                <box size="0.1 0.05 0.28"/>
+                <box size="0.05 0.05 0.28"/>
             </geometry>
-            <origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="0.0015 0 -0.14" rpy="0 0 0"/>
         </collision>
     </link>
 
@@ -485,9 +514,9 @@
     <link name="ankleBridgeL">
         <visual>
             <geometry>
-                <box size="0.1 0.05 0.02"/>
+                <box size="0.16 0.13 0.02"/>
             </geometry>
-            <origin xyz="0.05 0 -0.01" rpy="0 0 0"/>
+            <origin xyz="0.04 0 -0.01" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -499,9 +528,9 @@
         </inertial>
         <collision>
             <geometry>
-                <box size="0.1 0.05 0.02"/>
+                <box size="0.16 0.13 0.02"/>
             </geometry>
-            <origin xyz="0.05 0 -0.01" rpy="0 0 0"/>
+            <origin xyz="0.04 0 -0.01" rpy="0 0 0"/>
         </collision>
     </link>
 </robot>
