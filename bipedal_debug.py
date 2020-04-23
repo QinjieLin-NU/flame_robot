@@ -13,7 +13,7 @@ p.loadURDF("plane.urdf")
 humanoid = p.loadURDF("urdf/simbicon_urdf/flame.urdf",[0, 0, 0.7])
 # humanoid = p.loadURDF("urdf/simbicon_urdf/demo.urdf")
 # gravId = p.addUserDebugParameter("gravity",-10,10,-10)
-gravId = p.addUserDebugParameter("gravity",-10,10,0)
+gravId = p.addUserDebugParameter("gravity",-10,10,-10)
 jointIds=[]
 paramIds=[]
 

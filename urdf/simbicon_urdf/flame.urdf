@@ -343,7 +343,7 @@
             <geometry>
                 <box size="0.1 0.05 0.28"/>
             </geometry>
-            <origin xyz="0.05 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -357,532 +357,151 @@
             <geometry>
                 <box size="0.1 0.05 0.28"/>
             </geometry>
-            <origin xyz="0.05 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>
         </collision>
     </link>
 
-    <!--<joint name="fixed_hipMotorRF" type="fixed">-->
-        <!--<parent link="hipCylinderRX"/>-->
-        <!--<child link="hipMotorRF"/>-->
-    <!--</joint>-->
 
-    <!--<link name="hipMotorRF">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.034 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.6038208333333333e-05" ixy="0.0" ixz="0.0" iyy="1.4376750000000003e-05" iyz="0.0" izz="9.513208333333336e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.034 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
+    <joint name="fixed_ankleBridgeR" type="fixed">
+        <parent link="ankleCylinderR"/>
+        <child link="ankleBridgeR"/>
+    </joint>
 
-    <!--<joint name="fixed_hipMotorRB" type="fixed">-->
-        <!--<parent link="hipCylinderRX"/>-->
-        <!--<child link="hipMotorRB"/>-->
-    <!--</joint>-->
+    <link name="ankleBridgeR">
+        <visual>
+            <geometry>
+                <box size="0.1 0.05 0.02"/>
+            </geometry>
+            <origin xyz="0.05 0 -0.01" rpy="0 0 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="0.2356"/>
+            <inertia ixx="0.0952" ixy="0.00066457" ixz="0.0003989" iyy="0.5002" iyz="-0.005328" izz="0.5679"/>
+            <origin xyz="0.0230654545  0.0004316655 -0.0061157216" rpy="0 0 0"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.1 0.05 0.02"/>
+            </geometry>
+            <origin xyz="0.05 0 -0.01" rpy="0 0 0"/>
+        </collision>
+    </link>
 
-    <!--<link name="hipMotorRB">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.0315 0 -0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.4376750000000003e-05" ixy="0.0" ixz="0.0" iyy="1.6038208333333333e-05" iyz="0.0" izz="9.513208333333336e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.0315 0 -0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_legUpR" type="fixed">-->
-        <!--<parent link="hipCylinderRY"/>-->
-        <!--<child link="legUpR"/>-->
-    <!--</joint>-->
-
-    <!--<link name="legUpR">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.02 0.04 0.11"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.055"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="linkColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.03"/>-->
-            <!--<inertia ixx="3.425e-05" ixy="0.0" ixz="0.0" iyy="3.1249999999999994e-05" iyz="0.0" izz="5e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.02 0.04 0.11"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.055"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_kneeMotorR" type="fixed">-->
-        <!--<parent link="kneeCylinderRY"/>-->
-        <!--<child link="kneeMotorR"/>-->
-    <!--</joint>-->
-
-    <!--<link name="kneeMotorR">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.4376750000000003e-05" ixy="0.0" ixz="0.0" iyy="1.6038208333333333e-05" iyz="0.0" izz="1.6038208333333333e-05"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_legDownR" type="fixed">-->
-        <!--<parent link="kneeCylinderRY"/>-->
-        <!--<child link="legDownR"/>-->
-    <!--</joint>-->
-
-    <!--<link name="legDownR">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.02 0.04 0.07475"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.073625"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="linkColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.03"/>-->
-            <!--<inertia ixx="1.796890625e-05" ixy="0.0" ixz="0.0" iyy="1.4968906249999999e-05" iyz="0.0" izz="5e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.02 0.04 0.07475"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.073625"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_ankleMotorRF" type="fixed">-->
-        <!--<parent link="ankleCylinderRY"/>-->
-        <!--<child link="ankleMotorRF"/>-->
-    <!--</joint>-->
-
-    <!--<link name="ankleMotorRF">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.034 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.6038208333333333e-05" ixy="0.0" ixz="0.0" iyy="1.4376750000000003e-05" iyz="0.0" izz="9.513208333333336e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.034 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_ankleMotorRB" type="fixed">-->
-        <!--<parent link="ankleCylinderRY"/>-->
-        <!--<child link="ankleMotorRB"/>-->
-    <!--</joint>-->
-
-    <!--<link name="ankleMotorRB">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.0315 0 0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.4376750000000003e-05" ixy="0.0" ixz="0.0" iyy="1.6038208333333333e-05" iyz="0.0" izz="9.513208333333336e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.0315 0 0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_footBridgeR" type="fixed">-->
-        <!--<parent link="ankleCylinderRX"/>-->
-        <!--<child link="footBridgeR"/>-->
-    <!--</joint>-->
-
-    <!--<link name = "footBridgeR">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.0685 0.02 0.025"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.017 0 -0.0125" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="linkColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.009"/>-->
-            <!--<inertia ixx="8.541666666666668e-07" ixy="0.0" ixz="0.0" iyy="4.431041666666667e-06" iyz="0.0" izz="4.243541666666668e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.0685 0.02 0.025"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.017 0 -0.0125" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_footR" type="fixed">-->
-        <!--<parent link="ankleCylinderRX"/>-->
-        <!--<child link="footR"/>-->
-    <!--</joint>-->
-
-    <!--<link name="footR">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.10 0.05 0.005"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0.0 -0.0 -0.0275" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="footColor">-->
-                <!--<color rgba="0.2 0.2 1 1.0"/>-->
-            <!--</material>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.025"/>-->
-            <!--<inertia ixx="1.026041666666667e-05" ixy="0.0" ixz="0.0" iyy="4.692708333333334e-05" iyz="0.0" izz="5.7083333333333336e-05"/>-->
-        <!--</inertial>-->
-        <!--&lt;!&ndash;-->
-        <!--<collision>-->
-			<!--<geometry>-->
-				<!--<box size="0.15 0.04 0.02"/>-->
-			<!--</geometry>-->
-		    <!--<origin xyz="0.02 -0.015 -0.02" rpy="0 0 0"/>-->
-        <!--</collision>-->
-        <!--<collision>-->
-			<!--<geometry>-->
-				<!--<box size="0.12 0.07 0.02"/>-->
-			<!--</geometry>-->
-		    <!--<origin xyz="0.02 -0.015 -0.02" rpy="0 0 0"/>-->
-        <!--</collision>-->
-        <!--&ndash;&gt;-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.10 0.05 0.02"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0.00 -0.00 -0.02" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
 
     <!--&lt;!&ndash; *********************************Decorations Left leg ******************************************&ndash;&gt;-->
+    <joint name="fixed_hipBridgeL" type="fixed">
+        <parent link="hipCylinderL"/>
+        <child link="hipBridgeL"/>
+    </joint>
 
-    <!--<joint name="fixed_hipBridgeL" type="fixed">-->
-        <!--<parent link="hipCylinderLZ"/>-->
-        <!--<child link="hipBridgeL"/>-->
-    <!--</joint>-->
+    <link name="hipBridgeL">
+        <visual>
+            <geometry>
+                <box size="0.02 0.0830 0.0250"/>
+            </geometry>
+            <origin xyz="-0.01 -0.0415 0.0125" rpy="0 0 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="0.219"/>
+            <inertia ixx="414" ixy="0.149" ixz="0.00188" iyy="0.128" iyz="-0.0311" izz="0.359"/>
+            <origin rpy="0 0 0" xyz="0.00131 -0.0515 -0.00661"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.02 0.0830 0.0250"/>
+            </geometry>
+            <origin xyz="-0.01 -0.415 0.0125" rpy="0 0 0"/>
+        </collision>
+    </link>
 
-    <!--<link name="hipBridgeL">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.0685 0.02 0.046"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.017 0 0.023" rpy="0 0 0"/>-->
-            <!--<material name="linkColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.03"/>-->
-            <!--<inertia ixx="6.29e-06" ixy="0.0" ixz="0.0" iyy="1.7020625000000003e-05" iyz="0.0" izz="1.2730625000000003e-05"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.0685 0.02 0.046"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.017 0 0.023" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
+    <joint name="fixed_upperLegBridgeL" type="fixed">
+        <parent link="upperLegCylinderL"/>
+        <child link="upperLegBridgeL"/>
+    </joint>
 
-    <!--<joint name="fixed_hipMotorLF" type="fixed">-->
-        <!--<parent link="hipCylinderLX"/>-->
-        <!--<child link="hipMotorLF"/>-->
-    <!--</joint>-->
+    <link name="upperLegBridgeL">
+        <visual>
+            <geometry>
+                <box size="0.1 0.05 0.3155"/>
+            </geometry>
+            <origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="1.94"/>
+            <inertia ixx="10.4" ixy="-0.00195" ixz="0.0231" iyy="9.33" iyz="-0.127" izz="1.61"/>
+            <origin xyz="-0.00154  -0.00421 -0.111" rpy="0 0 0"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.1 0.05 0.3155"/>
+            </geometry>
+            <origin xyz="-0.05 0 -0.15" rpy="0 0 0"/>
+        </collision>
+    </link>
 
-    <!--<link name="hipMotorLF">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.034 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.6038208333333333e-05" ixy="0.0" ixz="0.0" iyy="1.4376750000000003e-05" iyz="0.0" izz="9.513208333333336e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.034 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
+    <joint name="fixed_lowerLegBridgeL" type="fixed">
+        <parent link="lowerlegCylinderL"/>
+        <child link="lowerLegBridgeL"/>
+    </joint>
 
-    <!--<joint name="fixed_hipMotorLB" type="fixed">-->
-        <!--<parent link="hipCylinderLX"/>-->
-        <!--<child link="hipMotorLB"/>-->
-    <!--</joint>-->
+    <link name="lowerLegBridgeL">
+        <visual>
+            <geometry>
+                <box size="0.1 0.05 0.28"/>
+            </geometry>
+            <origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="0.267"/>
+            <inertia ixx="2.52" ixy="-0.000411" ixz="-0.0238" iyy="2.45" iyz="0.0366" izz="0.110"/>
+            <origin xyz="0.00135  0.00496 -0.105" rpy="0 0 0"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.1 0.05 0.28"/>
+            </geometry>
+            <origin xyz="-0.05 0 -0.14" rpy="0 0 0"/>
+        </collision>
+    </link>
 
-    <!--<link name="hipMotorLB">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.0315 0 -0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.4376750000000003e-05" ixy="0.0" ixz="0.0" iyy="1.6038208333333333e-05" iyz="0.0" izz="9.513208333333336e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.0315 0 -0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
 
-    <!--<joint name="fixed_legUpL" type="fixed">-->
-        <!--<parent link="hipCylinderLY"/>-->
-        <!--<child link="legUpL"/>-->
-    <!--</joint>-->
+    <joint name="fixed_ankleBridgeL" type="fixed">
+        <parent link="ankleCylinderL"/>
+        <child link="ankleBridgeL"/>
+    </joint>
 
-    <!--<link name="legUpL">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.02 0.04 0.11"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.055"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="linkColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.03"/>-->
-            <!--<inertia ixx="3.425e-05" ixy="0.0" ixz="0.0" iyy="3.1249999999999994e-05" iyz="0.0" izz="5e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.02 0.04 0.11"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.055"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_kneeMotorL" type="fixed">-->
-        <!--<parent link="kneeCylinderLY"/>-->
-        <!--<child link="kneeMotorL"/>-->
-    <!--</joint>-->
-
-    <!--<link name="kneeMotorL">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.4376750000000003e-05" ixy="0.0" ixz="0.0" iyy="1.6038208333333333e-05" iyz="0.0" izz="1.6038208333333333e-05"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_legDownL" type="fixed">-->
-        <!--<parent link="kneeCylinderLY"/>-->
-        <!--<child link="legDownL"/>-->
-    <!--</joint>-->
-
-    <!--<link name="legDownL">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.02 0.04 0.07475"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.073625"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="linkColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.03"/>-->
-            <!--<inertia ixx="1.796890625e-05" ixy="0.0" ixz="0.0" iyy="1.4968906249999999e-05" iyz="0.0" izz="5e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.02 0.04 0.07475"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 -0.073625"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_ankleMotorLF" type="fixed">-->
-        <!--<parent link="ankleCylinderLY"/>-->
-        <!--<child link="ankleMotorLF"/>-->
-    <!--</joint>-->
-
-    <!--<link name="ankleMotorLF">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.034 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.6038208333333333e-05" ixy="0.0" ixz="0.0" iyy="1.4376750000000003e-05" iyz="0.0" izz="9.513208333333336e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.0285 0.034 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0 0 0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_ankleMotorLB" type="fixed">-->
-        <!--<parent link="ankleCylinderLY"/>-->
-        <!--<child link="ankleMotorLB"/>-->
-    <!--</joint>-->
-
-    <!--<link name="ankleMotorLB">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.0315 0 0.01225" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="motorColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.058"/>-->
-            <!--<inertia ixx="1.4376750000000003e-05" ixy="0.0" ixz="0.0" iyy="1.6038208333333333e-05" iyz="0.0" izz="9.513208333333336e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.034 0.0285 0.0465"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.0315 0 0.01225" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_footBridgeL" type="fixed">-->
-        <!--<parent link="ankleCylinderLX"/>-->
-        <!--<child link="footBridgeL"/>-->
-    <!--</joint>-->
-
-    <!--<link name = "footBridgeL">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.0685 0.02 0.025"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.017 0 -0.0125" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="linkColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.009"/>-->
-            <!--<inertia ixx="8.541666666666668e-07" ixy="0.0" ixz="0.0" iyy="4.431041666666667e-06" iyz="0.0" izz="4.243541666666668e-06"/>-->
-        <!--</inertial>-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.0685 0.02 0.025"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="-0.017 0 -0.0125" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
-
-    <!--<joint name="fixed_ankleCylinderLX" type="fixed">-->
-        <!--<parent link="ankleCylinderLX"/>-->
-        <!--<child link="footL"/>-->
-    <!--</joint>-->
-
-    <!--<link name="footL">-->
-        <!--<visual>-->
-            <!--<geometry>-->
-                <!--<box size="0.10 0.05 0.005"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0.0 0.0 -0.0275" rpy="0 0 0"/>-->
-            <!--<axis xyz="0 0 0" />-->
-            <!--<material name="footColor"/>-->
-        <!--</visual>-->
-        <!--<inertial>-->
-            <!--<mass value="0.025"/>-->
-            <!--<inertia ixx="1.026041666666667e-05" ixy="0.0" ixz="0.0" iyy="4.692708333333334e-05" iyz="0.0" izz="5.7083333333333336e-05"/>-->
-        <!--</inertial>-->
-        <!--&lt;!&ndash;-->
-        <!--<collision>-->
-			<!--<geometry>-->
-				<!--<box size="0.15 0.04 0.02"/>-->
-			<!--</geometry>-->
-		    <!--<origin xyz="0.02 0.015 -0.02" rpy="0 0 0"/>-->
-        <!--</collision>-->
-        <!--<collision>-->
-			<!--<geometry>-->
-				<!--<box size="0.12 0.07 0.02"/>-->
-			<!--</geometry>-->
-		    <!--<origin xyz="0.02 0.015 -0.02" rpy="0 0 0"/>-->
-        <!--</collision>-->
-        <!--&ndash;&gt;-->
-        <!--<collision>-->
-            <!--<geometry>-->
-                <!--<box size="0.10 0.05 0.02"/>-->
-            <!--</geometry>-->
-            <!--<origin xyz="0.00 0.000 -0.02" rpy="0 0 0"/>-->
-        <!--</collision>-->
-    <!--</link>-->
+    <link name="ankleBridgeL">
+        <visual>
+            <geometry>
+                <box size="0.1 0.05 0.02"/>
+            </geometry>
+            <origin xyz="0.05 0 -0.01" rpy="0 0 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <inertial>
+            <mass value="0.2356"/>
+            <inertia ixx="0.0952" ixy="0.00066457" ixz="0.0003989" iyy="0.5002" iyz="-0.005328" izz="0.5679"/>
+            <origin xyz="0.0230654545  0.0004316655 -0.0061157216" rpy="0 0 0"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.1 0.05 0.02"/>
+            </geometry>
+            <origin xyz="0.05 0 -0.01" rpy="0 0 0"/>
+        </collision>
+    </link>
 </robot>
