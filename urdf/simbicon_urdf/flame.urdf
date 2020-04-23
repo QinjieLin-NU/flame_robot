@@ -402,7 +402,7 @@
             <geometry>
                 <box size="0.02 0.0830 0.0250"/>
             </geometry>
-            <origin xyz="-0.01 -0.0415 0.0125" rpy="0 0 0"/>
+            <origin xyz="-0.01 0.0415 0.0125" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -416,7 +416,7 @@
             <geometry>
                 <box size="0.02 0.0830 0.0250"/>
             </geometry>
-            <origin xyz="-0.01 -0.415 0.0125" rpy="0 0 0"/>
+            <origin xyz="-0.01 0.415 0.0125" rpy="0 0 0"/>
         </collision>
     </link>
 
