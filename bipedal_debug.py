@@ -12,7 +12,7 @@ p.loadURDF("plane.urdf")
 # humanoid = p.loadURDF("urdf/simbicon_urdf/biped2d.urdf",[0, 0, 1.2])
 # humanoid = p.loadURDF("urdf/simbicon_urdf/humanoid_nohead.urdf",[0, 0, 0.31])
 # humanoid = p.loadURDF("urdf/simbicon_urdf/flame.urdf",[0, 0, 1.0])
-humanoid = p.loadURDF("urdf/simbicon_urdf/flame2.urdf",[0, 0, 1.0])
+humanoid = p.loadURDF("urdf/simbicon_urdf/flame3.urdf",[0, 0, 0.9])
 # humanoid = p.loadURDF("urdf/simbicon_urdf/demo.urdf")
 # gravId = p.addUserDebugParameter("gravity",-10,10,-10)
 gravId = p.addUserDebugParameter("gravity",-10,10,-10)
@@ -22,7 +22,7 @@ paramIds=[]
 test_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.2,1,0.1],rgbaColor=[1, 0, 0, 1])
 test_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.2,1,0.1])
 test_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
-baseVisualShapeIndex=test_visual, basePosition = [0, 0, 0])
+baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
 # shift = [0, -0.02, 0]
 # meshScale = [0.1, 0.1, 0.1]
@@ -62,7 +62,7 @@ p.setPhysicsEngineParameter(numSolverIterations=100)
 p.changeDynamics(humanoid,-1,linearDamping=0, angularDamping=0)
 
 # jointAngles=[0,0,1.0204,-1.97,-0.084,2.06,-1.9,0,0,1.0204,-1.97,-0.084,2.06,-1.9,0]
-jointAngles=[0.0,0.0,0.0,0.0,0.0,0.0,-0.994,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+jointAngles=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 # rev_jointAngles = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
 activeJoint=0
 for j in range (p.getNumJoints(humanoid)):
@@ -74,7 +74,7 @@ for j in range (p.getNumJoints(humanoid)):
         activeJoint+=1
         jointIds.append(j)
         paramIds.append(p.addUserDebugParameter(jointName.decode("utf-8"),-4,4,jointAngles[activeJoint]))
-        p.resetJointState(humanoid, j, jointAngles[activeJoint])
+        # p.resetJointState(humanoid, j, jointAngles[activeJoint])
 
 p.setRealTimeSimulation(1)
 while(1):
