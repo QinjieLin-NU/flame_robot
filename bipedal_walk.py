@@ -8,7 +8,7 @@ p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())  # to load plane.urdf
 p.loadURDF("plane.urdf")
 humanoid = p.loadURDF("urdf/simbicon_urdf/flame3.urdf",[0, 0, 0.85])
-gravId = p.addUserDebugParameter("gravity",-10,10,0)
+gravId = p.addUserDebugParameter("gravity",-10,10,-10)
 jointIds=[]
 paramIds=[]
 
@@ -36,6 +36,10 @@ p.changeDynamics(humanoid,-1,linearDamping=0, angularDamping=0)
 #         paramIds.append(p.addUserDebugParameter(jointName.decode("utf-8"),-4,4,jointAngles[activeJoint]))
 #         # p.resetJointState(humanoid, j, jointAngles[activeJoint])
 
+for j in range (p.getNumJoints(humanoid)):
+    info = p.getJointInfo(humanoid,j)
+    print(info)
+
 goal_traj = np.loadtxt("trajectories.txt") # [6001 * 4] matrix, kneeL-11,kneeR-3,HipL-10,HipR-2
 traj_jointIds = [11,3,10,2]
 traj_id = 0
@@ -44,16 +48,16 @@ p.getCameraImage(320,200)
 p.setGravity(0,0,p.readUserDebugParameter(gravId))
 time.sleep(1.0)
 while(1):
-    print(traj_id,":",end=" ")
+    # print(traj_id,":",end=" ")
     traj_id +=100
     p.getCameraImage(320,200)
     p.setGravity(0,0,p.readUserDebugParameter(gravId))
     for i in range(len(traj_jointIds)):
         jointId = traj_jointIds[i]
-        print(jointId,goal_traj[traj_id,i],end=" ")
+        # print(jointId,goal_traj[traj_id,i],end=" ")
         p.setJointMotorControl2(humanoid, jointId , p.POSITION_CONTROL, goal_traj[traj_id,i], force=140.)
         # p.resetJointState(humanoid, jointId, goal_traj[traj_id,i])
-    print()
+    # print()
     time.sleep(0.01)
 # while(1):
 #     p.getCameraImage(320,200)
