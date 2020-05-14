@@ -59,11 +59,12 @@ class PybulletEnv():
     """
     flame environment in self.p
     """
-    def __init__(self,gravity=-10.0,dt=0.01):
+    def __init__(self,gravity=-10.0,dt=0.01,file_path="../urdf/simbicon_urdf/flame3.urdf"):
         #physics params
         self.g = gravity
         self.dt = dt
         self.p = pybullet
+        self.file_path = file_path
 
         #joint of flame robot
         self.center_hip= FlameJoint(joint_type="rotate_x") # this joint consist of hipR and hipL
@@ -104,7 +105,7 @@ class PybulletEnv():
         baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
         #add humannoid
-        self.humanoid = self.p.loadURDF("../urdf/simbicon_urdf/flame3.urdf",[0, 0, 0.85])
+        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         # self.humanoid = self.p.loadURDF("../urdf/simbicon_urdf/flame3.urdf",[0.1, 0, 1.95])
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         self.p.setGravity(0,0,self.g)

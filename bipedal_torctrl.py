@@ -1,8 +1,8 @@
-from envs import PybulletEnv
+from envs.pybullet_env import PybulletEnv
 import time
 
 if __name__ == "__main__":
-    robot = PybulletEnv(gravity=-10.0,dt=0.01)
+    robot = PybulletEnv(gravity=-10.0,dt=0.01,file_path="urdf/simbicon_urdf/flame3.urdf")
     robot.reset(disable_velControl=True)
     for i in range(200):
         #torques = applied torques
