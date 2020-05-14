@@ -6,7 +6,7 @@
             <geometry>
                 <box size="0.05 0.2 0.3"/>
             </geometry>
-            <origin xyz="0.0 0 0" rpy="0.0 0.0 0"/>
+            <origin xyz="0.0 0 0.15" rpy="-0.0056 -0.0021 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
@@ -20,17 +20,17 @@
             <geometry>
                 <box size="0.05 0.2 0.3"/>
             </geometry>
-            <origin xyz="0.0 0 0" rpy="0.0 0.0 0"/>
+            <origin xyz="0.0 0 0.15" rpy="-0.0056 -0.0021 0"/>
         </collision>
     </link>
 
 
     <joint name="torsoBody" type="fixed">
-        <parent link="body"/>
-        <child link="torso"/>
+        <parent link="torso"/>
+        <child link="body"/>
         <!-- <origin xyz="0 0.0 -0.15" rpy="-0.0056 -0.0021 0"/> -->
-        <origin xyz="0 0.0 -0.15" rpy="0.0 0.0 0"/>
-        <axis xyz="0 1 0"/>
+        <origin xyz="0 0.0 0" rpy="0.0 0.0 0"/>
+        <axis xyz="1 0 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
         <dynamics damping="0"/>
     </joint>
