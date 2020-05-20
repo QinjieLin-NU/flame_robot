@@ -3,6 +3,27 @@ import pybullet
 import time
 import pybullet_data
 
+
+class FlameTorso():
+    """
+    torso info, including roll, pitch, yaw and angular velocity
+    """
+    def __init__(self):
+        self.roll = 0
+        self.rolld = 0
+        self.pitch = 0
+        self.pitchd = 0
+        self.yaw = 0
+        self.yawd = 0
+
+    def set_state(self,q,qd):
+        self.roll = q[0]
+        self.rolld = qd[0]
+        self.pitch = q[1]
+        self.pitchd = q[1]
+        self.yaw = q[2]
+        self.yawd = q[2]
+
 class FlameJoint():
     """
     joint state info
@@ -36,6 +57,7 @@ class FlameJoint():
         # self.y_qd = vely
         # self.z_qd = velz
         return
+
 
 class FlameFoot():
     def __init__(self):
@@ -82,6 +104,9 @@ class PybulletEnv():
         self.left_foot = FlameFoot()
 
         self.joints = [self.center_hipR,self.center_hipL,self.right_hip,self.right_knee,self.right_ankleY,self.left_hip,self.left_knee,self.left_ankleY]
+        
+        self.torso = FlameTorso()
+        self.bias = 0 
         return
 
 
@@ -131,7 +156,7 @@ class PybulletEnv():
             jointName = info[1]
             jointId = info[0]
 
-            print(info)
+            # print(info)
 
             if(jointName == 'jointHipR'):
                 self.center_hipR.set_jointId(jointId)
@@ -162,6 +187,7 @@ class PybulletEnv():
 
             if(jointName == 'fixed_ankleBridgeR'):
                 self.right_foot.set_linkId(jointId)
+
 
         return
 
@@ -214,6 +240,12 @@ class PybulletEnv():
         """
         get joint angle and assign it to the corresponding joint
         """
+        #update torso angles and angular velocity
+        torso_pos, torso_ori = self.p.getBasePositionAndOrientation(self.humanoid)
+        torso_angle = self.p.getEulerFromQuaternion(torso_ori)
+        torso_linVel, torso_angVel = self.p.getBaseVelocity(self.humanoid)
+        self.torso.set_state(torso_angle,torso_angVel)
+
         # update joint angle of joints
         for joint in self.joints:
             (pos,vel,forces,applied_torque) = self.p.getJointState(self.humanoid,joint.joint_id)
@@ -236,7 +268,7 @@ class PybulletEnv():
         if len(bullet_client.getContactPoints(bodyA,bodyB, linkIndexA=linkA))==0:
             return 0
         else:
-            print(bullet_client.getContactPoints(bodyA,bodyB, linkIndexA=linkA))
+            # print(bullet_client.getContactPoints(bodyA,bodyB, linkIndexA=linkA))
             return 1
 
 

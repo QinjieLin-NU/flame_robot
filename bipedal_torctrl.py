@@ -4,13 +4,19 @@ import time
 if __name__ == "__main__":
     robot = PybulletEnv(gravity=-10.0,dt=0.01,file_path="urdf/simbicon_urdf/flame3.urdf")
     robot.reset(disable_velControl=True)
-    for i in range(200):
+    i=0
+    while(i<10):
         #torques = applied torques
         torques = [-1.0,-0.8,-0.8,+0.8,0.8,0.8,0.8]
-        # robot.step(torque,step_sim=False)
+        robot.step(torques,step_sim=False)
         robot.p.stepSimulation()
         time.sleep(robot.dt)
-    robot.update_state()
+        robot.update_state()
+        print("torso_pos",robot.torso_pos)
+        print("torso_ori",robot.torso_ori)
+        print("base_linVel",robot.base_linVel)
+        print("base_angVel",robot.base_angVel)
+        i+=1
     print("center hip q and qd:",robot.center_hip.q,robot.center_hip.qd)
     print("right hip q and qd:",robot.right_hip.q,robot.right_hip.qd)
     print("right knee q and qd:",robot.right_knee.q,robot.right_knee.qd)
@@ -20,4 +26,6 @@ if __name__ == "__main__":
     print("left ankleY q and qd:",robot.left_ankleY.q,robot.left_ankleY.qd)
     print("left foot state:",robot.left_foot.state)
     print("right foot state:",robot.right_foot.state)
+
+
     time.sleep(10)

@@ -57,6 +57,12 @@ while(1):
         # print(jointId,goal_traj[traj_id,i],end=" ")
         p.setJointMotorControl2(humanoid, jointId , p.POSITION_CONTROL, goal_traj[traj_id,i], force=140.)
         # p.resetJointState(humanoid, jointId, goal_traj[traj_id,i])
+        torso_pos, torso_ori = p.getBasePositionAndOrientation(humanoid)
+        print("torso_pos",torso_pos)
+        print("torso_ori",torso_ori)
+        base_linVel, base_angVel = p.getBaseVelocity(humanoid)
+        print("base_linVel",base_linVel)
+        print("base_angVel",base_angVel)
     # print()
     time.sleep(0.01)
 # while(1):
