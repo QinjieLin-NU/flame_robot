@@ -6,17 +6,18 @@ def read_txt(filename):
     l = []
     l = [ line.split() for line in f]
 
-    weights = np.array(l)
-    return matrix
+    weights_string = np.array(l)
+    weights = weights_string.astype(np.float)
+    return weights
 
 #n is the index of joint
-def networkOutput(weight,offset,scale,n):
+def networkOutput(robot,weight,offset,scale,n):
     lw = weight[:,n]
-    loff = offset[:,n]
-    lscale = scale[:,n]
+    lioff = offset[:,n]
+    liscale = scale[:,n]
 
     output = 0
-    output += (robot.center_hip.q               - loff[0])  * lscale[0]  * lw[0]
+    output += (robot.center_hip.q               - lioff[0])  * liscale[0]  * lw[0]
     output += (robot.center_hip.qd              - lioff[1])  * liscale[1]  * lw[1]
     output += (robot.left_hip.q           - lioff[2])  * liscale[2]  * lw[2]
     output += (robot.left_hip.qd          - lioff[3])  * liscale[3]  * lw[3]
@@ -43,27 +44,24 @@ def networkOutput(weight,offset,scale,n):
     output += (robot.torso.yaw              - lioff[22]) * liscale[22] * lw[22]
     output += (robot.torso.yawd             - lioff[23]) * liscale[23] * lw[23]
     output += (robot.torso.pitch            - lioff[24]) * liscale[24] * lw[24]
-    output += (robots.torso.pitchd           - lioff[25]) * liscale[25] * lw[25]
+    output += (robot.torso.pitchd           - lioff[25]) * liscale[25] * lw[25]
     output += (robot.torso.roll             - lioff[26]) * liscale[26] * lw[26]
     output += (robot.torso.rolld            - lioff[27]) * liscale[27] * lw[27]
     output += (robot.bias                 - lioff[28]) * liscale[28] * lw[28]
 
+    return output
 
 
 
+def cal_Torque(robot):
+    weight = read_txt("standweight.txt")
+    offset = read_txt("standoffset.txt")
+    scale = read_txt("standscale.txt")
 
-weight = read_txt("standweight.txt")
-offset = read_txt("standoffset.txt")
-scale = read_txt("standscale.txt")
+    #get applied_torques
+    applied_torques = []
+    for i in range(7):
+        torque_i = networkOutput(robot,weight,offset,scale,i)
+        applied_torques.append(torque_i)
 
-#get first joint torque
-torque1 = networkOutput(weight,offset,scale,n)
-
-
-
-
-
-iweights = weights[:,0]
-
-
-#get weights, offset, scale
+    return applied_torques
