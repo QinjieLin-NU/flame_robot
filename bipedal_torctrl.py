@@ -1,6 +1,6 @@
 from envs.pybullet_env import PybulletEnv
 import time
-from calTorque import cal_Torque
+# from calTorque import cal_Torque
 
 if __name__ == "__main__":
     robot = PybulletEnv(gravity=-10.0,dt=0.01,file_path="urdf/simbicon_urdf/flame3.urdf")
@@ -8,9 +8,14 @@ if __name__ == "__main__":
     i=0
     while(i<10):
         #torques = applied torques
-        # torques = [-1.0,-0.8,-0.8,+0.8,0.8,0.8,0.8]
-        torques = cal_Torque(robot)
-        print("torques",torques)
+        torques = [-1.0,-0.8,-0.8,+0.8,0.8,0.8,0.8]
+
+
+        stance_leg = 'left'
+        print("stance leg hip",robot.__dict__[stance_leg+'_hip'].q)
+
+        # torques = cal_Torque(robot)
+        # print("torques",torques)
         robot.step(torques,step_sim=False)
         robot.p.stepSimulation()
         time.sleep(robot.dt)

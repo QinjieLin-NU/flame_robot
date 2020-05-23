@@ -106,7 +106,7 @@ class PybulletEnv():
         self.joints = [self.center_hipR,self.center_hipL,self.right_hip,self.right_knee,self.right_ankleY,self.left_hip,self.left_knee,self.left_ankleY]
         
         self.torso = FlameTorso()
-        self.bias = 0 
+        self.bias = 1 
         return
 
 
