@@ -76,13 +76,51 @@ def networkOutput(robot,weight,offset,scale,n):
 
 #set the calculated ref and p, d gains
 def assignRef():
-    for i in range(7):
-        robot.left_hip.ref = networkOutput(robot,weight,offset,scale,i)
+    robot.center_hip.q.ref = networkOutput(robot,weight,offset,scale,1)
+    robot.upperbody.q.ref = networkOutput(robot,weight,offset,scale,2)
+    robot.interleg.q.ref = networkOutput(robot,weight,offset,scale,3)
+    robot.stance_knee.q.ref = networkOutput(robot,weight,offset,scale,4)
+    robot.swing_knee.q.ref = networkOutput(robot,weight,offset,scale,5)
+    robot.stance_ankle.q.ref = networkOutput(robot,weight,offset,scale,6)
+    robot.swing_ankle.q.ref = networkOutput(robot,weight,offset,scale,7)
+    kp=weight[26,-7:]
+    kd=weight[27,-7:]
+    #calculate qd, dt=1
+    robot.center_hip.qd.ref =
+    robot.upperbody.qd.ref =
+    robot.interleg.qd.ref = 
+    robot.stance_knee.qd.ref =
+    robot.swing_knee.qd.ref =
+    robot.stance_ankle.qd.ref =
+    robot.swing_ankle.qd.ref =
 
+
+    return 
 
 
 # calTau
 def update():
+    #define interleg, stance_knee, swing knee, stance ankle, swing ankle///what is upperbody???
+        left_is_stance = True
+    if left_is_stance:
+        stance_leg = 'left'
+        swing_leg = 'right'
+        adj_flag = -1.0
+    else:
+        stance_leg = 'right'
+        swing_leg = 'left'
+        adj_flag = 1.0
+    robot.interleg.q  = robot.__dict__[swing_leg+'_hip'].q   - robot.__dict__[stance_leg+'_hip'].q
+    robot.interleg.qd = robot.__dict__[swing_leg+'_hip'].qd  - robot.__dict__[stance_leg+'_hip'].qd
+
+    robot.center_hip.tau = kp[0]*(robot.center_hip.q.ref-robot.center_hip.q)+kd[0]*(robot.center_hip.qd.ref-robot.center_hip.qd)
+    robot.upperbody.tau = kp[1]*(robot.upperbody.q.ref-robot.torso.pitch)+kd[1]*(robot.upperbody.qd.ref-robot.torso.pitchd)
+    robot.interleg.tau = kp[2]*(robot.interleg.q.ref-robot.interleg.q)+kd[2]*(robot.interleg.qd.ref-robot.interleg.qd)
+    robot.stance_knee.tau = kp[3]*(robot.stance_knee.q.ref-robot.__dict__[stance_leg+'knee'].q)+kd[3]*(robot.stance_knee.qd.ref-robot.__dict__[stance_leg+'knee'].qd)
+    robot.swing_knee.tau = kp[4]*(robot.swing_knee.q.ref-robot.__dict__[swing_leg+'knee'].q)+kd[4]*(robot.swing_knee.qd.ref-robot.__dict__[swing_leg+'knee'].qd)
+    robot.stance_ankle.tau = kp[5]*(robot.stance_ankle.q.ref-robot.__dict__[stance_leg+'ankley'].q)+kd[5]*(robot.stance_ankle.qd.ref-robot.__dict__[stance_leg+'ankley'].qd) #ankle y or ankle x or just ankle?
+    robot.swing_ankle.tau = kp[6]*(robot.swing_ankle.q.ref-robot.__dict__[swing_leg+'ankley'].q)+kd[6]*(robot.swing_ankle.qd.ref-robot.__dict__[swing_leg+'ankley'].qd)
+
 
 
 def cal_Torque(robot):
