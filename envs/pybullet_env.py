@@ -66,15 +66,26 @@ class FlameFoot():
         """
         self.state = 0.0
         self.link_id = 0
+        self.front_state = 0
+        self.back_state  = 0
         return
 
-    def set_state(self,collision_state):
+    def set_state(self,collision_state,front_collision = 0,back_collision = 0):
+        """
+        colision state:1  means collision happens on foot
+        front_collision: 0 means colision happens on front foot
+        back_collision: 0 means colision happens on back foot
+        """
         self.state = collision_state
+        self.front_state = front_collision
+        self.back_state = back_collision
         return
     
     def set_linkId(self,id):
         self.link_id = id
 
+    def get_state(self):
+        return self.state,self.front_state,self.back_state
     
 
 class PybulletEnv():
@@ -110,7 +121,7 @@ class PybulletEnv():
         return
 
 
-    def reset(self,disable_gui=False,disable_velControl=True):
+    def reset(self,disable_gui=False,disable_velControl=True,add_debug=False):
         if disable_gui:
             self.physics_client = self.p.connect(self.p.DIRECT)
         elif disable_gui==False:
@@ -124,14 +135,14 @@ class PybulletEnv():
         self.plane = self.p.loadURDF("plane.urdf")
 
         #add step down:
-        test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 1])
-        test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05])
-        test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
-        baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
+        # test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 1])
+        # test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05])
+        # test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
+        # baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
         #add humannoid
-        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
-        # self.humanoid = self.p.loadURDF("../urdf/simbicon_urdf/flame3.urdf",[0.1, 0, 1.95])
+        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.67])
+        # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         self.p.setGravity(0,0,self.g)
 
@@ -141,6 +152,10 @@ class PybulletEnv():
                 self.p.setJointMotorControl2(self.humanoid, joint, self.p.VELOCITY_CONTROL, force=0)
 
         self.assign_jointId()
+
+        if(add_debug):
+            self.gravId = self.p.addUserDebugParameter("gravity",-10,10,0)
+            self.paramIds,self.jointIds = self.get_motorId()
 
         # for i in range(20):#+ 10*np.random.randint(low=0, high=20)):
             # self.p.stepSimulation()
@@ -153,39 +168,50 @@ class PybulletEnv():
         """
         for j in range (self.p.getNumJoints(self.humanoid)):
             info = self.p.getJointInfo(self.humanoid,j)
+            # print(info)
             jointName = info[1]
             jointId = info[0]
 
             # print(info)
 
-            if(jointName == 'jointHipR'):
+            if(jointName == b'jointHipR'):
+                print(jointName,jointId)
                 self.center_hipR.set_jointId(jointId)
             
-            if(jointName == 'jointHipL'):
+            if(jointName == b'jointHipL'):
+                print(jointName,jointId)
                 self.center_hipL.set_jointId(jointId)
 
-            if(jointName == 'jointUpperLegR'):
+            if(jointName == b'jointUpperLegR'):
+                print(jointName,jointId)
                 self.right_hip.set_jointId(jointId)
 
-            if(jointName == 'jointLowerLegR'):
+            if(jointName == b'jointLowerLegR'):
+                print(jointName,jointId)
                 self.right_knee.set_jointId(jointId)
 
-            if(jointName == 'jointAnkleR'):
+            if(jointName == b'jointAnkleR'):
+                print(jointName,jointId)
                 self.right_ankleY.set_jointId(jointId)
 
-            if(jointName == 'jointUpperLegL'):
+            if(jointName == b'jointUpperLegL'):
+                print(jointName,jointId)
                 self.left_hip.set_jointId(jointId)
 
-            if(jointName == 'jointLowerLegL'):
+            if(jointName == b'jointLowerLegL'):
+                print(jointName,jointId)
                 self.left_knee.set_jointId(jointId)
 
-            if(jointName == 'jointAnkleL'):
+            if(jointName == b'jointAnkleL'):
+                print(jointName,jointId)
                 self.left_ankleY.set_jointId(jointId) 
 
-            if(jointName == 'fixed_ankleBridgeL'):
+            if(jointName == b'fixed_ankleBridgeL'):
+                print(jointName,jointId)
                 self.left_foot.set_linkId(jointId)
 
-            if(jointName == 'fixed_ankleBridgeR'):
+            if(jointName == b'fixed_ankleBridgeR'):
+                print(jointName,jointId)
                 self.right_foot.set_linkId(jointId)
 
 
@@ -255,22 +281,66 @@ class PybulletEnv():
         self.center_hip.set_state(q=centerHip_q,qd=centerHip_qd)
         
         #update state of foot
-        right_foot_collision = self.has_contact(self.p,self.humanoid,self.plane,linkA=self.right_foot.link_id)
-        left_foot_collision = self.has_contact(self.p,self.humanoid,self.plane,linkA=self.left_foot.link_id)
-        self.right_foot.set_state(right_foot_collision)
-        self.left_foot.set_state(left_foot_collision)
+        right_foot_collision,right_foot_collision_front,right_foot_collision_back =\
+             self.has_contact(self.p,self.humanoid,self.plane,linkA=self.right_foot.link_id,leg_direction='right')
+        left_foot_collision,left_foot_collision_front,left_foot_collision_back = \
+            self.has_contact(self.p,self.humanoid,self.plane,linkA=self.left_foot.link_id,leg_direction='left')
+        self.right_foot.set_state(right_foot_collision,right_foot_collision_front,right_foot_collision_back)
+        self.left_foot.set_state(left_foot_collision,left_foot_collision_front,left_foot_collision_back)
         return
     
-    def has_contact(self, bullet_client, bodyA, bodyB, linkA):
+    def has_contact(self, bullet_client, bodyA, bodyB, linkA,leg_direction):
         """
         return: 0 means no contact
         """
+        collision = 0
+        collision_front = 0
+        collision_back = 0
+        joint_angle = self.__dict__[leg_direction+'_ankleY'].q
         if len(bullet_client.getContactPoints(bodyA,bodyB, linkIndexA=linkA))==0:
-            return 0
+            return 0,0,0
         else:
+            collision = 1
+            print("collision in %s leg"%leg_direction,"joint angle:",joint_angle)
             # print(bullet_client.getContactPoints(bodyA,bodyB, linkIndexA=linkA))
-            return 1
+            if(joint_angle>=0):
+                collision_front =1
+            else:
+                collision_back = 1
+            return collision,collision_front,collision_back
+    
+    def get_motorId(self):
+        jointIds=[]
+        paramIds=[]
+        jointAngles=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+        activeJoint=0
+        for j in range (self.p.getNumJoints(self.humanoid)):
+            self.p.changeDynamics(self.humanoid,j,linearDamping=0, angularDamping=0)
+            info = self.p.getJointInfo(self.humanoid,j)
+            jointName = info[1]
+            jointType = info[2]
+            if (jointType==self.p.JOINT_PRISMATIC or jointType==self.p.JOINT_REVOLUTE):
+                activeJoint+=1
+                jointIds.append(j)
+                paramIds.append(self.p.addUserDebugParameter(jointName.decode("utf-8"),-4,4,jointAngles[activeJoint]))
+        return paramIds,jointIds
+    
+    def step_debugger(self,step_sim=True):
+        """
+        read data from debugger
+        """
+        self.p.getCameraImage(320,200)
+        self.p.setGravity(0,0,self.p.readUserDebugParameter(self.gravId))
 
+        # joint_states = p.getJointStates(humanoid,range(1))
+        info = self.p.getJointInfo(self.humanoid,0)
+        # print(info)
+        for i in range(len(self.paramIds)):
+            c = self.paramIds[i]
+            targetPos = self.p.readUserDebugParameter(c)
+            self.p.setJointMotorControl2(self.humanoid,self.jointIds[i],self.p.POSITION_CONTROL,targetPos, force=140.)
+        if(step_sim):
+            self.p.stepSimulation()
 
 
 if __name__ == "__main__":
