@@ -1,18 +1,23 @@
 from envs.pybullet_env import PybulletEnv
 import time
+from calTorque import multijointController
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
     robot = PybulletEnv(gravity=-10.0,dt=0.01,file_path="urdf/simbicon_urdf/flame3.urdf")
-    robot.reset(disable_velControl=True,add_debug=True)
+    robot.reset(disable_velControl=True,add_debug=False)
+    controller = multijointController(robot)
     i=0
     while(i<100000):
         #calculate torques and apply torques to robots
-        torques = [-1.0,-0.8,-0.8,+0.8,0.8,0.8,0.8]
+        torques = controller.update()
+        # print("torques",torques)
+        # torques = [-1.0,-0.8,-0.8,+0.8,0.8,0.8,0.8]
+
         # torques = cal_Torque(robot)
         # print("torques",torques)
-        # robot.step(torques,step_sim=False)
-        robot.step_debugger(step_sim=False)
+        robot.step(torques,step_sim=False)
+        # robot.step(step_sim=False)
         
         #step simulation id needed and update state of robot 
         robot.p.stepSimulation()
