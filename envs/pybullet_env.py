@@ -135,14 +135,14 @@ class PybulletEnv():
         self.plane = self.p.loadURDF("plane.urdf")
 
         #add step down:
-        # test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 1])
-        # test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05])
-        # test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
-        # baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
+        test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 1])
+        test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05])
+        test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
+        baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
         #add humannoid
-        self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
-        # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
+        # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
+        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         self.p.setGravity(0,0,self.g)
 
@@ -308,12 +308,16 @@ class PybulletEnv():
             # joint_info = self.p.getJointInfo(self.humanoid,self.__dict__[leg_direction+'_ankleY'].joint_id)
             # jointPos_frompar = joint_info[-3]
             link_pos = link_info[0]
+            link_quar = link_info[1]
             contact_posOnA = contact_info[0][5]
-            # print("link world position :",link_info[0],"contact point world position",contact_posOnA)
+            contact_qua = (1,0,0,0)
+            rel_pos,rel_qua=bullet_client.multiplyTransforms(link_pos,link_quar,contact_posOnA,contact_qua)
+            print("relative position: ",rel_pos)
             if((link_pos[0] - contact_posOnA[0])> 0):
                 collision_back = 1
             else:
                 collision_front = 1
+            # print("link world position :",link_info[0],"contact point world position",contact_posOnA)
             # joint_angle = self.__dict__[leg_direction+'_ankleY'].q
             # if(joint_angle>=0):
             #     collision_front =1
