@@ -301,7 +301,7 @@ class PybulletEnv():
             return 0,0,0
         else:
             collision = 1
-            print("collision in %s leg"%leg_direction,"joint angle:",joint_angle)
+            # print("collision in %s leg"%leg_direction,"joint angle:",joint_angle)
             # print(bullet_client.getContactPoints(bodyA,bodyB, linkIndexA=linkA))
             if(joint_angle>=0):
                 collision_front =1
