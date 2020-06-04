@@ -4,10 +4,11 @@ from calTorque import multijointController
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
-    robot = PybulletEnv(gravity=-10.0,dt=0.01,file_path="urdf/simbicon_urdf/flame3.urdf")
+    robot = PybulletEnv(gravity=0.0,dt=0.01,file_path="urdf/simbicon_urdf/flame3.urdf")
     robot.reset(disable_velControl=True,add_debug=False)
     controller = multijointController(robot)
     i=0
+    time.sleep(2.0)
     while(i<100000):
         #calculate torques and apply torques to robots
         torques = controller.update()
@@ -21,9 +22,16 @@ if __name__ == "__main__":
         
         #step simulation id needed and update state of robot 
         robot.p.stepSimulation()
+
         time.sleep(robot.dt)
         robot.update_state()
         i+=1
+        if (i%5==0):
+            robot.left_foot.state = 1
+            robot.right_foot.state = 0
+        if (i%10==0):
+            robot.left_foot.state = 0
+            robot.right_foot.state = 1
         if(robot.left_foot.state):
             print("left:",robot.left_foot.state,"front:",robot.left_foot.front_state,"back:",robot.left_foot.back_state)
         if(robot.right_foot.state):

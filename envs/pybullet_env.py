@@ -117,7 +117,7 @@ class PybulletEnv():
         self.joints = [self.center_hipR,self.center_hipL,self.right_hip,self.right_knee,self.right_ankleY,self.left_hip,self.left_knee,self.left_ankleY]
         
         self.torso = FlameTorso()
-        self.bias = 1 
+        self.bias = 0 
         return
 
 
@@ -135,14 +135,15 @@ class PybulletEnv():
         self.plane = self.p.loadURDF("plane.urdf")
 
         #add step down:
-        test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 1])
-        test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05])
-        test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
-        baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
+        # test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.1],rgbaColor=[1, 0, 0, 1])
+        # test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.1])
+        # test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
+        # baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
         #add humannoid
         # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
         self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
+        # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         self.p.setGravity(0,0,self.g)
 
@@ -286,7 +287,8 @@ class PybulletEnv():
         left_foot_collision,left_foot_collision_front,left_foot_collision_back = \
             self.has_contact(self.p,self.humanoid,self.plane,linkA=self.left_foot.link_id,leg_direction='left')
         self.right_foot.set_state(right_foot_collision,right_foot_collision_front,right_foot_collision_back)
-        self.left_foot.set_state(left_foot_collision,left_foot_collision_front,left_foot_collision_back)
+        # self.left_foot.set_state(left_foot_collision,left_foot_collision_front,left_foot_collision_back)
+        self.left_foot.set_state(0,left_foot_collision_front,left_foot_collision_back)
         return
     
     def has_contact(self, bullet_client, bodyA, bodyB, linkA,leg_direction):

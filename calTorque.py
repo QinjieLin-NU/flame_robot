@@ -116,8 +116,9 @@ class multijointController():
         output += (doublestance           - lioff[24]) * liscale[24] * lw[24]
         output += (robot.bias              - lioff[25]) * liscale[25] * lw[25]   
         
-        output = output/360 * np.pi
-        output = 1.0/(1.0+np.exp(-(output)))
+        # output = output/360 * np.pi
+        # output = 1.0/(1.0+np.exp(-(output)))
+        output = np.arctan2(np.tanh(output),1)
         return output
 
 
@@ -130,6 +131,7 @@ class multijointController():
         scale = self.scale[0:29,:-7]
 
         self.center_hip_q_ref = self.networkOutput(robot,weight,offset,scale,0)
+        # print("7 output:",self.center_hip_q_ref)
         self.upperbody_q_ref = self.networkOutput(robot,weight,offset,scale,1)
         self.interleg_q_ref = self.networkOutput(robot,weight,offset,scale,2)
         self.stance_knee_q_ref = self.networkOutput(robot,weight,offset,scale,3)
