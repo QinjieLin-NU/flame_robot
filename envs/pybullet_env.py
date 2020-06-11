@@ -287,8 +287,8 @@ class PybulletEnv():
         left_foot_collision,left_foot_collision_front,left_foot_collision_back = \
             self.has_contact(self.p,self.humanoid,self.plane,linkA=self.left_foot.link_id,leg_direction='left')
         self.right_foot.set_state(right_foot_collision,right_foot_collision_front,right_foot_collision_back)
-        # self.left_foot.set_state(left_foot_collision,left_foot_collision_front,left_foot_collision_back)
-        self.left_foot.set_state(0,left_foot_collision_front,left_foot_collision_back)
+        self.left_foot.set_state(left_foot_collision,left_foot_collision_front,left_foot_collision_back)
+        # self.left_foot.set_state(0,left_foot_collision_front,left_foot_collision_back)
         return
     
     def has_contact(self, bullet_client, bodyA, bodyB, linkA,leg_direction):

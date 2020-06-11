@@ -13,18 +13,15 @@ if __name__ == "__main__":
         #calculate torques and apply torques to robots
         torques = controller.update()
         # print("torques",torques)
-        # torques = [-1.0,-0.8,-0.8,+0.8,0.8,0.8,0.8]
 
-        # torques = cal_Torque(robot)
-        # print("torques",torques)
         robot.step(torques,step_sim=False)
         # robot.step(step_sim=False)
         
         #step simulation id needed and update state of robot 
         robot.p.stepSimulation()
-
         time.sleep(robot.dt)
         robot.update_state()
+
         i+=1
         if (i%5==0):
             robot.left_foot.state = 1
