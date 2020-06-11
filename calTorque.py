@@ -2,9 +2,10 @@ import numpy as np
 import copy
 class multijointController():
 #read txt file function
-    def __init__(self,robot):
+    def __init__(self,robot,walkweight):
         #read weights
-        self.weight = self.read_csv("walkweight.csv")
+        # self.weight = self.read_csv(walkweight_file)
+        self.weight = walkweight
         self.offset = self.read_csv("walkoffset.csv")
         self.scale = self.read_csv("walkscale.csv")
         self.kp=self.weight[26,-7:]

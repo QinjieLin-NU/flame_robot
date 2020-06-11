@@ -28,20 +28,20 @@ baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 p.setPhysicsEngineParameter(numSolverIterations=100)
 p.changeDynamics(humanoid,-1,linearDamping=0, angularDamping=0)
 
-# jointAngles=[0,0,1.0204,-1.97,-0.084,2.06,-1.9,0,0,1.0204,-1.97,-0.084,2.06,-1.9,0]
-# jointAngles=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
-# # rev_jointAngles = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
-# activeJoint=0
-# for j in range (p.getNumJoints(humanoid)):
-#     p.changeDynamics(humanoid,j,linearDamping=0, angularDamping=0)
-#     info = p.getJointInfo(humanoid,j)
-#     jointName = info[1]
-#     jointType = info[2]
-#     if (jointType==p.JOINT_PRISMATIC or jointType==p.JOINT_REVOLUTE):
-#         activeJoint+=1
-#         jointIds.append(j)
-#         paramIds.append(p.addUserDebugParameter(jointName.decode("utf-8"),-4,4,jointAngles[activeJoint]))
-#         # p.resetJointState(humanoid, j, jointAngles[activeJoint])
+jointAngles=[0,0,1.0204,-1.97,-0.084,2.06,-1.9,0,0,1.0204,-1.97,-0.084,2.06,-1.9,0]
+jointAngles=[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+# rev_jointAngles = [0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+activeJoint=0
+for j in range (p.getNumJoints(humanoid)):
+    p.changeDynamics(humanoid,j,linearDamping=0, angularDamping=0)
+    info = p.getJointInfo(humanoid,j)
+    jointName = info[1]
+    jointType = info[2]
+    if (jointType==p.JOINT_PRISMATIC or jointType==p.JOINT_REVOLUTE):
+        activeJoint+=1
+        jointIds.append(j)
+        paramIds.append(p.addUserDebugParameter(jointName.decode("utf-8"),-4,4,jointAngles[activeJoint]))
+        # p.resetJointState(humanoid, j, jointAngles[activeJoint])
 
 p.setRealTimeSimulation(1)
 while(1):

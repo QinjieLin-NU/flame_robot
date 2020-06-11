@@ -38,29 +38,62 @@ def crossover(parent1,parent2):
     return child
 
 #choose 20% of population
-def select(fitness,parent):
-    idx = np.random.choice(a=196, size=196*0.2, replace=False,p=None)
+def select(fitness_array,pop):
+    #pop 200*196
+    np.append(pop, fitness_array, axis=1)
+    #sort by fitness
+    pop[pop[:,-1].argsort()] 
+    #get top 20% population as parent
+    parent = pop[int(POP_SIZE*0.2),:]
+    #remove the last column(fitness)
+    parent = np.delete(parent, -1, axis=1)
+
     return parent
 
-#first generatinon
-weight = read_csv("walkweight.csv")
-weight.shape = (196,1)
-pop = np.zeros((POP_SIZE,196)
-for i in range(POP_SIZE):
-    pop[i,:] = weight + mutate(weight)
-child = np.zeros((1,196))
 
-for i in range(N_GENERATION):    
-    #select 20% best parent 4
-    pop = select(fitness,pop)
-    pop_copy = select(fitness,pop_copy)
+def get_fitness_array(pop):
+    #get all children's fitness
+    fitness_array = np.zeros(POP_SIZE)
+    for i in range(POP_SIZE):
+        ea_trial = bipedal_EActrl(pop[i,:])
+        fitness_trial =  ea_trial.move()
+        fitness_array[i]=fitness_trial
 
-    for i in range(POP_SIZE*0.2):
-        parent = pop[i,:]
-        parent_copy = pop_copy[i,:]
-        child = crossover(parent,parent_copy)
-        pop[i,:] = child
+    return fitness_array
 
 
+if __name__ == "__main__":
+    ea_trial = bipedal_EActrl(weights)
 
+    #first generatinon
+    weight = read_csv("walkweight.csv")
+    weight.shape = (196,1)
+    pop = np.zeros((POP_SIZE,196)
+    for i in range(POP_SIZE):
+        pop[i,:] = weight + mutate(weight)
+    child = np.zeros((1,196))
+
+
+
+
+
+    for i in range(N_GENERATION):    
+        #get the fitness and select top 20% as parent 
+        fitness_list = get_fitness_array(pop)
+        parent_pop = select(fitness_list,pop)
+
+
+        for j in range(POP_SIZE):
+            #generate by crossover
+            parent1_index =  random.randient(0,40)
+            parent2_index =  random.randient(0,40)
+            parent1 = parent_pop[parent1_index,:]
+            parent2 = parent_pop[parent2_index,:]
+            child = crossover(parent1,parent2)
+            pop[j,:] = child
+
+
+    #Harvest
+    print(pop)
+    write(pop)
 
