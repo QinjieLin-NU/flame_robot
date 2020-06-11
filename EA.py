@@ -1,5 +1,8 @@
 import numpy as np
 import random
+from bipedal_EActrl import bipedal_EActrl
+import pandas as pd
+import csv
 #parent is an array of 20x196(28*7)
 N_GENERATION = 20
 POP_SIZE = 200
@@ -7,16 +10,6 @@ DNA_SIZE = 196
 #fitness function
 #distance measured by hip
 # tend = time when the body detect ground//how to accumulate time?
-def fitness():
-    C1 = centerHip_torque*dt
-    C2 = rightHip_torque*dt
-    C3 = rightKnee_torque*dt
-    C4 = rightAnkleY_torque*dt
-    C5 = leftHip_torque*dt
-    C6 = leftKnee_torque*dt
-    C7 = leftAnkleY_torque*dt
-    Cost = C1+C2+C3+C4+C5+C6+C7
-    return Cost
 
 def mutate(parent):
     #parent 1x196
@@ -63,25 +56,18 @@ def get_fitness_array(pop):
 
 
 if __name__ == "__main__":
-    ea_trial = bipedal_EActrl(weights)
-
     #first generatinon
     weight = read_csv("walkweight.csv")
-    weight.shape = (196,1)
-    pop = np.zeros((POP_SIZE,196)
+    weight.shape = (1,196)
+    pop = np.zeros((POP_SIZE,196))
     for i in range(POP_SIZE):
         pop[i,:] = weight + mutate(weight)
     child = np.zeros((1,196))
-
-
-
-
 
     for i in range(N_GENERATION):    
         #get the fitness and select top 20% as parent 
         fitness_list = get_fitness_array(pop)
         parent_pop = select(fitness_list,pop)
-
 
         for j in range(POP_SIZE):
             #generate by crossover
@@ -90,10 +76,10 @@ if __name__ == "__main__":
             parent1 = parent_pop[parent1_index,:]
             parent2 = parent_pop[parent2_index,:]
             child = crossover(parent1,parent2)
+            child = mutate(child)
             pop[j,:] = child
-
 
     #Harvest
     print(pop)
-    write(pop)
+    numpy.savetxt("new_weight.csv", pop, delimiter=",")
 
