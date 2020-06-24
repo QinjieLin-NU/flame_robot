@@ -15,6 +15,8 @@ class FlameTorso():
         self.pitchd = 0
         self.yaw = 0
         self.yawd = 0
+        self.torso_pos = None
+        self.torso_ori = None
 
     def set_state(self,q,qd):
         self.roll = q[0]
@@ -23,6 +25,10 @@ class FlameTorso():
         self.pitchd = q[1]
         self.yaw = q[2]
         self.yawd = q[2]
+    
+    def set_pos(self,pos,ori):
+        self.torso_pos = list(pos)
+        self.torso_ori = list(ori)
 
 class FlameJoint():
     """
@@ -117,6 +123,8 @@ class PybulletEnv():
         self.joints = [self.center_hipR,self.center_hipL,self.right_hip,self.right_knee,self.right_ankleY,self.left_hip,self.left_knee,self.left_ankleY]
         
         self.torso = FlameTorso()
+        self.fall_flag = False # this will be true if robot position.z < fall_meter 
+        self.fall_meter = 0.35
         self.bias = 0 
         return
 
@@ -272,6 +280,11 @@ class PybulletEnv():
         torso_angle = self.p.getEulerFromQuaternion(torso_ori)
         torso_linVel, torso_angVel = self.p.getBaseVelocity(self.humanoid)
         self.torso.set_state(torso_angle,torso_angVel)
+        self.torso.set_pos(torso_pos,torso_ori)
+        if(self.torso.torso_pos[2]<self.fall_meter):
+            self.fall_flag = True
+        else:
+            self.fall_flag = False
 
         # update joint angle of joints
         for joint in self.joints:
