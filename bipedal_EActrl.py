@@ -10,16 +10,31 @@ class bipedal_EActrl():
         self.robot.reset(disable_velControl=True,add_debug=False)
         self.controller = multijointController(robot,weights)
 
+
+    def Accum_Torques(self,torques):
+        C1 = abs(torques[0])*dt#centerHip_torque
+        C2 = abs(torques[1])*dt#rightHip_torque
+        C3 = abs(torques[2])*dt#rightKnee_torque
+        C4 = abs(torques[3])*dt#rightAnkleY_torque
+        C5 = abs(torques[4])*dt#leftHip_torque
+        C6 = abs(torques[5])*dt#leftKnee_torque
+        C7 = abs(torques[6])*dt#leftAnkleY_torque
+        accum_torque = C1+C2+C3+C4+C5+C6+C7
+        return accum_torque
+
+
     def fitness(self, torques):
-        C1 = torques[0]*dt#centerHip_torque
-        C2 = torques[1]*dt#rightHip_torque
-        C3 = torques[2]*dt#rightKnee_torque
-        C4 = torques[3]*dt#rightAnkleY_torque
-        C5 = torques[4]*dt#leftHip_torque
-        C6 = torques[5]*dt#leftKnee_torque
-        C7 = torques[6]*dt#leftAnkleY_torque
-        Cost = C1+C2+C3+C4+C5+C6+C7
-        return Cost
+        multiplier = 1.0
+        max_dist = 0
+        max_torque = 0
+
+        if distTraveled>max_dist:
+            energy_remaining = max_torque - accum_torque
+            energy_per_meter = accum_torque / max_dist
+            distTraveled = max_dist + (energy_remaining / energy_per_meter)
+
+        return distTraveled*multiplier
+
 
     def move(self):
 
@@ -45,13 +60,13 @@ class bipedal_EActrl():
 
             #EA
             if (fall_flag==False):
-                fitness += fitness(torques)
+                accum_torque += Accum_Torques(torques)
             else:
                 break
 
             i+=1
 
-        return fitness
+        return accum_torque
 
 
 
