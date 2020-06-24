@@ -234,5 +234,143 @@ class multijointController():
         torques = [max(min(x, 1), -1) for x in torques]
         return torques
             
+class stepOffController():
+    #read txt file function     
+    def __init__(self,robot,walkweight):
+        #read weights
+        # self.weight = self.read_csv(walkweight_file)
+        self.weight = walkweight
+        self.offset = self.read_csv("walkoffset.csv")
+        self.scale = self.read_csv("walkscale.csv")
 
-    
+        #right is stance
+        self.kp=np.array([350,200,310,500,250,0.0,30])
+        self.kd=np.array([1,17,0.5,1,1,0,0.05])
+
+
+        #init robot
+        self.robot = robot  
+
+        #init refPrev
+        self.center_hip_q_refPrev = -robot.torso.roll
+        self.upperbody_q_refPrev = 0
+        self.interleg_q_refPrev = -0.995
+        self.stance_knee_q_refPrev = -2.0
+        self.swing_knee_q_refPrev = -2.0
+        self.stance_ankle_q_refPrev = 0
+        self.swing_ankle_q_refPrev = 0
+  
+
+    #set the calculated ref and p, d gains
+    def assignRef_leftstance(self):
+        robot = self.robot
+
+        #right is stance
+        self.center_hip_q_ref = -robot.torso.roll
+        self.upperbody_q_ref = -0.6
+        self.interleg_q_ref = -0.2
+        self.stance_knee_q_ref = 0.05
+        self.swing_knee_q_ref = -2.0
+        self.stance_ankle_q_ref = -5
+        self.swing_ankle_q_ref = 0.0
+
+
+        #change p,d 
+        # hipx, upperbody, interleg, stance knee, swing knee, stance ankle, swing ankle
+        self.kp=np.array([350,200,310,250,250,100,0])
+        self.kd=np.array([1,17,0.5,2,1,0.5,0.0])
+
+        # print("weight",weight)
+        # print("shape",weight.shape)
+
+
+        #calculate qd, dt=1
+        dt = 0.01
+        self.center_hip_qd_ref = self.FiltandDerivRef(self.center_hip_q_ref,self.center_hip_q_refPrev, dt)
+        self.upperbody_qd_ref = self.FiltandDerivRef(self.upperbody_q_ref,self.upperbody_q_refPrev, dt)
+        self.interleg_qd_ref = self.FiltandDerivRef(self.interleg_q_ref,self.interleg_q_refPrev, dt)
+        self.stance_knee_qd_ref = self.FiltandDerivRef(self.stance_knee_q_ref,self.stance_knee_q_refPrev, dt)
+        self.swing_knee_qd_ref = self.FiltandDerivRef(self.swing_knee_q_ref,self.swing_knee_q_refPrev, dt)
+        self.stance_ankle_qd_ref = self.FiltandDerivRef(self.stance_ankle_q_ref,self.stance_ankle_q_refPrev, dt)
+        self.swing_ankle_qd_ref = self.FiltandDerivRef(self.swing_ankle_q_ref,self.swing_ankle_q_refPrev, dt)
+
+        return 
+
+
+    def FiltandDerivRef(self,ref,refPrev, dt):
+        alpha = 1.0
+        ref = alpha * ref +  (1.0-alpha)*refPrev
+        qd_ref = (ref - refPrev)/dt
+        refPrev = copy.deepcopy(ref)
+        return qd_ref
+
+
+    # calTau
+    def update(self):
+        robot = self.robot
+        kp = self.kp
+        kd = self.kd
+        
+        #define centerhipx, upperbody, interleg, stance_knee, swing knee, stance ankle, swing ankle
+        if robot.left_foot.state == 1:
+            left_is_stance = True
+        else:
+            left_is_stance = False
+
+
+        if left_is_stance:
+            stance_leg = 'left'
+            swing_leg = 'right'
+            adj_flag = -1.
+            #reference update to left_is_stance
+            self.assignRef_leftstance()
+        else:
+            stance_leg = 'right'
+            swing_leg = 'left'
+            adj_flag = 1.0
+
+        center_hip_q = robot.center_hip.q
+        center_hip_qd = robot.center_hip.qd
+        interleg_q  = robot.__dict__[swing_leg+'_hip'].q   - robot.__dict__[stance_leg+'_hip'].q
+        interleg_qd = robot.__dict__[swing_leg+'_hip'].qd  - robot.__dict__[stance_leg+'_hip'].qd
+
+        center_hip_tau = kp[0]*(self.center_hip_q_ref-center_hip_q)+kd[0]*(self.center_hip_qd_ref-center_hip_qd)
+        upperbody_tau = kp[1]*(self.upperbody_q_ref-robot.torso.pitch)+kd[1]*(self.upperbody_qd_ref-robot.torso.pitchd)
+        interleg_tau = kp[2]*(self.interleg_q_ref-interleg_q)+kd[2]*(self.interleg_qd_ref-interleg_qd)
+        stance_knee_tau = kp[3]*(self.stance_knee_q_ref-robot.__dict__[stance_leg+'_knee'].q)+kd[3]*(self.stance_knee_qd_ref-robot.__dict__[stance_leg+'_knee'].qd)
+        swing_knee_tau = kp[4]*(self.swing_knee_q_ref-robot.__dict__[swing_leg+'_knee'].q)+kd[4]*(self.swing_knee_qd_ref-robot.__dict__[swing_leg+'_knee'].qd)
+        stance_ankle_tau = kp[5]*(self.stance_ankle_q_ref-robot.__dict__[stance_leg+'_ankleY'].q)+kd[5]*(self.stance_ankle_qd_ref-robot.__dict__[stance_leg+'_ankleY'].qd) #ankle y or ankle x or just ankle?
+        swing_ankle_tau = kp[6]*(self.swing_ankle_q_ref-robot.__dict__[swing_leg+'_ankleY'].q)+kd[6]*(self.swing_ankle_qd_ref-robot.__dict__[swing_leg+'_ankleY'].qd)
+
+        swing_hipy_tau = 0
+        stance_hipy_tau = 0
+
+        swing_hipy_tau += interleg_tau
+        stance_hipy_tau -= interleg_tau
+        stance_hipy_tau -= upperbody_tau
+
+
+
+
+        #centerHip_torque
+        centerHip_torque = center_hip_tau
+        #rightHip_torque, leftHip_torque, rightKnee_torque, leftKnee_torque, rightAnkleY_torque, leftAnkleY_torque
+        if left_is_stance:
+            leftHip_torque = stance_hipy_tau
+            rightHip_torque = swing_hipy_tau
+            leftKnee_torque = stance_knee_tau
+            rightKnee_torque = swing_knee_tau
+            leftAnkleY_torque = stance_ankle_tau
+            rightAnkleY_torque = swing_ankle_tau
+        else:
+            leftHip_torque = swing_hipy_tau
+            rightHip_torque = stance_hipy_tau
+            leftKnee_torque = swing_knee_tau
+            rightKnee_torque = stance_knee_tau
+            leftAnkleY_torque = swing_ankle_tau
+            rightAnkleY_torque = stance_ankle_tau            
+
+
+        torques = [centerHip_torque,rightHip_torque,rightKnee_torque,rightAnkleY_torque,leftHip_torque,leftKnee_torque,leftAnkleY_torque]
+        torques = [max(min(x, 1), -1) for x in torques]
+        return torques
