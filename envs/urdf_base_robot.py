@@ -15,6 +15,8 @@ class FlameTorso():
         self.pitchd = 0
         self.yaw = 0
         self.yawd = 0
+        self.torso_pos = None
+        self.torso_ori = None
 
     def set_state(self,q,qd):
         self.roll = q[0]
@@ -23,6 +25,10 @@ class FlameTorso():
         self.pitchd = q[1]
         self.yaw = q[2]
         self.yawd = q[2]
+
+    def set_pos(self,pos,ori):
+        self.torso_pos = list(pos)
+        self.torso_ori = list(ori)
 
 class FlameJoint():
     """
@@ -88,9 +94,9 @@ class FlameFoot():
         return self.state,self.front_state,self.back_state
     
 
-class PybulletEnv():
+class URDFBaseRobot():
     """
-    flame environment in self.p
+    this class will load robot in pybullet
     """
     def __init__(self,gravity=-10.0,dt=0.01,file_path="../urdf/simbicon_urdf/flame3.urdf"):
         #physics params
@@ -117,15 +123,21 @@ class PybulletEnv():
         self.joints = [self.center_hipR,self.center_hipL,self.right_hip,self.right_knee,self.right_ankleY,self.left_hip,self.left_knee,self.left_ankleY]
         
         self.torso = FlameTorso()
-        self.bias = 0 
+        self.bias = 0
+        self.init=False 
+
+        self.fall_flag = False # this will be true if robot position.z < fall_meter 
+        self.fall_meter = 0.15
         return
 
 
-    def reset(self,disable_gui=False,disable_velControl=True,add_debug=False):
-        if disable_gui:
-            self.physics_client = self.p.connect(self.p.DIRECT)
-        elif disable_gui==False:
-            self.physics_client = self.p.connect(self.p.GUI)
+    def reset_sim(self,disable_gui=False,disable_velControl=True,add_debug=False):
+        if(not self.init):
+            if disable_gui:
+                self.physics_client = self.p.connect(self.p.DIRECT)
+            elif disable_gui==False:
+                self.physics_client = self.p.connect(self.p.GUI)
+            self.init=True
         self.p.resetSimulation()
         self.p.setTimeStep(self.dt)
         self.p.setGravity(0,0,self.g)
@@ -141,9 +153,7 @@ class PybulletEnv():
         # baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
         #add humannoid
-        # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
         self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
-        # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         self.p.setGravity(0,0,self.g)
 
@@ -182,35 +192,35 @@ class PybulletEnv():
                 self.center_hipL.set_jointId(jointId)
 
             if(jointName == b'jointUpperLegR'):
-                # print(jointName,jointId)
+                #print(jointName,jointId)
                 self.right_hip.set_jointId(jointId)
 
             if(jointName == b'jointLowerLegR'):
-                # print(jointName,jointId)
+                #print(jointName,jointId)
                 self.right_knee.set_jointId(jointId)
 
             if(jointName == b'jointAnkleR'):
-                # print(jointName,jointId)
+                #print(jointName,jointId)
                 self.right_ankleY.set_jointId(jointId)
 
             if(jointName == b'jointUpperLegL'):
-                # print(jointName,jointId)
+                #print(jointName,jointId)
                 self.left_hip.set_jointId(jointId)
 
             if(jointName == b'jointLowerLegL'):
-                # print(jointName,jointId)
+                #print(jointName,jointId)
                 self.left_knee.set_jointId(jointId)
 
             if(jointName == b'jointAnkleL'):
-                # print(jointName,jointId)
+                #print(jointName,jointId)
                 self.left_ankleY.set_jointId(jointId) 
 
             if(jointName == b'fixed_ankleBridgeL'):
-                # print(jointName,jointId)
+                #print(jointName,jointId)
                 self.left_foot.set_linkId(jointId)
 
             if(jointName == b'fixed_ankleBridgeR'):
-                # print(jointName,jointId)
+                #print(jointName,jointId)
                 self.right_foot.set_linkId(jointId)
 
 
@@ -270,6 +280,11 @@ class PybulletEnv():
         torso_angle = self.p.getEulerFromQuaternion(torso_ori)
         torso_linVel, torso_angVel = self.p.getBaseVelocity(self.humanoid)
         self.torso.set_state(torso_angle,torso_angVel)
+        self.torso.set_pos(torso_pos,torso_ori)
+        if(self.torso.torso_pos[2]<self.fall_meter):
+            self.fall_flag = True
+        else:
+            self.fall_flag = False
 
         # update joint angle of joints
         for joint in self.joints:
@@ -368,12 +383,9 @@ class PybulletEnv():
 
 
 if __name__ == "__main__":
-    robot = PybulletEnv(gravity=-10.0,dt=0.01)
-    robot.reset(disable_velControl=True)
+    robot = URDFBaseRobot(gravity=-10.0,dt=0.01)
+    robot.reset_sim(disable_velControl=True)
     for j in range(200):
-        robot.p.resetSimulation()
-        # robot.reset(disable_velControl=True)
-        print(j,end=" ")
         for i in range(20):
             #torques = applied torques
             torque = [-1.0,-0.8,-0.8,+0.8,0.8,0.8,0.8]
