@@ -7,7 +7,7 @@ import time
 class BipedalBaseEnv(BulletBaseEnv):
     """
     This class will implement step, reset function of gym envs
-    TODO: implement calc state and calc potential, add joint angle limit
+    TODO: implement alive bonus function
     """
     def __init__(self, robot, render=False):
         BulletBaseEnv.__init__(self, robot, render)
@@ -38,7 +38,6 @@ class BipedalBaseEnv(BulletBaseEnv):
         """
         input: a is the applied torque of the robot
         step action a and return state
-        TODO:  calc rewards
         """
         self.robot.step(a,step_sim=True)
         if(real_time):
@@ -122,7 +121,6 @@ class BipedalBaseEnv(BulletBaseEnv):
     def reset(self):
         """
         reset robot to initial pose 
-        TODO: return state,reward, wait until robot fall
         """
         self.robot.reset_sim(disable_velControl=True,disable_gui=(not self.isRender),add_debug=False)
         self.robot.update_state()
