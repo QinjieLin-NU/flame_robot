@@ -8,7 +8,7 @@ class Bipedal(URDFBaseRobot):
     def __init__(self):
         """
         load bipedal robot urdf in Pybullet
-        TODO: done, add limit to each joint, implement robot_specific_reset function
+        TODO: done, implement robot_specific_reset function
         """
         URDFBaseRobot.__init__(self, gravity=-10.0,dt=0.01,file_path="urdf/simbicon_urdf/flame3.urdf")
         # self.reset_sim(disable_velControl=True,disable_gui=False,add_debug=False)
