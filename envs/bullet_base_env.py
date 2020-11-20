@@ -24,6 +24,7 @@ class BulletBaseEnv(gym.Env):
 		self._cam_pitch = -30
 		self._render_width = 320
 		self._render_height = 240
+		self.real_time=False
 
 
 	def configure(self, args):
@@ -37,13 +38,18 @@ class BulletBaseEnv(gym.Env):
 	def _reset(self):
 		return 
 
-	def _render(self, renfer_flag=True, close=False):
+	def _render(self, mode="realtime", close=False):
 		"""
 		render_flag: if True then render, if False then close GUi
+		mode: if realtime, then add sleep in  step function
 		This only supports render on Bullet Engine
 		isRender parameter will be passed in Reset Funstion ofE BipedalBaseEnv
 		"""
-		self.isRender = renfer_flag
+		self.isRender = True
+		if(mode == "realtime"):
+			self.real_time=True
+		else:
+			self.real_time=False
 		return 
 
 	def _close(self):

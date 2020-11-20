@@ -34,13 +34,14 @@ class BipedalBaseEnv(BulletBaseEnv):
     foot_ground_object_names = set(["floor"])  # to distinguish ground and other objects
     joints_at_limit_cost = -0.1	 # discourage stuck joints
 
-    def step(self, a,real_time=True):
+    def step(self, a):
         """
         input: a is the applied torque of the robot
+            real_time: if True, sleep every step, else: step very fast without time clock
         step action a and return state
         """
         self.robot.step(a,step_sim=True)
-        if(real_time):
+        if(self.real_time):
             time.sleep(0.05)
         self.last_state = np.asarray(self.state)
         self.state=[

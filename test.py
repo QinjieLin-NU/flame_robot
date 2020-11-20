@@ -236,7 +236,7 @@ env_name = "BipedalPyBulletEnv-v0"
 seed = 0  # Random seed number
 start_timesteps = 1e4  # Number of iterations/timesteps before which the model randomly chooses an action, and after which it starts to use the policy network
 eval_freq = 5e3  # How often the evaluation step is performed (after how many timesteps)
-max_timesteps = 100 # 10e4 or 10e5 # Total number of iterations/timesteps
+max_timesteps = 10e4 # 10e4 or 10e5 # Total number of iterations/timesteps
 save_models = True  # Boolean checker whether or not to save the pre-trained model
 expl_noise = 0.1  # Exploration noise - STD value of exploration Gaussian noise
 batch_size = 100  # Size of the batch
@@ -272,7 +272,7 @@ if save_models and not os.path.exists("./pytorch_models"):
 
 
 env = gym.make(env_name)
-env.render()
+env.render(mode="simtime")#simtime realtime
 
 # ## We set seeds and we get the necessary information on the states and actions in the chosen environment
 
