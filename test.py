@@ -580,12 +580,13 @@ print("---------------------------------------")
 
 eval_episodes = 10
 save_env_vid = True
-env = gym.make(env_name)
-env.render()
-max_episode_steps = env._max_episode_steps
-if save_env_vid:
-    env = wrappers.Monitor(env, monitor_dir, force=True)
-    env.reset()
+# env = gym.make(env_name)
+# env.render()
+# max_episode_steps = env._max_episode_steps
+# if save_env_vid:
+#     env = wrappers.Monitor(env, monitor_dir, force=True)
+#     env.reset()
+env.reset()
 env.seed(seed)
 torch.manual_seed(seed)
 np.random.seed(seed)

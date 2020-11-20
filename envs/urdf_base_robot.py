@@ -278,8 +278,8 @@ class URDFBaseRobot():
         #update torso angles and angular velocity
         torso_pos, torso_ori = self.p.getBasePositionAndOrientation(self.humanoid)
         torso_angle = self.p.getEulerFromQuaternion(torso_ori)
-        torso_linVel, torso_angVel = self.p.getBaseVelocity(self.humanoid)
-        self.torso.set_state(torso_angle,torso_angVel)
+        self.torso_linVel, self.torso_angVel = self.p.getBaseVelocity(self.humanoid)
+        self.torso.set_state(torso_angle,self.torso_angVel)
         self.torso.set_pos(torso_pos,torso_ori)
         if(self.torso.torso_pos[2]<self.fall_meter):
             self.fall_flag = True
