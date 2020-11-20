@@ -4,7 +4,7 @@ import pybullet as p
 import gym, gym.spaces, gym.utils
 
   
-class Bipedal(URDFBaseRobot):
+class BipedalRobot(URDFBaseRobot):
     def __init__(self):
         """
         load bipedal robot urdf in Pybullet
@@ -31,4 +31,4 @@ class Bipedal(URDFBaseRobot):
         return
 
 if __name__ == "__main__":
-    b = Bipedal()
+    b = BipedalRobot()

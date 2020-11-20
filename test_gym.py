@@ -12,6 +12,8 @@ if __name__ == "__main__":
             action = env.action_space.sample()
             observation,reward,done,info = env.step(action)
             print(observation,reward,done,info)
+            if done:
+                break
             # time.sleep(0.5)
     env.close()
      
