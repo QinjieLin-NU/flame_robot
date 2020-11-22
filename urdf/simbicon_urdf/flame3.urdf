@@ -114,7 +114,7 @@
         <child link="lowerlegCylinderR"/>
         <origin xyz="0.00110 0.0140 -0.3155" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
-        <limit effort="90" lower="-1.570796" upper="0" velocity="10"/>
+        <limit effort="90" lower="0" upper="1.570796" velocity="10"/>
         <dynamics damping="0.198431592389"/>
     </joint>
 
@@ -241,7 +241,7 @@
         <child link="lowerlegCylinderL"/>
         <origin xyz="0.00110 -0.0140 -0.3155" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
-        <limit effort="90" lower="-1.570796" upper="0" velocity="10"/>
+        <limit effort="90" lower="0" upper="1.570796" velocity="10"/>
         <dynamics damping="0.198431592389"/>
     </joint>
 
