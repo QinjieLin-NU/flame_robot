@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <robot name="humanoid">
-
+    <material name="upperLegLinkColor">
+        <color rgba="1 1 1 0.7"/>
+    </material>
     <link name="body">
         <visual>
             <geometry>
@@ -354,9 +356,7 @@
                 <box size="0.1 0.05 0.3155"/>
             </geometry>
             <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
-            <material name="linkColor">
-                <color rgba="1 1 1 1"/>
-            </material>
+            <material name="upperLegLinkColor" />
         </visual>
         <inertial>
             <mass value="1.94"/>
@@ -368,9 +368,81 @@
                 <box size="0.1 0.05 0.3155"/>
             </geometry>
             <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
-            <!-- <contact_coefficient mu="0.0578491069103"  resitution="0"  k_p="4000"  k_d="0.173402366366" /> -->
         </collision>
     </link>
+
+    <!-- Right Leg Motors -->
+    <!-- Motor 1 -->
+    <joint name="fixed_upperRightLegToRight_Motor1_Gear" type="fixed">
+        <origin xyz="0 0.02 -0.1" rpy="0 0 0"/>
+        <parent link="upperLegCylinderR"/>
+        <child link="Right_Motor1_gear"/>
+    </joint>
+    <link name="Right_Motor1_gear">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/gear.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+    <joint name="fixed_Right_Motor1_GearToRight_Motor1_Motor" type="fixed">
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <parent link="Right_Motor1_gear"/>
+        <child link="Right_Motor1_motor"/>
+    </joint>
+    <link name="Right_Motor1_motor">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/motor.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+    <!-- Motor 2 -->
+    <joint name="fixed_RightupperLegToRight_Motor2_Gear" type="fixed">
+        <origin xyz="0 -0.02 -0.1" rpy="0 0 0"/>
+        <parent link="upperLegCylinderR"/>
+        <child link="Right_Motor2_gear"/>
+    </joint>
+    <link name="Right_Motor2_gear">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/gear.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+    <joint name="fixed_Right_Motor2_GearToRight_Motor2_Motor" type="fixed">
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <parent link="Right_Motor2_gear"/>
+        <child link="Right_Motor2_motor"/>
+    </joint>
+    <link name="Right_Motor2_motor">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/motor.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+
+
+
+
+
 
     <joint name="fixed_lowerLegBridgeR" type="fixed">
         <parent link="lowerlegCylinderR"/>
@@ -445,7 +517,7 @@
             </geometry>
             <origin xyz="0 0.0415 0.0125" rpy="0 0 0"/>
             <material name="linkColor">
-                <color rgba="1 1 1 1"/>
+                <color rgba="1 0 0 1"/>
             </material>
         </visual>
         <inertial>
@@ -465,17 +537,15 @@
     <joint name="fixed_upperLegBridgeL" type="fixed">
         <parent link="upperLegCylinderL"/>
         <child link="upperLegBridgeL"/>
-    </joint>
-
+    </joint>   
+    <!-- upper leg rigid body -->
     <link name="upperLegBridgeL">
         <visual>
             <geometry>
                 <box size="0.1 0.05 0.3155"/>
             </geometry>
             <origin xyz="0.0005 -0.007 -0.15" rpy="0 0 0"/>
-            <material name="linkColor">
-                <color rgba="1 1 1 1"/>
-            </material>
+            <material name="upperLegLinkColor" />
         </visual>
         <inertial>
             <mass value="1.94"/>
@@ -487,10 +557,81 @@
                 <box size="0.1 0.05 0.3155"/>
             </geometry>
             <origin xyz="0.0005 -0.007 -0.15" rpy="0 0 0"/>
-            <!-- <contact_coefficient mu="0.0578491069103"  resitution="0"  k_p="4000"  k_d="0.173402366366" /> -->
         </collision>
     </link>
 
+    <!-- Left Leg Motors -->
+    <!-- Motor 1 -->
+    <joint name="fixed_upperLegToMotor1_Gear" type="fixed">
+        <origin xyz="0 0.02 -0.1" rpy="0 0 0"/>
+        <parent link="upperLegCylinderL"/>
+        <child link="Left_Motor1_gear"/>
+    </joint>
+    <link name="Left_Motor1_gear">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/gear.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+    <joint name="fixed_Motor1_GearToMotor1_Motor" type="fixed">
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <parent link="Left_Motor1_gear"/>
+        <child link="Left_Motor1_motor"/>
+    </joint>
+    <link name="Left_Motor1_motor">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/motor.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+    <!-- Motor 2 -->
+    <joint name="fixed_upperLegToMotor2_Gear" type="fixed">
+        <origin xyz="0 -0.02 -0.1" rpy="0 0 0"/>
+        <parent link="upperLegCylinderL"/>
+        <child link="Left_Motor2_gear"/>
+    </joint>
+    <link name="Left_Motor2_gear">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/gear.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+    <joint name="fixed_Motor2_GearToMotor2_Motor" type="fixed">
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <parent link="Left_Motor2_gear"/>
+        <child link="Left_Motor2_motor"/>
+    </joint>
+    <link name="Left_Motor2_motor">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/motor.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+
+
+
+
+    <!-- Left Lower Leg rigid body -->
     <joint name="fixed_lowerLegBridgeL" type="fixed">
         <parent link="lowerlegCylinderL"/>
         <child link="lowerLegBridgeL"/>
