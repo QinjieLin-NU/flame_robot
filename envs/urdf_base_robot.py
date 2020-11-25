@@ -22,9 +22,9 @@ class FlameTorso():
         self.roll = q[0]
         self.rolld = qd[0]
         self.pitch = q[1]
-        self.pitchd = q[1]
+        self.pitchd = qd[1]
         self.yaw = q[2]
-        self.yawd = q[2]
+        self.yawd = qd[2]
 
     def set_pos(self,pos,ori):
         self.torso_pos = list(pos)
@@ -98,7 +98,7 @@ class URDFBaseRobot():
     """
     this class will load robot in pybullet
     """
-    def __init__(self,gravity=-10.0,dt=0.01,file_path="../urdf/simbicon_urdf/flame3.urdf"):
+    def __init__(self,gravity=-9.8,dt=0.01,file_path="../urdf/simbicon_urdf/flame3.urdf"):
         #physics params
         self.g = gravity
         self.dt = dt
@@ -128,6 +128,14 @@ class URDFBaseRobot():
 
         self.fall_flag = False # this will be true if robot position.z < fall_meter 
         self.fall_meter = 0.15
+
+        self.link_names=["body","upperLegBridgeR","lowerLegBridgeR","ankleBridgeR","upperLegBridgeL","lowerLegBridgeL","ankleBridgeL"]
+        self.link_name_id_dict = None
+        #init pose for debug line
+        init_pos = [0,0,0]
+        self.prevPoses={"body":init_pos,"upperLegBridgeR":init_pos,"lowerLegBridgeR":init_pos,"ankleBridgeR":init_pos,"upperLegBridgeL":init_pos,"lowerLegBridgeL":init_pos,"ankleBridgeL":init_pos}
+        self.hasPrevPoses = {"body":0,"upperLegBridgeR":0,"lowerLegBridgeR":0,"ankleBridgeR":0,"upperLegBridgeL":0,"lowerLegBridgeL":0,"ankleBridgeL":0}
+    
         return
 
 
@@ -153,7 +161,7 @@ class URDFBaseRobot():
         # baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
         #add humannoid
-        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
+        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.80]) #0.85
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         self.p.setGravity(0,0,self.g)
 
@@ -163,6 +171,7 @@ class URDFBaseRobot():
                 self.p.setJointMotorControl2(self.humanoid, joint, self.p.VELOCITY_CONTROL, force=0)
 
         self.assign_jointId()
+        self.link_name_id_dict = self.get_links_dict()
 
         if(add_debug):
             self.gravId = self.p.addUserDebugParameter("gravity",-10,10,0)
@@ -170,6 +179,7 @@ class URDFBaseRobot():
 
         # for i in range(20):#+ 10*np.random.randint(low=0, high=20)):
             # self.p.stepSimulation()
+        self.update_state() # add to update state when reset
 
         return
 
@@ -269,11 +279,14 @@ class URDFBaseRobot():
         TODO: force = torque, right?
         Applies given torque at each joint
         """
-        self.p.setJointMotorControl2(self.humanoid, joint.joint_id, self.p.TORQUE_CONTROL,force=torque)
+        #add if condition to avoid bug
+        if abs(torque)>1e-5:
+            self.p.setJointMotorControl2(self.humanoid, joint.joint_id, self.p.TORQUE_CONTROL,force=torque)
 
     def update_state(self):
         """
         get joint angle and assign it to the corresponding joint
+        update link state and all joint state
         """
         #update torso angles and angular velocity
         torso_pos, torso_ori = self.p.getBasePositionAndOrientation(self.humanoid)
@@ -302,6 +315,8 @@ class URDFBaseRobot():
         self.right_foot.set_state(right_foot_collision,right_foot_collision_front,right_foot_collision_back)
         self.left_foot.set_state(left_foot_collision,left_foot_collision_front,left_foot_collision_back)
         # self.left_foot.set_state(0,left_foot_collision_front,left_foot_collision_back)
+
+        self.links_xyz,self.links_Vxyz = self.update_link_state()
         return
     
     def has_contact(self, bullet_client, bodyA, bodyB, linkA,leg_direction):
@@ -380,18 +395,57 @@ class URDFBaseRobot():
             self.p.setJointMotorControl2(self.humanoid,self.jointIds[i],self.p.POSITION_CONTROL,targetPos, force=140.)
         if(step_sim):
             self.p.stepSimulation()
+    
+    def get_links_dict(self):
+        #update link name id dictionary
+        link_name_id_dict={}
+        for j in range (self.p.getNumJoints(self.humanoid)):
+            info = self.p.getJointInfo(self.humanoid,j)
+            link_id = info[0]
+            link_name = info[12].decode('UTF-8')
+            link_name_id_dict.update({link_name:link_id})
+            print(info)
+        for link_name in self.link_names:
+            print(link_name,link_name_id_dict[link_name])
+        return link_name_id_dict
+    
+    def update_link_state(self):
+        """
+        get link state, orders: xyz,vxvyvz of ["body","upperLegBridgeR","lowerLegBridgeR","ankleBridgeR","upperLegBridgeL","lowerLegBridgeL","ankleBridgeL"]
+        """
+        #update link state
+        link_states = []
+        link_xyz = []
+        link_Vxyz = []
+        for link_name in self.link_names:
+            link_id = self.link_name_id_dict[link_name]
+            link_state = self.p.getLinkState(self.humanoid, link_id, computeLinkVelocity=1)
+            x,y,z = link_state[0][0],link_state[0][1],link_state[0][2]
+            xv,yv,zv = link_state[-2][0],link_state[-2][1],link_state[-2][2]
+            link_states += [x,y,z,xv,yv,zv]
+            link_xyz += [x,y,z]
+            link_Vxyz += [xv,yv,zv]
+            #draw line for debug
+            # self.pos = [x,y,z]
+            # if (self.hasPrevPoses[link_name]==1):
+            #     self.p.addUserDebugLine(self.prevPoses[link_name],self.pos,[0,0,0.3],1,15)
+            # self.hasPrevPoses[link_name] = 1	
+            # self.prevPoses[link_name]=self.pos
+
+        return link_xyz,link_Vxyz
 
 
 if __name__ == "__main__":
     robot = URDFBaseRobot(gravity=-10.0,dt=0.01)
-    robot.reset_sim(disable_velControl=True)
+    robot.reset_sim(disable_velControl=True,add_debug=True)
     for j in range(200):
         for i in range(20):
             #torques = applied torques
-            torque = [-1.0,-0.8,-0.8,+0.8,0.8,0.8,0.8]
-            robot.step(torque,step_sim=False)
-            robot.p.stepSimulation()
-            time.sleep(robot.dt)
+            # torque = [-1.0,-0.8,-0.8,+0.8,0.8,0.8,0.8]
+            # robot.step(torque,step_sim=False)
+            # robot.p.stepSimulation()
+            # time.sleep(robot.dt)
+            robot.step_debugger()
     robot.update_state()
     print("center hip q and qd:",robot.center_hip.q,robot.center_hip.qd)
     print("right hip q and qd:",robot.right_hip.q,robot.right_hip.qd)

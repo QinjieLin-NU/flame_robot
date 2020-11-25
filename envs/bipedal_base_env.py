@@ -39,10 +39,11 @@ class BipedalBaseEnv(BulletBaseEnv):
         input: a is the applied torque of the robot
             real_time: if True, sleep every step, else: step very fast without time clock
         step action a and return state
+        TODO: change sleep time
         """
         self.robot.step(a,step_sim=True)
         if(self.real_time):
-            time.sleep(0.05)
+            time.sleep(self.robot.dt)
         self.last_state = np.asarray(self.state)
         self.state=[
             self.robot.center_hip.q,self.robot.center_hip.qd,\
@@ -52,7 +53,7 @@ class BipedalBaseEnv(BulletBaseEnv):
                             self.robot.left_hip.q,self.robot.left_hip.qd,\
                                 self.robot.left_knee.q,self.robot.left_knee.qd,\
                                     self.robot.left_ankleY.q,self.robot.left_ankleY.qd,\
-                                        self.robot.left_foot.state,self.robot.right_foot.state]
+                                        self.robot.right_foot.state,self.robot.left_foot.state]
         state = np.asarray(self.state)
         
         # self.rewards = np.asarray([0,0,0])
@@ -133,7 +134,7 @@ class BipedalBaseEnv(BulletBaseEnv):
                             self.robot.left_hip.q,self.robot.left_hip.qd,\
                                 self.robot.left_knee.q,self.robot.left_knee.qd,\
                                     self.robot.left_ankleY.q,self.robot.left_ankleY.qd,\
-                                        self.robot.left_foot.state,self.robot.right_foot.state]
+                                        self.robot.right_foot.state,self.robot.left_foot.state]
         state=np.asarray(self.state)
         return state
 
