@@ -455,9 +455,7 @@
                 <box size="0.05 0.05 0.28"/>
             </geometry>
             <origin xyz="-0.0015 0 -0.14" rpy="0 0 0"/>
-            <material name="linkColor">
-                <color rgba="1 1 1 1"/>
-            </material>
+            <material name="upperLegLinkColor" />
         </visual>
         <inertial>
             <mass value="0.267"/>
@@ -472,6 +470,42 @@
             <!-- <contact_coefficient mu="0.0960723602789"  resitution="0"  k_p="4000"  k_d="0.198431592389" /> -->
         </collision>
     </link>
+
+    <!-- Right Leg Ankle Motor -->
+    <joint name="fixed_lowerLegBridgeRToRight_AnkleMotor_Gear" type="fixed">
+        <origin xyz="0 0.02 -0.05" rpy="0 0 0"/>
+        <parent link="lowerLegBridgeR"/>
+        <child link="Right_AnkleMotor_Gear"/>
+    </joint>
+    <link name="Right_AnkleMotor_Gear">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/gear.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+    <joint name="fixed_Right_AnkleMotor_GearToRight_Ankle_motor" type="fixed">
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <parent link="Right_AnkleMotor_Gear"/>
+        <child link="Right_Ankle_motor"/>
+    </joint>
+    <link name="Right_Ankle_motor">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/motor.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+
+
 
 
     <joint name="fixed_ankleBridgeR" type="fixed">
@@ -643,9 +677,7 @@
                 <box size="0.05 0.05 0.28"/>
             </geometry>
             <origin xyz="0.0015 0 -0.14" rpy="0 0 0"/>
-            <material name="linkColor">
-                <color rgba="1 1 1 1"/>
-            </material>
+            <material name="upperLegLinkColor"/>
         </visual>
         <inertial>
             <mass value="0.267"/>
@@ -660,6 +692,41 @@
             <!-- <contact_coefficient mu="0.0960723602789"  resitution="0"  k_p="4000"  k_d="0.198431592389" /> -->
         </collision>
     </link>
+
+    <!-- Left Leg Ankle Motor -->
+    <joint name="fixed_lowerLegBridgeLToLeft_AnkleMotor_Gear" type="fixed">
+        <origin xyz="0 0.02 -0.05" rpy="0 0 0"/>
+        <parent link="lowerLegBridgeL"/>
+        <child link="Left_AnkleMotor_Gear"/>
+    </joint>
+    <link name="Left_AnkleMotor_Gear">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/gear.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+    <joint name="fixed_Left_AnkleMotor_GearToLeft_Ankle_motor" type="fixed">
+        <origin xyz="0 0 -0.08" rpy="0 0 0"/>
+        <parent link="Left_AnkleMotor_Gear"/>
+        <child link="Left_Ankle_motor"/>
+    </joint>
+    <link name="Left_Ankle_motor">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/motor.obj"  scale="0.03 0.03 0.03"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
+            <material name="linkColor">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>        
+    </link>
+
 
 
     <joint name="fixed_ankleBridgeL" type="fixed">
