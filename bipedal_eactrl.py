@@ -1,12 +1,12 @@
 from envs.pybullet_env import PybulletEnv
 import time
-from calTorque import multijointController
+from controllers.EA_controller import EA_weights_Controller
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
     robot = PybulletEnv(gravity=0.0,dt=0.01,file_path="urdf/simbicon_urdf/flame3.urdf")
     robot.reset(disable_velControl=True,add_debug=False)
-    controller = multijointController(robot)
+    controller = EA_weights_Controller(robot)
     i=0
     time.sleep(2.0)
     while(i<100000):

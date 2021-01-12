@@ -1,6 +1,6 @@
 import numpy as np
 import copy
-class multijointController():
+class EA_weights_Controller():
 #read txt file function
     def __init__(self,robot):
         #read weights
