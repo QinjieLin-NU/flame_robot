@@ -27,6 +27,7 @@ python test.py
 use the controller in the [refer link](https://github.com/QinjieLin-NU/Deep-Reinforcement-Learning-Algorithms/tree/master/Walker2DBulletEnv-v0_TD3) to control the robot.
 
 ```
+export MESA_GL_VERSION_OVERRIDE=3.3 
 python TD3_controller.py
 ```
 
@@ -35,5 +36,6 @@ python TD3_controller.py
 use the controller in the [refer link](https://github.com/Anmol6/locomotion) to control the robot
 
 ```
+export MESA_GL_VERSION_OVERRIDE=3.3 
 python simbicon_controller.py
 ```

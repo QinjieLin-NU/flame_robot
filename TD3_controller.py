@@ -67,13 +67,13 @@ def play(env, agent, n_episodes):
             action = agent.select_action(np.array(state))
             # env.render()
             # time.sleep(0.01)
-            print("action:",action,"state:",state)
+            # print("action:",action,"state:",state)
             
             next_state, reward, done, _ = env.step(action)
             state = next_state
             score += reward
-            # if done:
-                # break 
+            if done:
+                break 
 
         s = (int)(time.time() - time_start)
         
@@ -85,7 +85,7 @@ def play(env, agent, n_episodes):
 
 
 
-load(agent, 'TD3_control/dir_Walker2D_002', 'chpnt_ts2500')
+load(agent, 'TD3_control/dir_Walker2D_002', 'biped')
 play(env, agent, n_episodes=10)
 
 env.close()

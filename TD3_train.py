@@ -21,7 +21,7 @@ std_noise=0.02
 
 # env = gym.make('Walker2DBulletEnv-v0')
 env = gym.make('BipedalPyBulletEnv-v2')
-# env.render(mode="realtime")
+env.render(mode="realtime")
 
 # Set seeds
 seed = 12345
@@ -129,9 +129,9 @@ def twin_ddd_train(n_episodes=15000, save_every=10, print_env=10):
 
     return scores_array, avg_scores_array
 
-scores, avg_scores = twin_ddd_train(n_episodes=100)
+scores, avg_scores = twin_ddd_train(n_episodes=500)
 
-save(agent, 'chpnt_ts2500', 'dir_Walker2D_002')
+save(agent, 'biped', 'TD3_control/dir_Walker2D_002')
 
 import matplotlib.pyplot as plt
 # %matplotlib inline
@@ -145,6 +145,7 @@ plt.plot(np.arange(1, len(avg_scores)+1), avg_scores, label="Avg on 100 episodes
 plt.legend(bbox_to_anchor=(1.05, 1)) 
 plt.ylabel('Score')
 plt.xlabel('Episodes #')
+plt.savefig("TD3_control/bipedal_train.png")
 plt.show()
 
 from collections import deque

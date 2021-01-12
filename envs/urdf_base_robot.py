@@ -161,7 +161,7 @@ class URDFBaseRobot():
         # baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
         #add humannoid
-        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.80]) #0.85
+        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.70]) #0.85
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         self.p.setGravity(0,0,self.g)
 
@@ -404,9 +404,9 @@ class URDFBaseRobot():
             link_id = info[0]
             link_name = info[12].decode('UTF-8')
             link_name_id_dict.update({link_name:link_id})
-            print(info)
-        for link_name in self.link_names:
-            print(link_name,link_name_id_dict[link_name])
+            # print(info)
+        # for link_name in self.link_names:
+            # print(link_name,link_name_id_dict[link_name])
         return link_name_id_dict
     
     def update_link_state(self):
