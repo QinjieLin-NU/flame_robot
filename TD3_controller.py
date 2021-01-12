@@ -31,6 +31,12 @@ print('state_size: ', state_size, ', action_size: ', action_size, ', action_high
 agent = TD3(state_dim=state_size, action_dim=action_size, max_action=action_high)
 
 def load(agent, dir, prefix):
+    agent.actor.load_state_dict(torch.load(os.path.join(dir,'%s_actor.pth' % prefix)))
+    agent.critic.load_state_dict(torch.load(os.path.join(dir,'%s_critic.pth' % prefix)))
+    agent.actor_target.load_state_dict(torch.load(os.path.join(dir,'%s_actor_t.pth' % prefix)))
+    agent.critic_target.load_state_dict(torch.load(os.path.join(dir,'%s_critic_t.pth' % prefix)))
+
+def load_cpu(agent, dir, prefix):
     agent.actor.load_state_dict(torch.load(os.path.join(dir,'%s_actor.pth' % prefix), map_location='cpu'))
     agent.critic.load_state_dict(torch.load(os.path.join(dir,'%s_critic.pth' % prefix), map_location='cpu'))
     agent.actor_target.load_state_dict(torch.load(os.path.join(dir,'%s_actor_t.pth' % prefix), map_location='cpu'))
