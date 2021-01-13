@@ -450,7 +450,7 @@
         </visual>
         <inertial>
             <mass value="0.219"/>
-            <inertia ixx="414" ixy="0.149" ixz="0.00188" iyy="0.128" iyz="-0.0311" izz="0.359"/>
+            <inertia ixx="0.414" ixy="0.0149" ixz="0.00188" iyy="0.128" iyz="-0.0311" izz="0.359"/>
             <origin rpy="0 0 0" xyz="0.00131 -0.0515 -0.00661"/>
         </inertial>
         <collision>
