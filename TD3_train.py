@@ -109,6 +109,7 @@ def twin_ddd_train(n_episodes=15000, save_every=10, print_env=10):
         max_score = np.max(scores_deque)
 
         # train_by_episode(time_start, i_episode) 
+        print("episode:",i_episode,"timestep:",timestep,"reward:",total_reward)
         s = (int)(time.time() - time_start)
         if i_episode % print_env == 0 or (len(scores_deque) == 100 and avg_score > threshold):
             print('Ep. {}, Timestep {},  Ep.Timesteps {}, Score: {:.2f}, Avg.Score: {:.2f}, Max.Score: {:.2f}, Time: {:02}:{:02}:{:02} '\

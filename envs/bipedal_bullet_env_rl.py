@@ -17,8 +17,10 @@ class BipedalBulletRLEnv(BipedalBaseEnv):
 
         self.joint_angle_limit = np.asarray([3.14,3.14,3.14,3.14,3.14,3.14])
         self.initial_z = None
-        self.walk_target_x = 1e3  # kilometer away
+        self.walk_target_x = 5  # kilometer away
         self.walk_target_y = 0
+        self.walk_target_dist_x = self.walk_target_x
+
 
     def calc_state(self):
         """
@@ -61,6 +63,8 @@ class BipedalBulletRLEnv(BipedalBaseEnv):
                                             self.walk_target_x - center_xyz[0])
         self.walk_target_dist = np.linalg.norm(
             [self.walk_target_y - center_xyz[1], self.walk_target_x - center_xyz[0]])
+        self.last_walk_target_dist_x = self.walk_target_dist_x
+        self.walk_target_dist_x = self.walk_target_x - center_xyz[0]
         angle_to_target = self.walk_target_theta - yaw
 
         rot_speed = np.array(
@@ -104,6 +108,7 @@ class BipedalBulletRLEnv(BipedalBaseEnv):
         state=self.calc_state()
         self.state = np.array(state)
         self.potential = 0
+        self.walk_target_dist_x = self.walk_target_x 
         return state
     
     electricity_cost = -2.0	 # cost for using motors -- this parameter should be carefully tuned against reward for making progress, other values less improtant
@@ -122,8 +127,11 @@ class BipedalBulletRLEnv(BipedalBaseEnv):
                             self.robot.left_knee.q,self.robot.left_knee.qd,\
                                 self.robot.left_ankleY.q,self.robot.left_ankleY.qd]
                                 
-        alive = float(self.alive_bonus())   
+        # alive = float(self.alive_bonus())
+        alive =0   
         done = self.robot.fall_flag
+        if(not done):
+            alive = 1
 
         potential_old = self.potential
         self.potential = self.calc_potential()
@@ -155,5 +163,13 @@ class BipedalBulletRLEnv(BipedalBaseEnv):
             joints_at_limit_cost,
             feet_collision_cost
         ]
+
+        walk_progress_x = self.last_walk_target_dist_x - self.walk_target_dist_x
+        alive_rate = 1
+        if(walk_progress_x<0.0):
+            alive_rate = 0.1
+        self.rewards=[walk_progress_x*10,
+                    alive*self.robot.dt*alive_rate]
+        #self.rewards=[self.walk_target_dist_x*self.robot.dt,alive*self.robot.dt]
 
         return  sum(self.rewards)
