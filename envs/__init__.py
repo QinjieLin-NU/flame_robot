@@ -22,3 +22,10 @@ register(
 	max_episode_steps=1000,
 	reward_threshold=950.0,
 	)
+# action including 7 torques including crnter hip
+register(
+	id='BipedalPyBulletEnv-v3',
+	entry_point='envs.bipedal_bullet_env_rl_a7:BipedalBulletRLEnvA7',
+	max_episode_steps=1000,
+	reward_threshold=950.0,
+	)

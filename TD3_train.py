@@ -20,7 +20,7 @@ start_timestep=1e4
 std_noise=0.02
 
 # env = gym.make('Walker2DBulletEnv-v0')
-env = gym.make('BipedalPyBulletEnv-v2')
+env = gym.make('BipedalPyBulletEnv-v3')
 env.render(mode="realtime")
 
 # Set seeds
@@ -122,7 +122,7 @@ def twin_ddd_train(n_episodes=15000, save_every=10, print_env=10):
         if timestep_after_last_save >= save_every and i_episode > 0:
 
             timestep_after_last_save %= save_every            
-            save(agent, 'biped', 'TD3_control/dir_Walker2D_002')  
+            save(agent, 'biped_v3', 'TD3_control/dir_Walker2D_002')  
         
         if len(scores_deque) == 100 and avg_score >= threshold:
             print('Environment solved with Average Score: ',  avg_score )
