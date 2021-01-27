@@ -15,7 +15,7 @@ class BipedalBulletRLEnvA7(BipedalBaseEnv):
         high = np.inf * np.ones([obs_dim]) * 3.14
         self.observation_space = gym.spaces.Box(-high, high)
 
-        self.joint_angle_limit = np.asarray([1.57,3.14,3.14,3.14,3.14,3.14,3.14])
+        self.joint_angle_limit = np.asarray([1.57,3.14,1.57,1.57,3.14,1.57,1.57])
         self.initial_z = None
         self.walk_target_x = 5  # kilometer away
         self.walk_target_y = 0
@@ -128,20 +128,27 @@ class BipedalBulletRLEnvA7(BipedalBaseEnv):
                             self.robot.left_hip.q,self.robot.left_hip.qd,\
                                 self.robot.left_knee.q,self.robot.left_knee.qd,\
                                     self.robot.left_ankleY.q,self.robot.left_ankleY.qd]
+        joints_at_limit = np.count_nonzero(np.abs(j[0::2]) < self.joint_angle_limit)
+        joints_at_limit_cost = 0.03
+        joints_cost = joints_at_limit * joints_at_limit_cost
 
                                 
-        # alive = float(self.alive_bonus())
+        # return negative when fall
         alive =0   
         done = self.robot.fall_flag
         if(not done):
             alive = 1
+        else:
+            return -3
 
         walk_progress_x = self.last_walk_target_dist_x - self.walk_target_dist_x
         alive_rate = 1
         if(walk_progress_x<0.0):
             alive_rate = 0.1
-        self.rewards=[walk_progress_x*10,
-                    alive*self.robot.dt*alive_rate]
-        #self.rewards=[self.walk_target_dist_x*self.robot.dt,alive*self.robot.dt]
+        walk_progress_cost = walk_progress_x * 10
+        alive_bonus =  alive*self.robot.dt*alive_rate
+        
+
+        self.rewards=[walk_progress_cost,alive_bonus,joints_cost]
 
         return  sum(self.rewards)
