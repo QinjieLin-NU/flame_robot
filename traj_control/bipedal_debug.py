@@ -12,7 +12,7 @@ p.loadURDF("plane.urdf")
 # humanoid = p.loadURDF("urdf/simbicon_urdf/biped2d.urdf",[0, 0, 1.2])
 # humanoid = p.loadURDF("urdf/simbicon_urdf/humanoid_nohead.urdf",[0, 0, 0.31])
 # humanoid = p.loadURDF("urdf/simbicon_urdf/flame.urdf",[0, 0, 1.0])
-humanoid = p.loadURDF("urdf/simbicon_urdf/flame3.urdf",[0, 0, 0.9])#flame3 0.9
+humanoid = p.loadURDF("urdf/simbicon_urdf/flame3.urdf",[0, 0, 1.5])#flame3 0.9
 # humanoid = p.loadURDF("urdf/simbicon_urdf/demo.urdf")
 # gravId = p.addUserDebugParameter("gravity",-10,10,-10)
 gravId = p.addUserDebugParameter("gravity",-10,10,0)
@@ -52,13 +52,12 @@ while(1):
     # joint_states = p.getJointStates(humanoid,range(1))
     info = p.getJointInfo(humanoid,0)
     print(info)
-
-
-
-
+    
     for i in range(len(paramIds)):
         c = paramIds[i]
         targetPos = p.readUserDebugParameter(c)
         p.setJointMotorControl2(humanoid,jointIds[i],p.POSITION_CONTROL,targetPos, force=140.)
+        p.setTimeStep(0.1)
+
     time.sleep(0.01)
     #   time.sleep(10)

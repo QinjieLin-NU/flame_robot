@@ -30,7 +30,7 @@
     </inertial>
 	</link>
 
-	<link name="y_prismatic">
+	<!-- <link name="y_prismatic">
 	 <inertial>
       <mass value="0.01"/>
       <inertia ixx="0.2125" ixy="-0.005" ixz="0.0225" iyy="0.205" iyz="0.045" izz="0.0125"/>
@@ -60,10 +60,10 @@
     <axis xyz="0 0 1"/>
      <limit effort="0.0" lower="1" upper="-1" velocity="1000.0"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
-  </joint>
+  </joint> -->
 	
 	<joint name="torso_to_z" type="continuous">
-    <parent link="z_prismatic"/>
+    <parent link="world"/>
     <child link="torso"/>
     <axis xyz="1 0 0"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
