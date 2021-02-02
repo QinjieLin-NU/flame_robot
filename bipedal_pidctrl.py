@@ -1,17 +1,17 @@
 from envs.pybullet_env import PybulletEnv
 import time
-from controllers.EA_controller import EA_weights_Controller
+from controllers.EA_controller import PID_Controller
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
     robot = PybulletEnv(gravity=-10.0,dt=0.001,file_path="urdf/simbicon_urdf/flame3.urdf")
     robot.reset(disable_velControl=True,add_debug=False)
-    controller = EA_weights_Controller(robot)
+    controller = PID_Controller(robot)
     i=0
     time.sleep(2.0)
     while(i<100000):
         #calculate torques and apply torques to robots
-        torques = controller.update()
+        torques = controller.update(i)
         # print("torques",torques)
 
         robot.step(torques,step_sim=False)

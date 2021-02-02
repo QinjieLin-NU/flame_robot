@@ -141,8 +141,8 @@ class PybulletEnv():
         # baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
         #add humannoid
-        # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
-        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
+        self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
+        #self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         self.p.setGravity(0,0,self.g)

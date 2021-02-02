@@ -4,9 +4,9 @@ class EA_weights_Controller():
 #read txt file function
     def __init__(self,robot):
         #read weights
-        self.weight = self.read_csv("walkweight.csv")
-        self.offset = self.read_csv("walkoffset.csv")
-        self.scale = self.read_csv("walkscale.csv")
+        self.weight = self.read_csv("controllers/walkweight.csv")
+        self.offset = self.read_csv("controllers/walkoffset.csv")
+        self.scale = self.read_csv("controllers/walkscale.csv")
         self.kp=self.weight[26,-7:]
         self.kd=self.weight[27,-7:]
 
@@ -230,8 +230,129 @@ class EA_weights_Controller():
 
 
         torques = [centerHip_torque,rightHip_torque,rightKnee_torque,rightAnkleY_torque,leftHip_torque,leftKnee_torque,leftAnkleY_torque]
-        torques = [max(min(x, 1), -1) for x in torques]
+        #torques = [max(min(x, 1), -1) for x in torques]
         return torques
             
 
-    
+class PID_Controller():
+#read txt file function
+    def __init__(self,robot):
+
+        self.hipytrqCtrlkp = 20
+        self.hipytrqCtrlkd = 0.25
+
+        #init refPrev
+        self.center_hip_q_refPrev = 0
+        self.upperbody_q_refPrev = 0
+        self.interleg_q_refPrev = 0
+        self.stance_knee_q_refPrev = 0
+        self.swing_knee_q_refPrev = 0
+        self.stance_ankle_q_refPrev = 0
+        self.swing_ankle_q_refPrev = 0
+
+        #init robot
+        self.robot = robot    
+
+    def compute_quintic_spline(self, t, x0,  v0,  a0, x1,  v1,  a1):
+        t = np.clip(t,0,1)
+        t2 = t*t
+        t3 = t2*t
+        t4 = t3*t
+        t5= t4*t
+        f = x0
+        e = v0
+        d = 0.5 * a0
+
+        # compute the rightmost column of the solution for [a b ]
+        y1 = x1 -   d - e - f
+        y2 = v1 - 2*d - e
+        y3 = a1 - 2*d
+
+        # multiply out the solution matrix to find [a b c]
+        a =   6*y1 - 3*y2 + 0.5*y3
+        b = -15*y1 + 7*y2 -     y3
+        c =  10*y1 - 4*y2 + 0.5*y3
+
+        # compute the polynomial
+        return ( a*t5 + b*t4 + c*t3 + d*t2 + e*t + f )
+
+    def assignRef(self, t):
+        # generate hip (interleg) swing trajectory
+        #if t < 0.6:
+        if t < 600:
+        # compute_quintic_spline( 1.67*(Controller()->TimeElapsed()), 0.6, 0.0, -25.0, -0.6, 0.0, 0.0)
+            self.interleg_q_ref = self.compute_quintic_spline( 1.67*(t/600), 0.6, 0.0, -25.0, -0.6, 0.0, 0.0)
+        else:
+            self.interleg_q_ref = -0.6
+
+        dt = 0.01
+        self.interleg_qd_ref = self.FiltandDerivRef(self.interleg_q_ref,self.interleg_q_refPrev, dt)
+
+
+    def FiltandDerivRef(self,ref,refPrev, dt):
+        alpha = 1.0
+        ref = alpha * ref +  (1.0-alpha)*refPrev
+        qd_ref = (ref - refPrev)/dt
+        refPrev = copy.deepcopy(ref)
+        return qd_ref
+
+
+    def update(self,t):
+        robot = self.robot
+        self.assignRef(t)
+
+        if robot.left_foot.state == 1:
+            left_is_stance = True
+        else:
+            left_is_stance = False
+
+        if left_is_stance:
+            stance_leg = 'left'
+            swing_leg = 'right'
+            adj_flag = -1.0
+        else:
+            stance_leg = 'right'
+            swing_leg = 'left'
+            adj_flag = 1.0
+
+        interleg_q  = robot.__dict__[swing_leg+'_hip'].q   - robot.__dict__[stance_leg+'_hip'].q
+        interleg_qd = robot.__dict__[swing_leg+'_hip'].qd  - robot.__dict__[stance_leg+'_hip'].qd
+
+        center_hip_tau = 0
+        upperbody_tau = 0
+        interleg_tau = self.hipytrqCtrlkp*(self.interleg_q_ref-interleg_q)+self.hipytrqCtrlkp*(self.interleg_qd_ref-interleg_qd)
+        stance_knee_tau = 0
+        swing_knee_tau = 0
+        stance_ankle_tau = 0
+        swing_ankle_tau = 0
+
+
+        swing_hipy_tau = 0
+        stance_hipy_tau = 0
+
+        swing_hipy_tau += interleg_tau
+        stance_hipy_tau -= interleg_tau
+
+        #centerHip_torque
+        centerHip_torque = center_hip_tau
+        #rightHip_torque, leftHip_torque, rightKnee_torque, leftKnee_torque, rightAnkleY_torque, leftAnkleY_torque
+        if left_is_stance:
+            leftHip_torque = stance_hipy_tau
+            rightHip_torque = swing_hipy_tau
+            leftKnee_torque = stance_knee_tau
+            rightKnee_torque = swing_knee_tau
+            leftAnkleY_torque = stance_ankle_tau
+            rightAnkleY_torque = swing_ankle_tau
+        else:
+            leftHip_torque = swing_hipy_tau
+            rightHip_torque = stance_hipy_tau
+            leftKnee_torque = swing_knee_tau
+            rightKnee_torque = stance_knee_tau
+            leftAnkleY_torque = swing_ankle_tau
+            rightAnkleY_torque = stance_ankle_tau            
+
+
+        torques = [centerHip_torque,rightHip_torque,rightKnee_torque,rightAnkleY_torque,leftHip_torque,leftKnee_torque,leftAnkleY_torque]
+        #torques = [max(min(x, 1), -1) for x in torques]
+        return torques
+        
