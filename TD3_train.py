@@ -20,9 +20,9 @@ start_timestep=1e4
 std_noise=0.02
 
 # env = gym.make('Walker2DBulletEnv-v0')
-env = gym.make('BipedalPyBulletEnv-v3')
+env = gym.make('BipedalPyBulletEnv-v4')
 env.render(mode="realtime")
-file_prefix = "biped-v3"
+file_prefix = "biped-v4-2d"
 
 # Set seeds
 seed = 12345

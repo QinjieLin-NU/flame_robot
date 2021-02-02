@@ -9,7 +9,7 @@
     </inertial>
 	</link>
 
-	<link name="y_prismatic">
+	<link name="x_prismatic">
 	 <inertial>
       <mass value="0.01"/>
       <inertia ixx="0.2125" ixy="-0.005" ixz="0.0225" iyy="0.205" iyz="0.045" izz="0.0125"/>
@@ -17,11 +17,11 @@
     </inertial>
 	</link>
 	
-	<joint name="y_to_world" type="prismatic">
+	<joint name="x_to_world" type="prismatic">
     <parent link="world"/>
-    <child link="y_prismatic"/>
-    <axis xyz="0 1 0"/>
-    <limit effort="0.0" lower="1" upper="-1" velocity="1000.0"/>
+    <child link="x_prismatic"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="0.0" lower="10" upper="-10" velocity="1000.0"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
   </joint>
 		
@@ -34,19 +34,21 @@
 	</link>
 	
 	<joint name="z_to_y" type="prismatic">
-    <parent link="y_prismatic"/>
+    <parent link="x_prismatic"/>
     <child link="z_prismatic"/>
     <axis xyz="0 0 1"/>
-     <limit effort="0.0" lower="1" upper="-1" velocity="1000.0"/>
+     <limit effort="0.0" lower="10" upper="-10" velocity="1000.0"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
   </joint>
 	
-	<joint name="torso_to_z" type="continuous">
+	<joint name="torso_to_z" type="revolute">
     <parent link="z_prismatic"/>
     <child link="body"/>
-    <axis xyz="1 0 0"/>
-    <origin rpy="0 0 0" xyz="0 0 1.4"/>
+    <axis xyz="0 1 0"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <limit effort="0.0" lower="10" upper="-10" velocity="1000.0"/>
   </joint>
+
 
     <link name="body">
         <visual>
@@ -72,10 +74,9 @@
     </link>
 
 
-    <joint name="torsoBody" type="continuous">
+    <!-- <joint name="torsoBody" type="fixed">
         <parent link="body"/>
         <child link="torso"/>
-        <!-- <origin xyz="0 0.0 -0.15" rpy="-0.0056 -0.0021 0"/> -->
         <origin xyz="0 0.0 0" rpy="0.0 0.0 0"/>
         <axis xyz="1 0 0"/>
         <limit effort="10" lower="-3" upper="+3" velocity="10"/>
@@ -97,7 +98,7 @@
             <mass value="1.0"/>
             <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
         </inertial>
-    </link>
+    </link> -->
 
 
 
@@ -106,7 +107,7 @@
     <!-- ****************************Right leg joints******************************************** -->
 
     <joint name="jointHipR" type="revolute">
-        <parent link="torso"/>
+        <parent link="body"/>
         <child link="hipCylinderR"/>
         <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
         <axis xyz="1 0 0"/>
@@ -233,7 +234,7 @@
 
 
     <joint name="jointHipL" type="revolute">
-        <parent link="torso"/>
+        <parent link="body"/>
         <child link="hipCylinderL"/>
         <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
         <axis xyz="1 0 0"/>

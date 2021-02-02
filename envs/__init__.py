@@ -29,3 +29,10 @@ register(
 	max_episode_steps=1000,
 	reward_threshold=950.0,
 	)
+# action including 7 torques including crnter hip, 2d dimension robot
+register(
+	id='BipedalPyBulletEnv-v4',
+	entry_point='envs.bipedal_bullet_env_rl_a7_d2:BipedalBulletRLEnvA7D2',
+	max_episode_steps=1000,
+	reward_threshold=950.0,
+	)
