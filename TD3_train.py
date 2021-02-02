@@ -131,7 +131,7 @@ def twin_ddd_train(n_episodes=15000, save_every=10, print_env=10):
 
     return scores_array, avg_scores_array
 
-scores, avg_scores = twin_ddd_train(n_episodes=500)
+scores, avg_scores = twin_ddd_train(n_episodes=100)
 
 save(agent, file_prefix, 'TD3_control/dir_Walker2D_002')
 

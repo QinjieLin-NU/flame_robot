@@ -137,7 +137,7 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         alive =0   
         done = self.robot.fall_flag
         if(not done):
-            alive = 1
+            alive = 0.3
         else:
             return -3
 
@@ -149,6 +149,6 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         alive_bonus =  alive*self.robot.dt*alive_rate
         
 
-        self.rewards=[walk_progress_cost,alive_bonus,joints_cost]
+        self.rewards=[walk_progress_cost,alive_bonus]
 
         return  sum(self.rewards)

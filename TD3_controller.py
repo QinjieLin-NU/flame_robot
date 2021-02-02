@@ -17,6 +17,7 @@ from TD3_control.TwinDelayed import TD3, device
 
 env = gym.make('BipedalPyBulletEnv-v4')
 env.render(mode="realtime")
+file_prefix = "biped-v4-2d-2"
 # Set seeds
 seed = 12345
 env.seed(seed)
@@ -85,7 +86,7 @@ def play(env, agent, n_episodes):
 
 
 
-load(agent, 'TD3_control/dir_Walker2D_002', 'biped-v4-2d')
-play(env, agent, n_episodes=10)
+load(agent, 'TD3_control/dir_Walker2D_002', file_prefix)
+play(env, agent, n_episodes=100)
 
 env.close()
