@@ -15,7 +15,7 @@ from TD3_control.TwinDelayed import TD3, device
 
 # pybullet.connect(pybullet.DIRECT)
 
-env = gym.make('BipedalPyBulletEnv-v3')
+env = gym.make('BipedalPyBulletEnv-v4')
 env.render(mode="realtime")
 # Set seeds
 seed = 12345
@@ -85,7 +85,7 @@ def play(env, agent, n_episodes):
 
 
 
-load(agent, 'TD3_control/dir_Walker2D_002', 'biped')
+load(agent, 'TD3_control/dir_Walker2D_002', 'biped-v4-2d')
 play(env, agent, n_episodes=10)
 
 env.close()

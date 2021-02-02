@@ -31,7 +31,7 @@ class BipedalRobot(URDFBaseRobot):
         return
     
 class BipedalRobot2D(URDFBaseRobot2D):
-    def __init__(self,file_path="urdf/simbicon_urdf/flame3.urdf",dimension=3):
+    def __init__(self,file_path="urdf/simbicon_urdf/flame3.urdf",dimension=2):
         """
         load bipedal robot urdf in Pybullet
         TODO: done, implement robot_specific_reset function

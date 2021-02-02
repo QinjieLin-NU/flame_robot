@@ -22,7 +22,7 @@ std_noise=0.02
 # env = gym.make('Walker2DBulletEnv-v0')
 env = gym.make('BipedalPyBulletEnv-v4')
 env.render(mode="realtime")
-file_prefix = "biped-v4-2d"
+file_prefix = "biped-v4-2d-2"
 
 # Set seeds
 seed = 12345
@@ -147,7 +147,7 @@ plt.plot(np.arange(1, len(avg_scores)+1), avg_scores, label="Avg on 100 episodes
 plt.legend(bbox_to_anchor=(1.05, 1)) 
 plt.ylabel('Score')
 plt.xlabel('Episodes #')
-plt.savefig("TD3_control/bipedal_train.png")
+plt.savefig("TD3_control/%s.png"%file_prefix)
 plt.show()
 
 from collections import deque
