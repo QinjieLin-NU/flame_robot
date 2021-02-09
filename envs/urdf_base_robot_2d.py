@@ -63,6 +63,7 @@ class FlameJoint():
         # self.y_qd = vely
         # self.z_qd = velz
         return
+    
 
 
 class FlameFoot():
@@ -74,6 +75,7 @@ class FlameFoot():
         self.link_id = 0
         self.front_state = 0
         self.back_state  = 0
+        self.xyz = [0.0,0.0,0.0]
         return
 
     def set_state(self,collision_state,front_collision = 0,back_collision = 0):
@@ -92,6 +94,13 @@ class FlameFoot():
 
     def get_state(self):
         return self.state,self.front_state,self.back_state
+    
+    def set_position(self,x,y,z):
+        """
+        get position of correponding link. here we only set ankle position
+        """
+        self.xyz = [x,y,z]
+
     
 
 class URDFBaseRobot2D():
@@ -319,6 +328,7 @@ class URDFBaseRobot2D():
         # self.left_foot.set_state(0,left_foot_collision_front,left_foot_collision_back)
 
         #update torso angles and angular velocity
+        #["body","upperLegBridgeR","lowerLegBridgeR","ankleBridgeR","upperLegBridgeL","lowerLegBridgeL","ankleBridgeL"]
         self.links_xyz,self.links_Vxyz,self.link_rpy,self.link_Vrpy = self.update_link_state()
         torso_pos,torso_ori = self.links_xyz[0:3], self.link_rpy[0:3]
         torso_angVel = self.link_Vrpy[0:3]
@@ -328,6 +338,9 @@ class URDFBaseRobot2D():
             self.fall_flag = True
         else:
             self.fall_flag = False
+        #["body","upperLegBridgeR","lowerLegBridgeR","ankleBridgeR","upperLegBridgeL","lowerLegBridgeL","ankleBridgeL"]
+        self.right_foot.set_position(x=self.links_xyz[9],y=self.links_xyz[10],z=self.links_xyz[11])
+        self.left_foot.set_position(x=self.links_xyz[-3],y=self.links_xyz[-2],z=self.links_xyz[-1])
         return
     
     def has_contact(self, bullet_client, bodyA, bodyB, linkA,leg_direction):
