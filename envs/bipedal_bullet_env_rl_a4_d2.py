@@ -186,7 +186,7 @@ class BipedalBulletRLEnvA4D2(BipedalBaseEnv):
         alive =0   
         done = self.robot.fall_flag
         if(not done):
-            alive = 0.3
+            alive = 0.01 #0.3
         else:
             return -3
 

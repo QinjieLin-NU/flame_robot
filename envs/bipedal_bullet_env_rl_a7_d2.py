@@ -22,14 +22,27 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         self.walk_target_dist_x = self.walk_target_x
 
         # if next state is in the list, then get positive reward
-        self.next_state_list = {
-            "leftStand_rightGround": [[1,1]],
-            "leftGround_rightGround": [[1,0],[0,1]],
-            "leftGround_rightStand":[[1,1]],
-            "leftStand_rightStand":[[1,1]]
+        # self.next_state_list = {
+        #     "leftStand_rightGround": [[1,1]],
+        #     "leftGround_rightGround": [[1,0],[0,1]],
+        #     "leftGround_rightStand":[[1,1]],
+        #     "leftStand_rightStand":[[1,1]]
+        # }
+        # self.prev_colision_state = [0,1] # left standing, right ground
+        # self.next_reward_colliionStates = [[1,1]]
+        self.next_state_list={
+            "LeftStandFront_RightGroundBack":"LeftGroundFront_RightGroundBack",
+            "LeftGroundFront_RightGroundBack":"LeftGroundFront_RightStandBack",
+            "LeftGroundFront_RightStandBack":"LeftGroundBack_RightStandFront",
+            "LeftGroundBack_RightStandFront":"LeftGroundBack_RightGroundFront",
+            "LeftGroundBack_RightGroundFront":"LeftStandBack_RightGroundFront",
+            "LeftStandBack_RightGroundFront":"LeftStandFront_RightGroundBack",
+            "LeftStandFront_RightStandBack":"LeftStandFront_RightGroundBack",
+            "LeftStandBack_RightStandFront":"LeftStandFront_RightGroundBack"
         }
-        self.prev_colision_state = [0,1] # left standing, right ground
-        self.next_reward_colliionStates = [[1,1]]
+        self.prev_colision_state = "LeftStandFront_RightGroundBack" #[0,1] # left standing, right ground
+        self.next_reward_colliionStates = self.next_state_list["LeftStandFront_RightGroundBack" ]#[[1,1]]
+
 
 
     def calc_state(self):
@@ -120,8 +133,8 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         self.state = np.array(state)
         self.potential = 0
         self.walk_target_dist_x = self.walk_target_x 
-        self.prev_colision_state = [0,1] # left standing, right ground
-        self.next_reward_colliionStates = [[1,1]]
+        self.prev_colision_state = "LeftStandFront_RightGroundBack" #[0,1] # left standing, right ground
+        self.next_reward_colliionStates = self.next_state_list["LeftStandFront_RightGroundBack" ]#[[1,1]]
 
         return state
     
@@ -131,7 +144,7 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
     foot_ground_object_names = set(["floor"])  # to distinguish ground and other objects
     joints_at_limit_cost = -0.1	 # discourage stuck joints
 
-    def state_machine(self,left_foot_ground,right_foot_ground):
+    def state_machine_simple(self,left_foot_ground,right_foot_ground):
         """
         this function return reqrd if robot follow the state machine tranferation
         1 mean ground when collision with floor, 0 means standing wihout collision
@@ -148,7 +161,30 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         self.next_reward_colliionStates = self.next_state_list[current_collision_state]
         # print("current state:",current_collision_state,"nect: ",self.next_reward_colliionStates)
 
-        return reward    
+        return reward   
+
+    def state_machine(self,left_foot_ground,right_foot_ground,left_footx,right_footx):
+        """
+        this function return reqrd if robot follow the state machine tranferation
+        1 mean ground when collision with floor, 0 means standing wihout collision
+        TODO: add right befoe left
+        """
+        reward = 0.0
+        current_collision_state = self.get_collision_state(left_foot_ground,right_foot_ground,left_footx,right_footx)
+        #set reward here
+        if(current_collision_state == self.next_reward_colliionStates):
+            return 1.0
+
+        #record the prvious state
+        self.prev_colision_state = current_collision_state
+        self.next_reward_colliionStates = self.next_state_list[current_collision_state]
+        # print("current state:",current_collision_state,"next: ",self.next_reward_colliionStates)
+
+        return reward
+
+    def get_collision_state(self,left_foot_ground,right_foot_ground,left_footx,right_footx):
+        current_collision_state =  "Left%s%s_Right%s%s"%("Ground" if left_foot_ground else "Stand", "Front" if (left_footx > right_footx) else "Back", "Ground" if right_foot_ground else "Stand", "Front" if (left_footx < right_footx) else "Back")
+        return current_collision_state 
 
     def calc_reward(self,state,a):
 
@@ -169,7 +205,7 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         alive =0   
         done = self.robot.fall_flag
         if(not done):
-            alive = 0.3
+            alive = 0.1#0.3
         else:
             return -3
 
@@ -177,7 +213,7 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         double_stand_reward = 0.0
         double_stand_rate = 1.0
         right_collision,left_collision = self.robot.right_foot.state,self.robot.left_foot.state
-        # cancel the collision state
+        right_footx,left_footx = self.robot.right_foot.xyz[0],self.robot.left_foot.xyz[0]
         # if((right_collision==1)and(left_collision==1)):
         #     double_stand_reward = 0.0
         # elif(right_collision or left_collision):
@@ -186,7 +222,7 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         #     double_stand_reward = -1.0
 
         #stand state machine reward
-        statemachine_reward = self.state_machine(left_collision,right_collision)
+        statemachine_reward = self.state_machine(left_collision,right_collision,left_footx,right_footx)
 
 
         walk_progress_x = self.last_walk_target_dist_x - self.walk_target_dist_x
