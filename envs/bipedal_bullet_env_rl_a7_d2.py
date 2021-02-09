@@ -21,6 +21,16 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         self.walk_target_y = 0
         self.walk_target_dist_x = self.walk_target_x
 
+        # if next state is in the list, then get positive reward
+        self.next_state_list = {
+            "leftStand_rightGround": [[1,1]],
+            "leftGround_rightGround": [[1,0],[0,1]],
+            "leftGround_rightStand":[[1,1]],
+            "leftStand_rightStand":[[1,1]]
+        }
+        self.prev_colision_state = [0,1] # left standing, right ground
+        self.next_reward_colliionStates = [[1,1]]
+
 
     def calc_state(self):
         """
@@ -110,13 +120,35 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         self.state = np.array(state)
         self.potential = 0
         self.walk_target_dist_x = self.walk_target_x 
+        self.prev_colision_state = [0,1] # left standing, right ground
+        self.next_reward_colliionStates = [[1,1]]
+
         return state
     
     electricity_cost = -2.0	 # cost for using motors -- this parameter should be carefully tuned against reward for making progress, other values less improtant
     stall_torque_cost = -0.1  # cost for running electric current through a motor even at zero rotational speed, small
     foot_collision_cost = -1.0	# touches another leg, or other objects, that cost makes robot avoid smashing feet into itself
     foot_ground_object_names = set(["floor"])  # to distinguish ground and other objects
-    joints_at_limit_cost = -0.1	 # discourage stuck joints    
+    joints_at_limit_cost = -0.1	 # discourage stuck joints
+
+    def state_machine(self,left_foot_ground,right_foot_ground):
+        """
+        this function return reqrd if robot follow the state machine tranferation
+        1 mean ground when collision with floor, 0 means standing wihout collision
+        TODO: add right befoe left
+        """
+        reward = 0.0
+        current_collision_state = "left%s_right%s"%("Ground" if left_foot_ground else "Stand","Ground" if right_foot_ground else "Stand")
+        #set reward here
+        if([left_foot_ground,right_foot_ground] in self.next_reward_colliionStates):
+            reward = 0.6
+
+        #record the prvious state
+        self.prev_colision_state = current_collision_state
+        self.next_reward_colliionStates = self.next_state_list[current_collision_state]
+        # print("current state:",current_collision_state,"nect: ",self.next_reward_colliionStates)
+
+        return reward    
 
     def calc_reward(self,state,a):
 
@@ -141,14 +173,31 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         else:
             return -3
 
+        # double stand reward
+        double_stand_reward = 0.0
+        double_stand_rate = 1.0
+        right_collision,left_collision = self.robot.right_foot.state,self.robot.left_foot.state
+        # cancel the collision state
+        # if((right_collision==1)and(left_collision==1)):
+        #     double_stand_reward = 0.0
+        # elif(right_collision or left_collision):
+        #     double_stand_reward = 0.3
+        # else:
+        #     double_stand_reward = -1.0
+
+        #stand state machine reward
+        statemachine_reward = self.state_machine(left_collision,right_collision)
+
+
         walk_progress_x = self.last_walk_target_dist_x - self.walk_target_dist_x
         alive_rate = 1
         if(walk_progress_x<0.0):
             alive_rate = 0.1
+            double_stand_rate = 0.1
         walk_progress_cost = walk_progress_x * 10
         alive_bonus =  alive*self.robot.dt*alive_rate
         
 
-        self.rewards=[walk_progress_cost,alive_bonus]
+        self.rewards=[walk_progress_cost,alive_bonus,double_stand_reward,statemachine_reward]
 
         return  sum(self.rewards)
