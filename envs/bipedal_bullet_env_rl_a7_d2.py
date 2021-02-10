@@ -173,6 +173,7 @@ class BipedalBulletRLEnvA7D2(BipedalBaseEnv):
         current_collision_state = self.get_collision_state(left_foot_ground,right_foot_ground,left_footx,right_footx)
         #set reward here
         if(current_collision_state == self.next_reward_colliionStates):
+            print("switch state to:",current_collision_state)
             return 1.0
 
         #record the prvious state

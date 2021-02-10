@@ -10,7 +10,7 @@ class BipedalBulletRLEnvA4D2(BipedalBaseEnv):
 
         action_dim = 4 # toruqe of "upperLegBridgeR","lowerLegBridgeR","ankleBridgeR","upperLegBridgeL","lowerLegBridgeL","ankleBridgeL"
         obs_dim = 24
-        high = np.ones([action_dim]) * 5
+        high = np.ones([action_dim]) * 15 #5
         self.action_space = gym.spaces.Box(-high, high)
         high = np.inf * np.ones([obs_dim]) * 3.14
         self.observation_space = gym.spaces.Box(-high, high)
@@ -154,7 +154,8 @@ class BipedalBulletRLEnvA4D2(BipedalBaseEnv):
         current_collision_state = self.get_collision_state(left_foot_ground,right_foot_ground,left_footx,right_footx)
         #set reward here
         if(current_collision_state == self.next_reward_colliionStates):
-            return 0.6
+            # print("switch state to:",current_collision_state)
+            return 0.1
 
         #record the prvious state
         self.prev_colision_state = current_collision_state
@@ -178,6 +179,7 @@ class BipedalBulletRLEnvA4D2(BipedalBaseEnv):
                                 self.robot.left_knee.q,self.robot.left_knee.qd,\
                                     self.robot.left_ankleY.q,self.robot.left_ankleY.qd]
         joints_at_limit = np.count_nonzero(np.abs(j[0::2]) < self.joint_angle_limit)
+        joint_speeds = j[1::2]
         joints_at_limit_cost = 0.03
         joints_cost = joints_at_limit * joints_at_limit_cost
 
@@ -204,15 +206,20 @@ class BipedalBulletRLEnvA4D2(BipedalBaseEnv):
         #stand state machine reward
         statemachine_reward = self.state_machine(left_collision,right_collision,left_footx,right_footx)
 
+        #joint spped reward
+        joints_move_reward = 0.03
+        speed_reward = np.mean(np.absolute(np.asarray(joint_speeds))) * joints_move_reward
+
         walk_progress_x = self.last_walk_target_dist_x - self.walk_target_dist_x
         alive_rate = 1
         if(walk_progress_x<0.0):
             alive_rate = 0.1
             double_stand_rate = 0.1
+            speed_reward = 0.0
         walk_progress_cost = walk_progress_x * 10
         alive_bonus =  alive*self.robot.dt*alive_rate
         
 
-        self.rewards=[walk_progress_cost,alive_bonus,double_stand_reward]
+        self.rewards=[walk_progress_cost,alive_bonus,double_stand_reward,statemachine_reward,speed_reward]
 
         return  sum(self.rewards)

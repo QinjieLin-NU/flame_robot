@@ -136,7 +136,7 @@ class URDFBaseRobot2D():
         self.init=False 
 
         self.fall_flag = False # this will be true if robot position.z < fall_meter 
-        self.fall_meter = 0.25#0.2
+        self.fall_meter = 0.3#0.2
 
         self.link_names=["body","upperLegBridgeR","lowerLegBridgeR","ankleBridgeR","upperLegBridgeL","lowerLegBridgeL","ankleBridgeL"]
         self.link_name_id_dict = None

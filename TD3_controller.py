@@ -15,9 +15,9 @@ from TD3_control.TwinDelayed import TD3, device
 
 # pybullet.connect(pybullet.DIRECT)
 
-env = gym.make('BipedalPyBulletEnv-v4')
+env = gym.make('BipedalPyBulletEnv-v5')
 env.render(mode="realtime")
-file_prefix = "biped-v4-2d-2"
+file_prefix = "biped-v5-2d-11"
 # Set seeds
 seed = 12345
 env.seed(seed)
