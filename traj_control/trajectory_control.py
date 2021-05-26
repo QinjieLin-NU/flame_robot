@@ -56,20 +56,21 @@ for i in range(2422):
 
 for i in range(6):
     select_traj[:, 2+i] = goal_traj[:, 3+i]
-
+print(select_traj[1,1])
 traj_jointIds = [15,1,16,2,17,3,18,4]
 traj_id = 0
 # # p.setRealTimeSimulation(1)
 p.getCameraImage(320,200)
-
-while(1):
+# time.sleep(5)
+while(traj_id<2000):
     # print(traj_id,":",end=" ")
-    traj_id += 1
+
     p.getCameraImage(320,200)
     for i in range(len(traj_jointIds)):
         jointId = traj_jointIds[i]
         # print(jointId,goal_traj[traj_id,i],end=" ")
         p.setJointMotorControl2(humanoid, jointId , p.POSITION_CONTROL, targetPosition=select_traj[traj_id,i], force=140.)
+        print("----------", jointId, select_traj[traj_id,i])
         # p.resetJointState(humanoid, jointId, goal_traj[traj_id,i])
         # torso_pos, torso_ori = p.getBasePositionAndOrientation(humanoid)
         # print("torso_pos",torso_pos)
@@ -78,7 +79,9 @@ while(1):
         # print("base_linVel",base_linVel)
         # print("base_angVel",base_angVel)
     # print()
-    time.sleep(0.01)
+    p.stepSimulation()
+    traj_id += 1
+    # time.sleep(0.01)
 # while(1):
 #     p.getCameraImage(320,200)
 #     p.setGravity(0,0,p.readUserDebugParameter(gravId))
