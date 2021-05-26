@@ -46,7 +46,7 @@
 
 	<joint name="torso_to_z" type="continuous">
     <parent link="z_prismatic"/>
-    <child link="body"/>
+    <child link="torso"/>
     <axis xyz="1 0 0"/>
     <origin rpy="0 0 0" xyz="0 0 1.4"/>
   </joint>
