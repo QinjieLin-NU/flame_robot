@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f310497e-85fb-45b5-94cc-21f13c70d550" name="Default Changelist" comment="SEA and test">
-      <change afterPath="$PROJECT_DIR$/.idea/flame_robot.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="f310497e-85fb-45b5-94cc-21f13c70d550" name="Default Changelist" comment="test">
+      <change afterPath="$PROJECT_DIR$/EA_training/EA.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EA_training/calTorque.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/flame5.urdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bipedal_eactrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/bipedal_eactrl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bipedal_eactrl_SEA.py" beforeDir="false" afterPath="$PROJECT_DIR$/bipedal_eactrl_SEA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/EA_controller_SEA.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/EA_controller_SEA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/tutorial.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/tutorial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/envs/pybullet_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/pybullet_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/envs/pybullet_env_SEA.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/pybullet_env_SEA.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/envs/test_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/test_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/traj_control/actionFile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/actionFile.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/traj_control/allTraj.txt" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/allTraj.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/traj_control/bipedal_walk.py" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/bipedal_walk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/traj_control/test_urdf.py" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/test_urdf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/traj_control/trajectory_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/trajectory_control.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/urdf/simbicon_urdf/flame3.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/flame3.urdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/urdf/simbicon_urdf/flame4.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/flame4.urdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/urdf/simbicon_urdf/test.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/test.urdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/urdf/simbicon_urdf/test4.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/test4.urdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,6 +32,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Python Script" />
       </list>
     </option>
@@ -38,12 +48,13 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.test_env">
+  <component name="RunManager" selected="Python.bipedal_eactrl_SEA">
     <configuration name="bipedal_eactrl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -86,7 +97,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pybullet_env" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="bipedal_pidctrl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -94,11 +105,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/envs" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/envs/pybullet_env.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bipedal_pidctrl.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -107,7 +118,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="pybullet_env_SEA" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="testURDF" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -115,11 +126,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/envs" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/urdf/simbicon_urdf" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/envs/pybullet_env_SEA.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/urdf/simbicon_urdf/testURDF.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -128,7 +139,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="test_env" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="tutorial" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -136,11 +147,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/envs" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/controllers" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/envs/test_env.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/controllers/tutorial.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -151,11 +162,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test_env" />
         <item itemvalue="Python.bipedal_eactrl_SEA" />
+        <item itemvalue="Python.tutorial" />
         <item itemvalue="Python.bipedal_eactrl" />
-        <item itemvalue="Python.pybullet_env_SEA" />
-        <item itemvalue="Python.pybullet_env" />
+        <item itemvalue="Python.bipedal_pidctrl" />
+        <item itemvalue="Python.testURDF" />
       </list>
     </recent_temporary>
   </component>
@@ -168,6 +179,21 @@
       <option name="presentableId" value="Default" />
       <updated>1615239828970</updated>
     </task>
+    <task id="LOCAL-00001" summary="test">
+      <created>1620230288802</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1620230288802</updated>
+    </task>
+    <task id="LOCAL-00002" summary="test">
+      <created>1620230438023</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1620230438023</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -184,6 +210,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="SEA and test" />
-    <option name="LAST_COMMIT_MESSAGE" value="SEA and test" />
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
   </component>
 </project>

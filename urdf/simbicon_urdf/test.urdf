@@ -1,109 +1,148 @@
 <?xml version="1.0"?>
 <robot name="test">
-  <link name="base" >
-     <inertial>
-        <origin rpy = "0 0 0" xyz = "0 0 0" />
-        <mass value = "0.0001" />
-        <inertia ixx = "0.0001" ixy = "0" ixz = "0" iyy = "0.0001" iyz = "0" izz = "0.0001" />
-     </inertial>
-  </link>
 
-   <joint name="root" type="fixed" >
-     <parent link = "base" />
-     <child link="upperLegCylinderR" />
-     <origin rpy = "0 0 0" xyz = "0.000000 0.000000 0.000000" />
-  </joint>
+    <link name="upperLegCylinderR">
+        <visual>
+            <geometry>
+                <cylinder length="0.04" radius="0.01"/>
+            </geometry>
+            <origin xyz="0 0 0.02" rpy="1.57 0 0"/>
+            <axis xyz="0 0 0" />
+            <material name="red"/>
+        </visual>
+        <inertial>
+            <mass value="0.0000001"/>
+            <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
+        </inertial>
+    </link>
 
-   <link name="upperLegCylinderR">
-       <visual>
-           <geometry>
-               <cylinder length="0.04" radius="0.01"/>
-           </geometry>
-           <origin xyz="0 0 0.02" rpy="1.57 0 0"/>
-           <axis xyz="0 0 0" />
-           <material name="red"/>
-       </visual>
-       <inertial>
-           <mass value="0"/>
-           <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
-       </inertial>
-   </link>
+    <joint name="jointLowerLegR" type="revolute">
+        <parent link="upperLegCylinderR"/>
+        <child link="lowerlegCylinderR"/>
+        <origin xyz="0.00110 0.0140 -0.3155" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+        <limit effort="90" lower="0" upper="1.570796" velocity="672"/>
+        <dynamics damping="0.198431592389"/>
+    </joint>
 
-   <joint name="jointLowerLegR" type="revolute">
-       <parent link="upperLegCylinderR"/>
-       <child link="lowerlegCylinderR"/>
-       <origin xyz="0.00110 0.0140 -0.3155" rpy="0 0 0"/>
-       <axis xyz="0 1 0"/>
-       <limit effort="90" lower="0" upper="1.570796" velocity="10"/>
-       <dynamics damping="0.198431592389"/>
-   </joint>
+    <link name="lowerlegCylinderR">
+        <visual>
+            <geometry>
+                <cylinder length="0.044" radius="0.01"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="1.57075 0 0"/>
+            <axis xyz="0 0 0" />
+            <material name="red"/>
+        </visual>
+        <inertial>
+            <mass value="0"/>
+            <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="672"/>
+        </inertial>
+    </link>
 
-   <link name="lowerlegCylinderR">
-       <visual>
-           <geometry>
-               <cylinder length="0.044" radius="0.01"/>
-           </geometry>
-           <origin xyz="0 0 0" rpy="1.57075 0 0"/>
-           <axis xyz="0 0 0" />
-           <material name="red"/>
-       </visual>
-       <inertial>
-           <mass value="0"/>
-           <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
-       </inertial>
-   </link>
+    <joint name="fixed_upperLegBridgeR" type="fixed">
+        <parent link="upperLegCylinderR"/>
+        <child link="upperLegBridgeR"/>
+    </joint>
 
-   <joint name="fixed_upperLegBridgeR" type="fixed">
-       <parent link="upperLegCylinderR"/>
-       <child link="upperLegBridgeR"/>
-   </joint>
+    <link name="upperLegBridgeR">
+        <visual>
+            <geometry>
+                <box size="0.1 0.05 0.3155"/>
+            </geometry>
+            <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
+            <material name="upperLegLinkColor" />
+        </visual>
+        <inertial>
+            <mass value="1.94"/>
+            <inertia ixx="0.0104" ixy="-0.00000195" ixz="0.0000231" iyy="0.00933" iyz="-0.000127" izz="0.00161"/>
+            <origin xyz="-0.00154  -0.00421 -0.111" rpy="0 0 0"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.1 0.05 0.3155"/>
+            </geometry>
+            <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
+        </collision>
+    </link>
 
-   <link name="upperLegBridgeR">
-       <visual>
-           <geometry>
-               <box size="0.1 0.05 0.3155"/>
-           </geometry>
-           <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
-           <material name="upperLegLinkColor" />
-       </visual>
-       <inertial>
-           <mass value="1.94"/>
-           <inertia ixx="10.4" ixy="-0.00195" ixz="0.0231" iyy="9.33" iyz="-0.127" izz="1.61"/>
-           <origin xyz="-0.00154  -0.00421 -0.111" rpy="0 0 0"/>
-       </inertial>
-       <collision>
-           <geometry>
-               <box size="0.1 0.05 0.3155"/>
-           </geometry>
-           <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
-       </collision>
-   </link>
+    <joint name="legToHinge" type="fixed">
+        <parent link="upperLegCylinderR"/>
+        <child link="hinge"/>
+        <origin xyz="0 0 -0.1" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
 
-   <joint name="fixed_lowerLegBridgeR" type="fixed">
-       <parent link="lowerlegCylinderR"/>
-       <child link="lowerLegBridgeR"/>
-   </joint>
+    <link name="hinge">
+        <visual>
+            <geometry>
+                <cylinder length="0.02" radius="0.005"/>
+            </geometry>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <axis xyz="0 0 1" />
+            <material name="red"/>
+        </visual>
+        <inertial>
+            <mass value="0.00001"/>
+            <inertia ixx="0.0000001" ixy="0" ixz="0.0" iyy="0.0000001" iyz="0.0" izz="0.0000001"/>
+        </inertial>
+    </link>
 
-   <link name="lowerLegBridgeR">
-       <visual>
-           <geometry>
-               <box size="0.05 0.05 0.28"/>
-           </geometry>
-           <origin xyz="-0.0015 0 -0.14" rpy="0 0 0"/>
-           <material name="upperLegLinkColor" />
-       </visual>
-       <inertial>
-           <mass value="0.267"/>
-           <inertia ixx="2.52" ixy="-0.000411" ixz="-0.0238" iyy="2.45" iyz="0.0366" izz="0.110"/>
-           <origin xyz="0.00135  0.00496 -0.105" rpy="0 0 0"/>
-       </inertial>
-       <collision>
-           <geometry>
-               <box size="0.05 0.05 0.28"/>
-           </geometry>
-           <origin xyz="0.0015 0 -0.14" rpy="0 0 0"/>
-           <!-- <contact_coefficient mu="0.0960723602789"  resitution="0"  k_p="4000"  k_d="0.198431592389" /> -->
-       </collision>
-   </link>
+    <joint name="hingeToMotor" type="revolute">
+        <parent link="hinge"/>
+        <child link="motor"/>
+        <origin xyz="0 0 -0.01" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="90" lower="-1.57" upper="1.57" velocity="672"/>
+        <dynamics damping="0.0"/>
+    </joint>
+
+    <link name="motor">
+        <visual>
+            <geometry>
+                <cylinder length="0.066714" radius="0.02"/>
+            </geometry>
+            <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+            <axis xyz="0 0 1" />
+            <material name="red"/>
+        </visual>
+        <inertial>
+            <mass value="0.59"/>
+            <inertia ixx="0.001" ixy="0.00" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <cylinder length="0.066714" radius="0.02"/>
+            </geometry>
+            <origin xyz="0 0 -0.03" rpy="0 0 0"/>
+        </collision>
+    </link>
+
+    <joint name="fixed_lowerLegBridgeR" type="fixed">
+        <parent link="lowerlegCylinderR"/>
+        <child link="lowerLegBridgeR"/>
+    </joint>
+
+    <link name="lowerLegBridgeR">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.28"/>
+            </geometry>
+            <origin xyz="-0.0015 0 -0.14" rpy="0 0 0"/>
+            <material name="upperLegLinkColor" />
+        </visual>
+        <inertial>
+            <mass value="0.267"/>
+            <inertia ixx="2.52" ixy="-0.000411" ixz="-0.0238" iyy="2.45" iyz="0.0366" izz="0.110"/>
+            <origin xyz="0.00135  0.00496 -0.105" rpy="0 0 0"/>
+        </inertial>
+        <collision>
+            <geometry>
+                <box size="0.05 0.05 0.28"/>
+            </geometry>
+            <origin xyz="0.0015 0 -0.14" rpy="0 0 0"/>
+            <!-- <contact_coefficient mu="0.0960723602789"  resitution="0"  k_p="4000"  k_d="0.198431592389" /> -->
+        </collision>
+    </link>
 
 </robot>

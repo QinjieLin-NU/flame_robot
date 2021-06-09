@@ -7,7 +7,7 @@ import pybullet_data
 p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())  # to load plane.urdf
 p.loadURDF("plane.urdf")
-humanoid = p.loadURDF("urdf/simbicon_urdf/flame3.urdf",[0, 0, 0.85])
+humanoid = p.loadURDF("/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame3.urdf",[0, 0, 0.85])
 gravId = p.addUserDebugParameter("gravity",-10,10,-10)
 jointIds=[]
 paramIds=[]

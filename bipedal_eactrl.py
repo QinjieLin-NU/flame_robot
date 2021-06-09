@@ -4,7 +4,7 @@ from controllers.EA_controller import EA_weights_Controller
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
-    robot = PybulletEnv(gravity=-10.0,dt=0.001,file_path="urdf/simbicon_urdf/flame3.urdf")
+    robot = PybulletEnv(gravity=-10.0,dt=0.001,file_path="urdf/simbicon_urdf/flame5.urdf")
     robot.reset(disable_velControl=True,add_debug=False)
     controller = EA_weights_Controller(robot)
     i=0

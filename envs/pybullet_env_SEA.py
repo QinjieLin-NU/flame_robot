@@ -79,55 +79,6 @@ class FlameJoint():
        return
 
 
-# # class FlameJointSEA():
-# #     """
-# #     joint state info
-# #     """
-# #
-# #     def __init__(self, joint_type="rotate_x"):
-# #         """
-# #         q represents joint angle, qd represents joint velocity, hipy, knee, and ankley
-# #         """
-# #         self.q = 0.0
-# #         # self.y_q = 0.0
-# #         # self.z_q = 0.0
-# #         # self.x_qd = 0.0
-# #         # self.y_qd = 0.0
-# #         self.qd = 0.0
-# #         self.qmot = 0.0
-# #         self.tauSEA = CtrlData()
-# #         self.stiffSEA = 0.0
-# #         self.joint_id = 0
-# #         self.type = joint_type
-#
-#     def set_jointId(self, id):
-#         """
-#         """
-#         self.joint_id = id
-#
-#     def set_state(self, q, qd, qmot):
-#         """
-#         every joint has x,y,z axis
-#         """
-#         self.q = q
-#         # self.y_q = y
-#         # self.z_q = z
-#         self.qd = qd
-#         # self.y_qd = vely
-#         # self.z_qd = velz
-#         self.qmot = qmot
-#         return
-#
-#     def set_qmot(self, qmot):
-#         self.qmot = qmot
-#
-#     def set_stiff(self, stiffSEA):
-#         self.stiffSEA = stiffSEA
-#
-#     def set_tauSEA(self, tauSEA):
-#         self.tauSEA = tauSEA
-
-
 class FlameFoot():
    def __init__(self):
        """

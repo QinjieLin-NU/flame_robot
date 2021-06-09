@@ -135,14 +135,14 @@ class PybulletEnv():
         self.plane = self.p.loadURDF("plane.urdf")
 
         #add step down:
-        # test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.1],rgbaColor=[1, 0, 0, 1])
-        # test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.1])
-        # test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
-        # baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
+        test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 1])
+        test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05])
+        test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
+        baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
         #add humannoid
-        self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
-        #self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
+        # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
+        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.87])
         # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         self.p.setGravity(0,0,self.g)
@@ -294,7 +294,7 @@ class PybulletEnv():
         return: 0 means no contact
         ##collision_front: when link pos_X is bigger than contact pos_X, collision happens in the back of link
         ##collision_back: when link pos_X is smaller than contact pos_X, collision happens in the front of link
-        Currently, we caculate the relative position of contact point to the local fram, and then decide back and front 
+        Currently, we calculate the relative position of contact point to the local fram, and then decide back and front
         according to the relative position along x axis
         This assumption is based on the robot move along the x axis, if not, the front and back judgement is wrong
         

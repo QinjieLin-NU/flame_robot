@@ -9,7 +9,7 @@ import numpy as np
 if __name__ == "__main__":
    # robot = PybulletEnv(gravity=-10.0,dt=0.001,file_path="urdf/simbicon_urdf/flame3.urdf")
    robot = PybulletEnv(gravity=-10.0, dt=0.001,
-                       file_path="/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame3.urdf")
+                       file_path="/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame4.urdf")
    robot.reset(disable_velControl=True, add_debug=False)
    controller = EA_weights_Controller(robot)
    # allData = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
