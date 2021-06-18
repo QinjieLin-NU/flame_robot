@@ -1,84 +1,151 @@
 import numpy as np
 import random
 from bipedal_EActrl import bipedal_EActrl
-import pandas as pd
+import matplotlib.pyplot as plt
+# import pandas as pd
 import csv
-#parent is an array of 20x196(28*7)
-N_GENERATION = 20
-POP_SIZE = 200
+
+#parent is an array of 300x196(28*7)
+N_GENERATION = 300
+CHILDREN_SIZE = 150
 DNA_SIZE = 196
-#fitness function
-#distance measured by hip
+# fitness function
+# distance measured by hip
 # tend = time when the body detect ground//how to accumulate time?
 
-def mutate(parent):
+# mutation
+def mutate(child, mode):
+    """
+    child: one dimension array 1x196
+    mode == 0 indicates standard deviation is 0.005
+    mode == 1 indicates standard deviation is 0.1
+    """
     #parent 1x196
     miu = 0
-    sigma = 0.05
+    sigma0 = 0.005
+    sigma1 = 0.1
+    sigma2 = 5
     size = 7*28
-    parent = parent + np.random.normal(miu,sigma,size)
-    return parent
+    result = []
+    if mode == 0:
+        for item in child:
+            item = item + np.random.normal(miu, sigma0, size)
+            result.append(item)
+    if mode == 1:
+        for item in child:
+            item = item + np.random.normal(miu, sigma1, size)
+            result.append(item)
+    if mode == 2:
+        for item in child:
+            item = item + np.random.normal(miu, sigma2, size)
+            result.append(item)
+    return np.array(result)
 
-def crossover(parent1,parent2):
-    #child 1x196
-    child = []
-    for i in range(196):
-        index = random.randient(0,1)
-        if index == 0:
-            child[i] = parent1[i]
-        else:
-            child[i] = parent2[i]
+def crossover(parents):
+    """
+    input:30x196 array
+    return:one child 1x196
+    """
+    child = np.ones((1,196))
+    index0=random.randint(0,29)
+    index1=random.randint(0,29)
+    for bit in range(196):
+        selected = random.randint(0,1)
+        if selected == 0:
+            child[0,bit] = parents[index0,bit]
+        if selected == 1:
+            child[0,bit] = parents[index1,bit]
     return child
 
-#choose 20% of population
-def select(fitness_array,pop):
-    #pop 200*196
-    np.append(pop, fitness_array, axis=1)
+#choose top 30 of population
+def select(children_array):
     #sort by fitness
-    pop[pop[:,-1].argsort()]
-    #get top 20% population as parent
-    parent = pop[int(POP_SIZE*0.2),:]
+    children_array = children_array[children_array[: , -1:].argsort()]
+    #get top 30 population as parent
+    parent = children_array[-30:, :]
+    best_fitness = children_array[-1:, -1:]
+    aver_fitness = np.mean(parent[:, -1:])
     #remove the last column(fitness)
-    parent = np.delete(parent, -1, axis=1)
+    parent = np.delete(parent, 196, axis=1)
+    return parent, best_fitness, aver_fitness
 
-    return parent
 
+def get_fitness(child):
+    # child:1x196; return: child's fitness
+    ea_trial = bipedal_EActrl(child)
+    fitness =  ea_trial.move()
+    return fitness
 
-def get_fitness_array(pop):
-    #get all children's fitness
-    fitness_array = np.zeros(POP_SIZE)
-    for i in range(POP_SIZE):
-        ea_trial = bipedal_EActrl(pop[i,:])
-        fitness_trial =  ea_trial.move()
-        fitness_array[i]=fitness_trial
+def read_csv(filename):
+    data = np.loadtxt(filename, delimiter=',')
+    weights = data
+    weights = np.array(weights)
+    return weights
 
-    return fitness_array
+def reshape(weight_array):
+    reshape_array = []
+    for i in range(7):
+        for item in weight_array[:, i]:
+            reshape_array.append(item)
+    return np.reshape(reshape_array, (1,196))
 
 
 if __name__ == "__main__":
     #first generatinon
-    weight = np.read_csv("../controllers/walkweight.csv")
-    weight.shape = (1,196)
-    pop = np.zeros((POP_SIZE,196))
-    for i in range(POP_SIZE):
-        pop[i,:] = weight + mutate(weight)
-    child = np.zeros((1,196))
+    weight = read_csv("../controllers/walkweight.csv")
+    weight = weight[:,-7:]
+    parent0 = reshape(weight)
+    parent_array = np.zeros((30,196))
+    for i in range(30):
+        parent_i = mutate(parent0,2)
+        parent_array[i,:] = parent_i
 
+    history_fitness_max = []
+    history_fitness_aver = []
     for i in range(N_GENERATION):
-        #get the fitness and select top 20% as parent
-        fitness_list = get_fitness_array(pop)
-        parent_pop = select(fitness_list,pop)
+        print(i, " generation")
+        children_array = np.ones((CHILDREN_SIZE,197))
+        for j in range(CHILDREN_SIZE):
+            child_indv = crossover(parent_array)
+            child_indv = mutate(child_indv,0)
+            # child_indv 1x196
+            fitness = get_fitness(child_indv)
+            print("fitness:",fitness)
+            children_array[j,-1:] = fitness
+            children_array[j,0:-1] = child_indv[0,:]
+        # parent_array 30x196
+        parent_array, best_fitness, aver_fitness = select(children_array)
+        history_fitness_max.append(best_fitness)
+        history_fitness_aver.append(aver_fitness)
+    xpoint = range(N_GENERATION)
+    plt.plot(xpoint, history_fitness_max, label='max')
+    plt.plot(xpoint, history_fitness_aver, label='average')
+    plt.show()
 
-        for j in range(POP_SIZE):
-            #generate by crossover
-            parent1_index =  random.randient(0,40)
-            parent2_index =  random.randient(0,40)
-            parent1 = parent_pop[parent1_index,:]
-            parent2 = parent_pop[parent2_index,:]
-            child = crossover(parent1,parent2)
-            child = mutate(child)
-            pop[j,:] = child
 
-    #Harvest
-    print(pop)
-    np.savetxt("new_weight.csv", pop, delimiter=",")
+
+
+    # pop = np.zeros((POP_SIZE,196))
+    # for i in range(POP_SIZE):
+    #     pop[i,:] = weight + mutate(weight)
+    # child = np.zeros((1,196))
+    #
+    # for i in range(N_GENERATION):
+    #     #get the fitness and select top 20% as parent
+    #     fitness_list = get_fitness_array(pop)
+    #     parent_pop = select(fitness_list,pop)
+    #
+    #     for j in range(POP_SIZE):
+    #         #generate by crossover
+    #         parent1_index =  random.randient(0,40)
+    #         parent2_index =  random.randient(0,40)
+    #         parent1 = parent_pop[parent1_index,:]
+    #         parent2 = parent_pop[parent2_index,:]
+    #         child = crossover(parent1,parent2)
+    #         child = mutate(child)
+    #         pop[j,:] = child
+    #
+    # #Harvest
+    # print(pop)
+    # np.savetxt("new_weight.csv", pop, delimiter=",")
+

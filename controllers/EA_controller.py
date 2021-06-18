@@ -219,13 +219,13 @@ class EA_weights_Controller():
             leftKnee_torque = stance_knee_tau
             rightKnee_torque = swing_knee_tau
             leftAnkleY_torque = stance_ankle_tau
-            rightAnkleY_torque = swing_ankle_tau
+            rightAnkleY_torque = swing_ankle_tau*0.05
         else:
             leftHip_torque = swing_hipy_tau
             rightHip_torque = stance_hipy_tau
             leftKnee_torque = swing_knee_tau
             rightKnee_torque = stance_knee_tau
-            leftAnkleY_torque = swing_ankle_tau
+            leftAnkleY_torque = swing_ankle_tau*0.05
             rightAnkleY_torque = stance_ankle_tau            
 
 

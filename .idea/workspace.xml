@@ -2,27 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f310497e-85fb-45b5-94cc-21f13c70d550" name="Default Changelist" comment="test">
-      <change afterPath="$PROJECT_DIR$/EA_training/EA.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/EA_training/calTorque.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/flame5.urdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA_training/EA.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/EA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA_training/calTorque.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/calTorque.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bipedal_eactrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/bipedal_eactrl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bipedal_eactrl_SEA.py" beforeDir="false" afterPath="$PROJECT_DIR$/bipedal_eactrl_SEA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/tutorial.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/tutorial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/EA_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/EA_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/envs/pybullet_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/pybullet_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/envs/pybullet_env_SEA.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/pybullet_env_SEA.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/envs/test_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/test_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/traj_control/actionFile.txt" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/actionFile.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/traj_control/allTraj.txt" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/allTraj.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/traj_control/bipedal_walk.py" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/bipedal_walk.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/traj_control/test_urdf.py" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/test_urdf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/traj_control/trajectory_control.py" beforeDir="false" afterPath="$PROJECT_DIR$/traj_control/trajectory_control.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/urdf/simbicon_urdf/flame3.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/flame3.urdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/urdf/simbicon_urdf/flame4.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/flame4.urdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/urdf/simbicon_urdf/test.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/test.urdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/urdf/simbicon_urdf/test4.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/test4.urdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +41,28 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.bipedal_eactrl_SEA">
+  <component name="RunManager" selected="Python.EA">
+    <configuration name="EA" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="flame_robot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EA_training" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EA_training/EA.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="bipedal_eactrl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -118,27 +126,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="testURDF" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="flame_robot" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/urdf/simbicon_urdf" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/urdf/simbicon_urdf/testURDF.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="tutorial" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -162,11 +149,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.bipedal_eactrl_SEA" />
-        <item itemvalue="Python.tutorial" />
+        <item itemvalue="Python.EA" />
         <item itemvalue="Python.bipedal_eactrl" />
+        <item itemvalue="Python.tutorial" />
+        <item itemvalue="Python.bipedal_eactrl_SEA" />
         <item itemvalue="Python.bipedal_pidctrl" />
-        <item itemvalue="Python.testURDF" />
       </list>
     </recent_temporary>
   </component>
