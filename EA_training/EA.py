@@ -24,6 +24,7 @@ def mutate(child, mode):
     miu = 0
     sigma0 = 0.005
     sigma1 = 0.1
+    sigma2 = 0.8
     size = 7*28
     result = []
     if mode == 0:
@@ -36,7 +37,7 @@ def mutate(child, mode):
             result.append(item)
     if mode == 2:
         for item in child:
-            item = item + random.randint(-5,10)
+            item = item + np.random.normal(miu, sigma2, size)
             result.append(item)
     return np.array(result)
 
