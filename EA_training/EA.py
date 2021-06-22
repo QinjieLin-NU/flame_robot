@@ -7,7 +7,7 @@ import csv
 
 #parent is an array of 300x196(28*7)
 N_GENERATION = 300
-CHILDREN_SIZE = 40 #150
+CHILDREN_SIZE = 150 #150
 DNA_SIZE = 196
 # fitness function
 # distance measured by hip
@@ -72,7 +72,7 @@ def select(children_array):
     aver_fitness = np.mean(children_array[:, -1:])
     #remove the last column(fitness)
     # parent = np.delete(parent, 196, axis=1)
-    return parent, best_fitness, aver_fitness
+    return parent, best_fitness, aver_fitness, children_array
 
 
 def get_fitness(child):
@@ -121,12 +121,18 @@ if __name__ == "__main__":
             # print(children_array[j,:])
         # parent_array 30x196
         print(children_array)
-        parent_array, best_fitness, aver_fitness = select(children_array)
+        parent_array, best_fitness, aver_fitness, children_array = select(children_array)
         print("parent array:",parent_array)
         print("best fitness:",best_fitness)
         print("average fitness:",aver_fitness)
         history_fitness_max.append(best_fitness)
         history_fitness_aver.append(aver_fitness)
+        # f = open('/root/Documents/flame_robot/EA_training/results/csv{i}gen.csv','w')
+        number = str(i)
+        np.savetxt('results/{%s}gen.csv'%number,children_array,delimiter=',')
+        # f.close()
+    np.savetxt('results/fitnessMax.csv',history_fitness_max, delimiter=',')
+    np.savetxt('results/fitnessAver.csv',history_fitness_aver, delimiter=',')
     xpoint = range(N_GENERATION)
     plt.plot(xpoint, history_fitness_max, label='max')
     plt.plot(xpoint, history_fitness_aver, label='average')
