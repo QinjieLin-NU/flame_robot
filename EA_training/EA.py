@@ -129,7 +129,7 @@ if __name__ == "__main__":
         history_fitness_aver.append(aver_fitness)
         # f = open('/root/Documents/flame_robot/EA_training/results/csv{i}gen.csv','w')
         number = str(i)
-        np.savetxt('results/{%s}gen.csv'%number,children_array,delimiter=',')
+        np.savetxt('results/%sgen.csv'%number,children_array,delimiter=',')
         # f.close()
     np.savetxt('results/fitnessMax.csv',history_fitness_max, delimiter=',')
     np.savetxt('results/fitnessAver.csv',history_fitness_aver, delimiter=',')
