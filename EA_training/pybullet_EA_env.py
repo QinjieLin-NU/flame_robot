@@ -139,10 +139,10 @@ class PybulletEnv():
         self.plane = self.p.loadURDF("plane.urdf")
 
         # add step down:
-        test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05], rgbaColor=[1, 0, 0, 1])
-        test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05])
-        test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
-                                           baseVisualShapeIndex=test_visual, basePosition=[-0.15, 0, 0])
+        self.test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05], rgbaColor=[1, 0, 0, 1])
+        self.test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05])
+        self.test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=self.test_collision, \
+                                           baseVisualShapeIndex=self.test_visual, basePosition=[-0.15, 0, 0])
 
         # add humannoid
         # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
@@ -212,11 +212,11 @@ class PybulletEnv():
                 # print(jointName,jointId)
                 self.left_ankleY.set_jointId(jointId)
 
-            if (jointName == b'fixed_ankleBridgeL'):
+            if (jointName == b'fixed_ankleBridgeL'): # id = 15
                 # print(jointName,jointId)
                 self.left_foot.set_linkId(jointId)
 
-            if (jointName == b'fixed_ankleBridgeR'):
+            if (jointName == b'fixed_ankleBridgeR'): # id = 7
                 # print(jointName,jointId)
                 self.right_foot.set_linkId(jointId)
 
@@ -307,12 +307,12 @@ class PybulletEnv():
         collision = 0
         collision_front = 0
         collision_back = 0
-        if len(bullet_client.getContactPoints(self.humanoid, self.plane, linkIndexA=linkA)) == 0:
+        if len(bullet_client.getContactPoints(self.humanoid, self.test_body, linkIndexA=linkA)) == 0:
             return 0, 0, 0
         else:
             collision = 1
             link_info = bullet_client.getLinkState(self.humanoid, linkA)
-            contact_info = bullet_client.getContactPoints(self.humanoid, self.plane, linkIndexA=linkA)
+            contact_info = bullet_client.getContactPoints(self.humanoid, self.test_body, linkIndexA=linkA)
             link_pos = link_info[0]
             link_quar = link_info[1]
             contact_posOnA = contact_info[0][5]
@@ -338,6 +338,51 @@ class PybulletEnv():
             # else:
             #     collision_back = 1
             return collision, collision_front, collision_back
+
+    def has_contact_stage(self, bullet_client, linkA):
+        """
+        return: 0 means no contact
+        ##collision_front: when link pos_X is bigger than contact pos_X, collision happens in the back of link
+        ##collision_back: when link pos_X is smaller than contact pos_X, collision happens in the front of link
+        Currently, we calculate the relative position of contact point to the local fram, and then decide back and front
+        according to the relative position along x axis
+        This assumption is based on the robot move along the x axis, if not, the front and back judgement is wrong
+
+        """
+        collision = 0
+        collision_front = 0
+        collision_back = 0
+        if len(bullet_client.getContactPoints(self.humanoid, self.test_body, linkIndexA=linkA)) == 0:
+            return 0, 0, 0
+        else:
+            collision = 1
+            link_info = bullet_client.getLinkState(self.humanoid, linkA)
+            contact_info = bullet_client.getContactPoints(self.humanoid, self.test_body, linkIndexA=linkA)
+            link_pos = link_info[0]
+            link_quar = link_info[1]
+            contact_posOnA = contact_info[0][5]
+            contact_qua = (1, 0, 0, 0)
+            link_pos_invert, link_quar_invert = bullet_client.invertTransform(link_pos, link_quar)
+            rel_pos, rel_qua = bullet_client.multiplyTransforms(link_pos_invert, link_quar_invert, contact_posOnA,
+                                                                contact_qua)
+            # print("relative position: ",rel_pos)
+            if (rel_pos[0] > 0):
+                collision_front = 1
+            else:
+                collision_back = 1
+            # this is the second version judgment
+            # if((link_pos[0] - contact_posOnA[0])> 0):
+            #     collision_back = 1
+            # else:
+            #     collision_front = 1
+            # print("link world position :",link_info[0],"contact point world position",contact_posOnA)
+            # this is the first verision judgment
+            # joint_angle = self.__dict__[leg_direction+'_ankleY'].q
+            # if(joint_angle>=0):
+            #     collision_front =1
+            # else:
+            #     collision_back = 1
+            return collision
 
     def get_motorId(self):
         jointIds = []

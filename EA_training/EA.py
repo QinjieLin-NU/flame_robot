@@ -7,7 +7,7 @@ import csv
 
 #parent is an array of 300x196(28*7)
 N_GENERATION = 300
-CHILDREN_SIZE = 150
+CHILDREN_SIZE = 40 #150
 DNA_SIZE = 196
 # fitness function
 # distance measured by hip
@@ -24,7 +24,6 @@ def mutate(child, mode):
     miu = 0
     sigma0 = 0.005
     sigma1 = 0.1
-    sigma2 = 5
     size = 7*28
     result = []
     if mode == 0:
@@ -37,7 +36,7 @@ def mutate(child, mode):
             result.append(item)
     if mode == 2:
         for item in child:
-            item = item + np.random.normal(miu, sigma2, size)
+            item = item + random.randint(-5,10)
             result.append(item)
     return np.array(result)
 
@@ -60,13 +59,18 @@ def crossover(parents):
 #choose top 30 of population
 def select(children_array):
     #sort by fitness
-    children_array = children_array[children_array[: , -1:].argsort()]
+    print("children array before sort：",children_array, children_array.shape, type(children_array))
+    children_array = children_array[children_array[:, -1].argsort()]
+    # np.reshape(children_array,(40,197))
+    # sorted(children_array, key=lambda x:x[196])
     #get top 30 population as parent
-    parent = children_array[-30:, :]
+    parent = np.zeros((30,196))
+    print("children array after sort:",children_array,children_array.shape,type(children_array))
+    parent = children_array[-30:, 0:196]
     best_fitness = children_array[-1:, -1:]
-    aver_fitness = np.mean(parent[:, -1:])
+    aver_fitness = np.mean(children_array[:, -1:])
     #remove the last column(fitness)
-    parent = np.delete(parent, 196, axis=1)
+    # parent = np.delete(parent, 196, axis=1)
     return parent, best_fitness, aver_fitness
 
 
@@ -113,8 +117,13 @@ if __name__ == "__main__":
             print("fitness:",fitness)
             children_array[j,-1:] = fitness
             children_array[j,0:-1] = child_indv[0,:]
+            # print(children_array[j,:])
         # parent_array 30x196
+        print(children_array)
         parent_array, best_fitness, aver_fitness = select(children_array)
+        print("parent array:",parent_array)
+        print("best fitness:",best_fitness)
+        print("average fitness:",aver_fitness)
         history_fitness_max.append(best_fitness)
         history_fitness_aver.append(aver_fitness)
     xpoint = range(N_GENERATION)

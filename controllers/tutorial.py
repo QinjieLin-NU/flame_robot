@@ -116,9 +116,9 @@ jointFrictionForce = 1
 for joint in range(p.getNumJoints(humanoid)):
   p.setJointMotorControl2(humanoid, joint, p.POSITION_CONTROL, force=jointFrictionForce)
 
-# for j in range (p.getNumJoints(humanoid)):
-#     info = p.getJointInfo(humanoid,j)
-#     print(info)
+for j in range (p.getNumJoints(humanoid)):
+    info = p.getJointInfo(humanoid,j)
+    print(info)
 #for i in range(10000):
 #     p.setJointMotorControl2(botId, 1, p.TORQUE_CONTROL, force=1098.0)
 #     p.stepSimulation()

@@ -2,14 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f310497e-85fb-45b5-94cc-21f13c70d550" name="Default Changelist" comment="test">
-      <change afterPath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/EA.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/EA.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/calTorque.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/calTorque.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bipedal_eactrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/bipedal_eactrl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/EA_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/EA_controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/envs/pybullet_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/envs/pybullet_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/tutorial.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/tutorial.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,8 +148,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.EA" />
-        <item itemvalue="Python.bipedal_eactrl" />
         <item itemvalue="Python.tutorial" />
+        <item itemvalue="Python.bipedal_eactrl" />
         <item itemvalue="Python.bipedal_eactrl_SEA" />
         <item itemvalue="Python.bipedal_pidctrl" />
       </list>
@@ -199,5 +197,21 @@
     <MESSAGE value="SEA and test" />
     <MESSAGE value="test" />
     <option name="LAST_COMMIT_MESSAGE" value="test" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EA_training/calTorque.py</url>
+          <line>168</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EA_training/calTorque.py</url>
+          <line>129</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

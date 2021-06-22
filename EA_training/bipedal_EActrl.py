@@ -72,7 +72,7 @@ class bipedal_EActrl():
             self.fall_flag = True
         # check if fall down
         for j in range(self.p.getNumJoints(self.robot.humanoid)):
-            if (j != self.robot.left_foot.link_id) or (j != self.robot.right_foot.link_id):
+            if j != 15 and j != 7:
                 collision = self.robot.has_contact(self.p, linkA=j)
                 if collision[0] == 1:
                     self.fall_flag = True
@@ -80,10 +80,15 @@ class bipedal_EActrl():
 
     def move(self):
         i = 0
-        time.sleep(1.0)
+        time.sleep(2.0)
         fitness = 0
         self.robot.reset(disable_gui=True, disable_velControl=True, add_debug=False)
         self.plane = self.p.loadURDF("plane.urdf")
+        while True:
+            self.robot.p.stepSimulation()
+            collision = self.robot.has_contact_stage(self.p,linkA=self.robot.right_foot.link_id)
+            if collision==1:
+                break
         while (i < 100000):
             self.check_flag()
             if self.fall_flag:

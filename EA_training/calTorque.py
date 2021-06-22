@@ -56,7 +56,7 @@ class EA_weights_Controller():
     # n is the index of joint
     def networkOutput(self, robot, weight, offset, scale, n):
         # load weight
-        lw = weight[:, n]
+        lw = weight
         lioff = offset[:, n]
         liscale = scale[:, n]
 
@@ -129,14 +129,14 @@ class EA_weights_Controller():
         offset = self.offset[0:29, :-7]
         scale = self.scale[0:29, :-7]
 
-        self.center_hip_q_ref = self.networkOutput(robot, self.weight[0:28], offset, scale, 0)
+        self.center_hip_q_ref = self.networkOutput(robot, self.weight[0,0:28], offset, scale, 0)
         # print("7 output:",self.center_hip_q_ref)
-        self.upperbody_q_ref = self.networkOutput(robot, self.weight[28:56], offset, scale, 1)
-        self.interleg_q_ref = self.networkOutput(robot, self.weight[56:84], offset, scale, 2)
-        self.stance_knee_q_ref = self.networkOutput(robot, self.weight[84:112], offset, scale, 3)
-        self.swing_knee_q_ref = self.networkOutput(robot, self.weight[112:140], offset, scale, 4)
-        self.stance_ankle_q_ref = self.networkOutput(robot, self.weight[140:168], offset, scale, 5)
-        self.swing_ankle_q_ref = self.networkOutput(robot, self.weight[168:], offset, scale, 6)
+        self.upperbody_q_ref = self.networkOutput(robot, self.weight[0,28:56], offset, scale, 1)
+        self.interleg_q_ref = self.networkOutput(robot, self.weight[0,56:84], offset, scale, 2)
+        self.stance_knee_q_ref = self.networkOutput(robot, self.weight[0,84:112], offset, scale, 3)
+        self.swing_knee_q_ref = self.networkOutput(robot, self.weight[0,112:140], offset, scale, 4)
+        self.stance_ankle_q_ref = self.networkOutput(robot, self.weight[0,140:168], offset, scale, 5)
+        self.swing_ankle_q_ref = self.networkOutput(robot, self.weight[0,168:], offset, scale, 6)
 
         # print("weight",weight)
         # print("shape",weight.shape)
@@ -188,19 +188,19 @@ class EA_weights_Controller():
         interleg_q = robot.__dict__[swing_leg + '_hip'].q - robot.__dict__[stance_leg + '_hip'].q
         interleg_qd = robot.__dict__[swing_leg + '_hip'].qd - robot.__dict__[stance_leg + '_hip'].qd
 
-        center_hip_tau = kp[0] * (self.center_hip_q_ref - center_hip_q) + kd[0] * (
+        center_hip_tau = kp[0,0] * (self.center_hip_q_ref - center_hip_q) + kd[0,0] * (
                     self.center_hip_qd_ref - center_hip_qd)
-        upperbody_tau = kp[1] * (self.upperbody_q_ref - robot.torso.pitch) + kd[1] * (
+        upperbody_tau = kp[0,1] * (self.upperbody_q_ref - robot.torso.pitch) + kd[0,1] * (
                     self.upperbody_qd_ref - robot.torso.pitchd)
-        interleg_tau = kp[2] * (self.interleg_q_ref - interleg_q) + kd[2] * (self.interleg_qd_ref - interleg_qd)
-        stance_knee_tau = kp[3] * (self.stance_knee_q_ref - robot.__dict__[stance_leg + '_knee'].q) + kd[3] * (
+        interleg_tau = kp[0,2] * (self.interleg_q_ref - interleg_q) + kd[0,2] * (self.interleg_qd_ref - interleg_qd)
+        stance_knee_tau = kp[0,3] * (self.stance_knee_q_ref - robot.__dict__[stance_leg + '_knee'].q) + kd[0,3] * (
                     self.stance_knee_qd_ref - robot.__dict__[stance_leg + '_knee'].qd)
-        swing_knee_tau = kp[4] * (self.swing_knee_q_ref - robot.__dict__[swing_leg + '_knee'].q) + kd[4] * (
+        swing_knee_tau = kp[0,4] * (self.swing_knee_q_ref - robot.__dict__[swing_leg + '_knee'].q) + kd[0,4] * (
                     self.swing_knee_qd_ref - robot.__dict__[swing_leg + '_knee'].qd)
-        stance_ankle_tau = kp[5] * (self.stance_ankle_q_ref - robot.__dict__[stance_leg + '_ankleY'].q) + kd[5] * (
+        stance_ankle_tau = kp[0,5] * (self.stance_ankle_q_ref - robot.__dict__[stance_leg + '_ankleY'].q) + kd[0,5] * (
                     self.stance_ankle_qd_ref - robot.__dict__[
                 stance_leg + '_ankleY'].qd)  # ankle y or ankle x or just ankle?
-        swing_ankle_tau = kp[6] * (self.swing_ankle_q_ref - robot.__dict__[swing_leg + '_ankleY'].q) + kd[6] * (
+        swing_ankle_tau = kp[0,6] * (self.swing_ankle_q_ref - robot.__dict__[swing_leg + '_ankleY'].q) + kd[0,6] * (
                     self.swing_ankle_qd_ref - robot.__dict__[swing_leg + '_ankleY'].qd)
 
         swing_hipy_tau = 0
