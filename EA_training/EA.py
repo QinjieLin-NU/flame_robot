@@ -7,7 +7,7 @@ import csv
 
 #parent is an array of 300x196(28*7)
 N_GENERATION = 300
-CHILDREN_SIZE = 150 #150
+CHILDREN_SIZE = 70 #150
 DNA_SIZE = 196
 # fitness function
 # distance measured by hip
