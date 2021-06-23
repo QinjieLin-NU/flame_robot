@@ -163,7 +163,7 @@ while(traj_id<1500):
         # link index2:body,index3:hipCylinderR
     array = p.getLinkState(bodyUniqueId=humanoid, linkIndex=2)
     linkWorldPos = array[0]
-    print("<<<<<<<<linkworldPosition:",linkWorldPos)
+    print("<<<<<<<<linkworldPosition:", traj_id)
     posx.append(linkWorldPos[0])
     posy.append(linkWorldPos[1])
     # p.stepSimulation()
