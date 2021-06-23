@@ -8,18 +8,18 @@ import pybullet_data
 import time
 
 class bipedal_EActrl():
-    def __init__(self, weights):
+    def __init__(self, weights,robot):
         self.weights = weights
         self.dt = 0.01
-        self.g = -10.0
+
         self.p = pybullet
 
-        self.robot = PybulletEnv(gravity=self.g, dt=self.dt, file_path="../urdf/simbicon_urdf/flame5.urdf")
+        self.robot = robot
 
         self.fall_flag = False
         self.controller = EA_weights_Controller(self.robot,self.weights)
         self.max_dist = 0.001
-        self.max_torque = 50000000 #check!
+        self.max_torque = 50000000 #checked!
         self.accum_torque = 0.001
 
     def Accum_Torques(self, torques):
@@ -82,7 +82,7 @@ class bipedal_EActrl():
         i = 0
         time.sleep(2.0)
         fitness = 0
-        self.robot.reset(disable_gui=True, disable_velControl=True, add_debug=False)
+        self.robot.reset(disable_gui=False, disable_velControl=True, add_debug=False)
         self.plane = self.p.loadURDF("plane.urdf")
         while True:
             self.robot.p.stepSimulation()

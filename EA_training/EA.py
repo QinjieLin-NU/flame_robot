@@ -2,12 +2,13 @@ import numpy as np
 import random
 from bipedal_EActrl import bipedal_EActrl
 import matplotlib.pyplot as plt
+from pybullet_EA_env import PybulletEnv
 # import pandas as pd
 import csv
 
 #parent is an array of 300x196(28*7)
 N_GENERATION = 300
-CHILDREN_SIZE = 70 #150
+CHILDREN_SIZE = 150 #150
 DNA_SIZE = 196
 # fitness function
 # distance measured by hip
@@ -68,16 +69,16 @@ def select(children_array):
     parent = np.zeros((30,196))
     print("children array after sort:",children_array,children_array.shape,type(children_array))
     parent = children_array[-30:, 0:196]
-    best_fitness = children_array[-1:, -1:]
+    best_fitness = children_array[-1, -1]
     aver_fitness = np.mean(children_array[:, -1:])
     #remove the last column(fitness)
     # parent = np.delete(parent, 196, axis=1)
     return parent, best_fitness, aver_fitness, children_array
 
 
-def get_fitness(child):
+def get_fitness(child,robot):
     # child:1x196; return: child's fitness
-    ea_trial = bipedal_EActrl(child)
+    ea_trial = bipedal_EActrl(child,robot)
     fitness =  ea_trial.move()
     return fitness
 
@@ -107,6 +108,7 @@ if __name__ == "__main__":
 
     history_fitness_max = []
     history_fitness_aver = []
+    robot = PybulletEnv(gravity=-10, dt=0.01, file_path="../urdf/simbicon_urdf/flame5.urdf")
     for i in range(N_GENERATION):
         print(i, " generation")
         children_array = np.ones((CHILDREN_SIZE,197))
@@ -114,7 +116,7 @@ if __name__ == "__main__":
             child_indv = crossover(parent_array)
             child_indv = mutate(child_indv,0)
             # child_indv 1x196
-            fitness = get_fitness(child_indv)
+            fitness = get_fitness(child_indv,robot)
             print("fitness:",fitness)
             children_array[j,-1:] = fitness
             children_array[j,0:-1] = child_indv[0,:]
@@ -131,8 +133,8 @@ if __name__ == "__main__":
         number = str(i)
         np.savetxt('results/%sgen.csv'%number,children_array,delimiter=',')
         # f.close()
-    np.savetxt('results/fitnessMax.csv',history_fitness_max, delimiter=',')
-    np.savetxt('results/fitnessAver.csv',history_fitness_aver, delimiter=',')
+    np.savetxt('results/fitnessMax.csv', history_fitness_max, delimiter=',')
+    np.savetxt('results/fitnessAver.csv', history_fitness_aver, delimiter=',')
     xpoint = range(N_GENERATION)
     plt.plot(xpoint, history_fitness_max, label='max')
     plt.plot(xpoint, history_fitness_aver, label='average')

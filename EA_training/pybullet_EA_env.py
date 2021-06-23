@@ -102,6 +102,7 @@ class PybulletEnv():
         self.dt = dt
         self.p = pybullet
         self.file_path = file_path
+        self.init = False
 
         # joint of flame robot
         self.center_hip = FlameJoint(joint_type="rotate_x")  # this joint consist of hipR and hipL
@@ -126,10 +127,12 @@ class PybulletEnv():
         return
 
     def reset(self, disable_gui=False, disable_velControl=True, add_debug=False):
-        if disable_gui:
-            self.physics_client = self.p.connect(self.p.DIRECT)
-        elif disable_gui == False:
-            self.physics_client = self.p.connect(self.p.GUI)
+        if(not self.init):
+            if disable_gui:
+                self.physics_client = self.p.connect(self.p.DIRECT)
+            elif disable_gui == False:
+                self.physics_client = self.p.connect(self.p.GUI)
+            self.init = True
         self.p.resetSimulation()
         self.p.setTimeStep(self.dt)
         self.p.setGravity(0, 0, self.g)
