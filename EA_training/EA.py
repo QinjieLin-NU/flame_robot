@@ -8,7 +8,7 @@ import csv
 
 #parent is an array of 300x196(28*7)
 N_GENERATION = 300
-CHILDREN_SIZE = 150 #150
+CHILDREN_SIZE = 34 #150
 DNA_SIZE = 196
 # fitness function
 # distance measured by hip
@@ -128,14 +128,12 @@ if __name__ == "__main__":
         print("best fitness:",best_fitness)
         print("average fitness:",aver_fitness)
         history_fitness_max.append(best_fitness)
-        print("histry:",history_fitness_max,type(history_fitness_max))
         history_fitness_aver.append(aver_fitness)
-        np.savetxt('results/fitnessAver.csv', history_fitness_aver, delimiter=',')
         # f = open('/root/Documents/flame_robot/EA_training/results/csv{i}gen.csv','w')
         number = str(i)
         np.savetxt('results/%sgen.csv'%number,children_array,delimiter=',')
         # f.close()
-    np.savetxt('results/fitnessMax.csv', np.array(history_fitness_max), delimiter=',')
+    np.savetxt('results/fitnessMax.csv', history_fitness_max, delimiter=',')
     np.savetxt('results/fitnessAver.csv', history_fitness_aver, delimiter=',')
     xpoint = range(N_GENERATION)
     plt.plot(xpoint, history_fitness_max, label='max')
