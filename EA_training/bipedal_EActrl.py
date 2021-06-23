@@ -6,6 +6,7 @@ from calTorque import EA_weights_Controller
 import pybullet
 import pybullet_data
 import time
+import numpy as np
 
 class bipedal_EActrl():
     def __init__(self, weights,robot):
@@ -80,14 +81,20 @@ class bipedal_EActrl():
 
     def move(self):
         i = 0
+        traj_id = 0
+
         time.sleep(2.0)
+
         fitness = 0
         self.robot.reset(disable_gui=False, disable_velControl=True, add_debug=False)
-        self.plane = self.p.loadURDF("plane.urdf")
-        while True:
-            self.robot.p.stepSimulation()
-            collision = self.robot.has_contact_stage(self.p,linkA=self.robot.right_foot.link_id)
-            if collision==1:
+        select_traj = self.robot.step_down_init()
+        # self.plane = self.p.loadURDF("plane.urdf")
+        while traj_id<1500:
+            self.robot.step_down(select_traj,traj_id)
+            traj_id += 1
+            time.sleep(self.dt)
+            collision = self.robot.has_contact(self.p,linkA=self.robot.left_foot.link_id)
+            if collision[0]==1:
                 break
         while (i < 100000):
             self.check_flag()

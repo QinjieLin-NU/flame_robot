@@ -174,6 +174,36 @@ class PybulletEnv():
 
         return
 
+    def step_down_init(self):
+        goal_traj = np.loadtxt(
+            "../traj_control/allTraj.txt")  # [6001 * 4] matrix, kneeL-11,kneeR-3,HipL-10,HipR-2
+        select_traj = np.zeros((2655, 8))
+        select_traj[:, 0] = goal_traj[:, 2]
+        select_traj[:, 1] = goal_traj[:, 2]
+        for i in range(2422):
+            select_traj[i, 0] = -goal_traj[i, 2] / 2
+        for i in range(2422):
+            select_traj[i, 1] = goal_traj[i, 2] / 2
+        for i in range(6):
+            select_traj[:, 2 + i] = goal_traj[:, 3 + i]
+        # disable the default velocity motors
+        # and set some position control with small force to emulate joint friction/return to a rest pose
+        jointFrictionForce = 1
+        for joint in range(self.p.getNumJoints(self.humanoid)):
+            self.p.setJointMotorControl2(self.humanoid, joint, self.p.POSITION_CONTROL, force=jointFrictionForce)
+        return select_traj
+
+    def step_down(self,select_traj,traj_id):
+        traj_jointIds = [11, 3, 12, 4, 13, 5, 14, 6]
+        for i in range(len(traj_jointIds)):
+            jointId = traj_jointIds[i]
+            self.p.setJointMotorControl2(self.humanoid, jointId, self.p.POSITION_CONTROL,
+                                         targetPosition=select_traj[traj_id, i],
+                                         force=140.)
+            self.p.stepSimulation()
+
+
+
     def assign_jointId(self):
         """
         assign joint id to corresponding id
@@ -310,12 +340,12 @@ class PybulletEnv():
         collision = 0
         collision_front = 0
         collision_back = 0
-        if len(bullet_client.getContactPoints(self.humanoid, self.test_body, linkIndexA=linkA)) == 0:
+        if len(bullet_client.getContactPoints(self.humanoid, self.plane, linkIndexA=linkA)) == 0:
             return 0, 0, 0
         else:
             collision = 1
             link_info = bullet_client.getLinkState(self.humanoid, linkA)
-            contact_info = bullet_client.getContactPoints(self.humanoid, self.test_body, linkIndexA=linkA)
+            contact_info = bullet_client.getContactPoints(self.humanoid, self.plane, linkIndexA=linkA)
             link_pos = link_info[0]
             link_quar = link_info[1]
             contact_posOnA = contact_info[0][5]
