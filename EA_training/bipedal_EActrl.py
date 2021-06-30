@@ -71,9 +71,10 @@ class bipedal_EActrl():
         left_foot_collision,left_foot_collision_front, left_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.left_foot.link_id)
         if pattern_count > 3000:
             self.fall_flag = True
+            self.punish = -100
         if switch_count > 3000:
             self.fall_flag = True
-            self.punish = -1500
+            self.punish = -2999
 
         # check if fly
         if (right_foot_collision == 0) and (left_foot_collision == 0):

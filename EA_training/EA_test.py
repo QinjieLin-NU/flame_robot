@@ -8,7 +8,7 @@ import numpy as np
 
 if __name__ == "__main__":
     weight = read_csv("result_3.csv")
-    weight = weight[6,0:-1]
+    weight = weight[5,0:-1]
     parent0 = np.reshape(weight,(1,196))
     print(parent0,type(parent0))
     dt = 0.01
