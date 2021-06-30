@@ -64,11 +64,13 @@ class bipedal_EActrl():
         else:
             return 1
 
-    def check_flag(self,pattern_count):
+    def check_flag(self,pattern_count,switch_count):
         # check if we need to stop
         right_foot_collision, right_foot_collision_front, right_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.right_foot.link_id)
         left_foot_collision,left_foot_collision_front, left_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.left_foot.link_id)
         if pattern_count > 3000:
+            self.fall_flag = True
+        if switch_count > 8000:
             self.fall_flag = True
         # check if fly
         if (right_foot_collision == 0) and (left_foot_collision == 0):
@@ -92,6 +94,7 @@ class bipedal_EActrl():
         select_traj = self.robot.step_down_init()
         # self.plane = self.p.loadURDF("plane.urdf")
         pattern_count = 0
+        switch_count = 0
         while traj_id<1500:
             self.robot.step_down(select_traj,traj_id)
             traj_id += 1
@@ -100,7 +103,7 @@ class bipedal_EActrl():
             if collision[0]==1:
                 break
         while (i < 100000):
-            self.check_flag(pattern_count)
+            self.check_flag(pattern_count,switch_count)
             if self.fall_flag:
                 # self.fitness()
                 break
@@ -127,12 +130,27 @@ class bipedal_EActrl():
                 left_collision = self.robot.has_contact(
                     self.p, linkA=self.robot.left_foot.link_id)
                 current_pattern = [left_collision[0], right_collision[0]]
-                if current_pattern != self.robot.collision_pattern:
-                    fitness = fitness + 20
+
+                left_foot_dist = self.robot.left_foot_traveled()
+                right_foot_dist = self.robot.right_foot_traveled()
+                if left_foot_dist >=right_foot_dist:
+                    current_switch_flag = b'left_front'
+                else:
+                    current_switch_flag = b'right_front'
+
+                if current_pattern != self.robot.collision_pattern and current_pattern != [0,0]:
+                    fitness = fitness + 10
                     self.robot.collision_pattern=current_pattern
                     pattern_count = 0
+                    if current_switch_flag != self.robot.switch_flag:
+                        fitness = fitness + 50
+                        self.robot.switch_flag = current_switch_flag
+                        switch_count = 0
+                    else:
+                        switch_count += 1
                 else:
                     pattern_count += 1
+                    switch_count += 1
                 i += 1
         dist_traveled = self.robot.get_dist_traveled()
         if dist_traveled > self.robot.max_distance:

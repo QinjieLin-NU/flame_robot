@@ -105,6 +105,7 @@ class PybulletEnv():
         self.init = False
         self.max_distance = 0.0001
         self.collision_pattern = [1,0]
+        self.switch_flag = b'left_front'
 
         # joint of flame robot
         self.center_hip = FlameJoint(joint_type="rotate_x")  # this joint consist of hipR and hipL
@@ -439,6 +440,18 @@ class PybulletEnv():
 
     def get_dist_traveled(self):
         array = self.p.getLinkState(bodyUniqueId=self.humanoid, linkIndex=2)
+        linkWorldPos = array[0]
+        posx = linkWorldPos[0]
+        return posx
+
+    def left_foot_traveled(self):
+        array = self.p.getLinkState(bodyUniqueId=self.humanoid, linkIndex=15)
+        linkWorldPos = array[0]
+        posx = linkWorldPos[0]
+        return posx
+
+    def right_foot_traveled(self):
+        array = self.p.getLinkState(bodyUniqueId=self.humanoid, linkIndex=7)
         linkWorldPos = array[0]
         posx = linkWorldPos[0]
         return posx

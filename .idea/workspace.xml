@@ -2,14 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f310497e-85fb-45b5-94cc-21f13c70d550" name="Default Changelist" comment="test">
+      <change afterPath="$PROJECT_DIR$/EA_training/result_2.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/EA.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/EA.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/EA_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/EA_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EA_training/result.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/result.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EA_training/result_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/result_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EA_training/results/fitnessAver.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/results/fitnessAver.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA_training/results/temp_gen.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/results/temp_gen.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,8 +144,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.EA" />
-        <item itemvalue="Python.HellowWorld" />
         <item itemvalue="Python.EA_test" />
+        <item itemvalue="Python.HellowWorld" />
         <item itemvalue="Python.helloWorld" />
         <item itemvalue="Python tests.pytest in test_py.py" />
       </list>
@@ -194,5 +193,31 @@
     <MESSAGE value="SEA and test" />
     <MESSAGE value="test" />
     <option name="LAST_COMMIT_MESSAGE" value="test" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EA_training/bipedal_EActrl.py</url>
+          <line>141</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EA_training/bipedal_EActrl.py</url>
+          <line>131</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EA_training/bipedal_EActrl.py</url>
+          <line>127</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EA_training/bipedal_EActrl.py</url>
+          <line>129</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
