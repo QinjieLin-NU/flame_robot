@@ -41,10 +41,17 @@ class bipedal_EActrl():
         energy_remaining = 0.0
         energy_per_meter = 0.0
 
+<<<<<<< HEAD
         if distTraveled > self.robot.max_distance:
             energy_remaining = self.max_torque - self.accum_torque
             energy_per_meter = self.accum_torque / self.robot.max_distance
             distTraveled = self.robot.max_distance + (energy_remaining / energy_per_meter)
+=======
+        if distTraveled > self.max_dist:
+            energy_remaining = self.max_torque - self.accum_torque
+            energy_per_meter = self.accum_torque / self.max_dist
+            distTraveled = self.max_dist + (energy_remaining / energy_per_meter)
+>>>>>>> 5efd8bc1dc633287c4ae9768fa0b4304a6063523
 
         return distTraveled * multiplier
 
