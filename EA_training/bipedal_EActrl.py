@@ -18,6 +18,7 @@ class bipedal_EActrl():
         self.robot = robot
 
         self.fall_flag = False
+        self.punish = 0
         self.controller = EA_weights_Controller(self.robot,self.weights)
         # self.max_dist = 0.001
         self.max_torque = 50000000 #checked!
@@ -70,8 +71,11 @@ class bipedal_EActrl():
         left_foot_collision,left_foot_collision_front, left_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.left_foot.link_id)
         if pattern_count > 3000:
             self.fall_flag = True
-        if switch_count > 8000:
+            self.punish = -100
+        if switch_count > 3000:
             self.fall_flag = True
+            self.punish = -2999
+
         # check if fly
         if (right_foot_collision == 0) and (left_foot_collision == 0):
             self.fall_flag = True
@@ -139,21 +143,20 @@ class bipedal_EActrl():
                     current_switch_flag = b'right_front'
 
                 if current_pattern != self.robot.collision_pattern and current_pattern != [0,0]:
-                    fitness = fitness + 10
+                    fitness = fitness + 1
                     self.robot.collision_pattern=current_pattern
                     pattern_count = 0
-                    if current_switch_flag != self.robot.switch_flag:
-                        fitness = fitness + 50
-                        self.robot.switch_flag = current_switch_flag
-                        switch_count = 0
-                    else:
-                        switch_count += 1
                 else:
                     pattern_count += 1
+                if current_switch_flag != self.robot.switch_flag:
+                    fitness = fitness + 50
+                    self.robot.switch_flag = current_switch_flag
+                    switch_count = 0
+                else:
                     switch_count += 1
                 i += 1
         dist_traveled = self.robot.get_dist_traveled()
         if dist_traveled > self.robot.max_distance:
             self.robot.max_distance = dist_traveled
-        fitness = fitness + self.fitness()
+        fitness = fitness + self.fitness() - self.punish
         return fitness
