@@ -103,6 +103,7 @@ class PybulletEnv():
         self.p = pybullet
         self.file_path = file_path
         self.init = False
+        self.max_distance = 0.0001
 
         # joint of flame robot
         self.center_hip = FlameJoint(joint_type="rotate_x")  # this joint consist of hipR and hipL

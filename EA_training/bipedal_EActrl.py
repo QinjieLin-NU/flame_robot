@@ -19,7 +19,7 @@ class bipedal_EActrl():
 
         self.fall_flag = False
         self.controller = EA_weights_Controller(self.robot,self.weights)
-        self.max_dist = 0.001
+        # self.max_dist = 0.001
         self.max_torque = 50000000 #checked!
         self.accum_torque = 0.001
 
@@ -41,10 +41,10 @@ class bipedal_EActrl():
         energy_remaining = 0.0
         energy_per_meter = 0.0
 
-        # if distTraveled > self.max_dist:
-        #     energy_remaining = self.max_torque - self.accum_torque
-        #     energy_per_meter = self.accum_torque / self.max_dist
-        #     distTraveled = self.max_dist + (energy_remaining / energy_per_meter)
+        if distTraveled > self.robot.max_distance:
+            energy_remaining = self.max_torque - self.accum_torque
+            energy_per_meter = self.accum_torque / self.robot.max_distance
+            distTraveled = self.robot.max_distance + (energy_remaining / energy_per_meter)
 
         return distTraveled * multiplier
 
@@ -118,9 +118,9 @@ class bipedal_EActrl():
 
                 # EA
                 self.accum_torque = self.Accum_Torques(torques)
-                dist_traveled = self.robot.get_dist_traveled()
-                if dist_traveled > self.max_dist:
-                    self.max_dist = dist_traveled
-                i += 1
+        dist_traveled = self.robot.get_dist_traveled()
+        if dist_traveled > self.robot.max_distance:
+            self.robot.max_distance = dist_traveled
+        i += 1
         fitness = self.fitness()
         return fitness
