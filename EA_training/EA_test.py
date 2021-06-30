@@ -46,10 +46,10 @@ if __name__ == "__main__":
 
         i += 1
         print(torques)
-        print("left:", robot.left_foot.state, "front:", robot.left_foot.front_state, "back:",
-              robot.left_foot.back_state)
-        print("right:", robot.right_foot.state, "front:", robot.right_foot.front_state, "back:",
-              robot.right_foot.back_state)
+        # print("left:", robot.left_foot.state, "front:", robot.left_foot.front_state, "back:",
+        #       robot.left_foot.back_state)
+        # print("right:", robot.right_foot.state, "front:", robot.right_foot.front_state, "back:",
+        #       robot.right_foot.back_state)
         # if (i%5==0):
         #     robot.left_foot.state = 1
         #     robot.right_foot.state = 0

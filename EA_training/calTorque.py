@@ -160,6 +160,13 @@ class EA_weights_Controller():
         refPrev = copy.deepcopy(ref)
         return qd_ref
 
+    def MaxMinNormalization(self,Y,Max,Min):
+        def_max_tau = 50
+        def_min_tau = -50
+        k = (def_max_tau - def_min_tau)/(Max-Min)
+        nor_Y = def_min_tau + k*(Y-Min)
+        return nor_Y
+
     # calTau
     def update(self):
         robot = self.robot
@@ -230,8 +237,18 @@ class EA_weights_Controller():
 
         torques = [centerHip_torque, rightHip_torque, rightKnee_torque, rightAnkleY_torque, leftHip_torque,
                    leftKnee_torque, leftAnkleY_torque]
+
+        # normarlization
+        max_torque = np.max(torques)
+        min_torque = np.min(torques)
+
+        torques_norm = []
+        for item in torques:
+            item = self.MaxMinNormalization(item,max_torque,min_torque)
+            torques_norm.append(item)
+
         # torques = [max(min(x, 1), -1) for x in torques]
-        return torques
+        return torques_norm
 
 
 
