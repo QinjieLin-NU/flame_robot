@@ -64,10 +64,12 @@ class bipedal_EActrl():
         else:
             return 1
 
-    def check_flag(self):
+    def check_flag(self,pattern_count):
         # check if we need to stop
         right_foot_collision, right_foot_collision_front, right_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.right_foot.link_id)
         left_foot_collision,left_foot_collision_front, left_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.left_foot.link_id)
+        if pattern_count > 3000:
+            self.fall_flag = True
         # check if fly
         if (right_foot_collision == 0) and (left_foot_collision == 0):
             self.fall_flag = True
@@ -89,6 +91,7 @@ class bipedal_EActrl():
         self.robot.reset(disable_gui=False, disable_velControl=True, add_debug=False)
         select_traj = self.robot.step_down_init()
         # self.plane = self.p.loadURDF("plane.urdf")
+        pattern_count = 0
         while traj_id<1500:
             self.robot.step_down(select_traj,traj_id)
             traj_id += 1
@@ -97,7 +100,7 @@ class bipedal_EActrl():
             if collision[0]==1:
                 break
         while (i < 100000):
-            self.check_flag()
+            self.check_flag(pattern_count)
             if self.fall_flag:
                 # self.fitness()
                 break
@@ -118,9 +121,21 @@ class bipedal_EActrl():
 
                 # EA
                 self.accum_torque = self.Accum_Torques(torques)
+
+                right_collision = self.robot.has_contact(
+                    self.p, linkA=self.robot.right_foot.link_id)
+                left_collision = self.robot.has_contact(
+                    self.p, linkA=self.robot.left_foot.link_id)
+                current_pattern = [left_collision[0], right_collision[0]]
+                if current_pattern != self.robot.collision_pattern:
+                    fitness = fitness + 20
+                    self.robot.collision_pattern=current_pattern
+                    pattern_count = 0
+                else:
+                    pattern_count += 1
                 i += 1
         dist_traveled = self.robot.get_dist_traveled()
         if dist_traveled > self.robot.max_distance:
             self.robot.max_distance = dist_traveled
-        fitness = self.fitness()
+        fitness = fitness + self.fitness()
         return fitness

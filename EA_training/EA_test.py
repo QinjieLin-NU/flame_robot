@@ -8,7 +8,7 @@ import numpy as np
 
 if __name__ == "__main__":
     weight = read_csv("result_1.csv")
-    weight = weight[0:-1]
+    weight = weight[2,0:-1]
     parent0 = np.reshape(weight,(1,196))
     print(parent0,type(parent0))
     dt = 0.01
@@ -16,12 +16,8 @@ if __name__ == "__main__":
     robot.reset(disable_velControl=True, add_debug=False)
     controller = EA_weights_Controller(robot,parent0)
     i = 0
-    time.sleep(2.0)
-
     traj_id = 0
-
     fitness = 0
-
     select_traj = robot.step_down_init()
     # self.plane = self.p.loadURDF("plane.urdf")
     while traj_id < 1500:
@@ -41,7 +37,7 @@ if __name__ == "__main__":
 
         # step simulation id needed and update state of robot
         robot.p.stepSimulation()
-        # time.sleep(dt)
+        time.sleep(dt)
         robot.update_state()
 
         i += 1

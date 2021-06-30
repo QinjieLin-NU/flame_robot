@@ -98,9 +98,12 @@ def reshape(weight_array):
 
 if __name__ == "__main__":
     #first generatinon
-    weight = read_csv("../controllers/walkweight.csv")
-    weight = weight[:,-7:]
-    parent0 = reshape(weight)
+    weight = read_csv("result_1.csv")
+    weight = weight[2,0:-1]
+    parent0 = np.reshape(weight,(1,196))
+    # weight = read_csv("../controllers/walkweight.csv")
+    # weight = weight[:,-7:]
+    # parent0 = reshape(weight)
     parent_array = np.zeros((30,196))
     for i in range(30):
         parent_i = mutate(parent0,2)
@@ -116,6 +119,7 @@ if __name__ == "__main__":
             child_indv = crossover(parent_array)
             child_indv = mutate(child_indv,0)
             # child_indv 1x196
+            np.savetxt('results/temp_gen.csv',child_indv,delimiter=',')
             fitness = get_fitness(child_indv,robot)
             print("fitness:",fitness)
             children_array[j,-1:] = fitness
