@@ -98,8 +98,8 @@ def reshape(weight_array):
 
 if __name__ == "__main__":
     #first generatinon
-    weight = read_csv("result_1.csv")
-    weight = weight[2,0:-1]
+    weight = read_csv("result_2.csv")
+    weight = weight[0,0:-1]
     parent0 = np.reshape(weight,(1,196))
     # weight = read_csv("../controllers/walkweight.csv")
     # weight = weight[:,-7:]
