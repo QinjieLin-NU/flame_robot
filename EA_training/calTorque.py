@@ -249,6 +249,7 @@ class EA_weights_Controller():
 
         # torques = [max(min(x, 1), -1) for x in torques]
         return torques_norm
+        # return torques
 
 
 

@@ -7,7 +7,7 @@ from pybullet_EA_env import PybulletEnv
 import csv
 
 #parent is an array of 300x196(28*7)
-N_GENERATION = 300
+N_GENERATION = 150
 CHILDREN_SIZE = 150 #150
 DNA_SIZE = 196
 # fitness function

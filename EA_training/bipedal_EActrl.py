@@ -118,9 +118,9 @@ class bipedal_EActrl():
 
                 # EA
                 self.accum_torque = self.Accum_Torques(torques)
+                i += 1
         dist_traveled = self.robot.get_dist_traveled()
         if dist_traveled > self.robot.max_distance:
             self.robot.max_distance = dist_traveled
-        i += 1
         fitness = self.fitness()
         return fitness
