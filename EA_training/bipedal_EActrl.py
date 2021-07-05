@@ -23,6 +23,16 @@ class bipedal_EActrl():
         # self.max_dist = 0.001
         self.max_torque = 50000000 #checked!
         self.accum_torque = 0.001
+        self.next_state_list = {
+            "LeftGroundFront_RightStandBack": "LeftGroundBack_RightStandFront",
+            "LeftGroundBack_RightStandFront": "LeftGroundBack_RightGroundFront",
+            "LeftGroundBack_RightGroundFront": "LeftStandBack_RightGroundFront",
+            "LeftStandBack_RightGroundFront": "LeftStandFront_RightGroundBack",
+            "LeftStandFront_RightGroundBack": "LeftGroundFront_RightGroundBack",
+            "LeftGroundFront_RightGroundBack": "LeftGroundFront_RightStandBack",
+        }
+        self.prev_colision_state = "LeftGroundFront_RightStandBack"  # [0,1] # left standing, right ground
+        self.next_reward_colliionStates = self.next_state_list["LeftGroundFront_RightStandBack"]  # [[1,1]]
 
     def Accum_Torques(self, torques):
         C1 = abs(torques[0]) * self.dt  # centerHip_torque
@@ -34,6 +44,33 @@ class bipedal_EActrl():
         C7 = abs(torques[6]) * self.dt  # leftAnkleY_torque
         self.accum_torque = self.accum_torque + C1 + C2 + C3 + C4 + C5 + C6 + C7
         return self.accum_torque
+
+    def get_collision_state(self,left_foot_ground,right_foot_ground,left_footx,right_footx):
+        current_collision_state =  "Left%s%s_Right%s%s"%("Ground" if left_foot_ground else "Stand", "Front" if (left_footx > right_footx) else "Back", "Ground" if right_foot_ground else "Stand", "Front" if (left_footx < right_footx) else "Back")
+        return current_collision_state
+
+    def state_machine(self,left_foot_ground,right_foot_ground,left_footx,right_footx):
+        """
+        this function return reqrd if robot follow the state machine tranferation
+        1 mean ground when collision with floor, 0 means standing wihout collision
+        TODO: add right befoe left
+        """
+        reward = 0.0
+        current_collision_state = self.get_collision_state(left_foot_ground,right_foot_ground,left_footx,right_footx)
+        #set reward here
+        if(current_collision_state == self.next_reward_colliionStates):
+            print("switch state to:",current_collision_state)
+            self.prev_colision_state = current_collision_state
+            self.next_reward_colliionStates = self.next_state_list[current_collision_state]
+            return 100.0
+
+        #record the prvious state
+        # print("prev state:", self.prev_colision_state)
+        # self.prev_colision_state = current_collision_state
+        # self.next_reward_colliionStates = self.next_state_list[current_collision_state]
+        # print("current state:",current_collision_state,"next: ",self.next_reward_colliionStates)
+
+        return reward
 
     def fitness(self):
         multiplier = 1.0
@@ -48,7 +85,8 @@ class bipedal_EActrl():
             distTraveled = self.robot.max_distance + (energy_remaining / energy_per_meter)
             self.robot.max_distance = distTraveled
 
-        return distTraveled * multiplier
+        fitness = distTraveled * multiplier
+        return fitness
 
     # def if_fall(self,fall_flag):
     #     if fall_flag == True:
@@ -70,12 +108,12 @@ class bipedal_EActrl():
         # check if we need to stop
         right_foot_collision, right_foot_collision_front, right_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.right_foot.link_id)
         left_foot_collision,left_foot_collision_front, left_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.left_foot.link_id)
-        if pattern_count > 3000:
+        if pattern_count > 500:
             self.fall_flag = True
-            self.punish += -500
-        if switch_count > 3000:
+            self.punish += -5000
+        if switch_count > 500:
             self.fall_flag = True
-            self.punish += -3400
+            self.punish += -5000
 
         # check if fly
         if (right_foot_collision == 0) and (left_foot_collision == 0):
@@ -113,10 +151,41 @@ class bipedal_EActrl():
                 # self.fitness()
                 break
             if not self.fall_flag:
-                # return 0
+                print("round:",i)
+                right_collision = self.robot.has_contact(
+                    self.p, linkA=self.robot.right_foot.link_id)
+                left_collision = self.robot.has_contact(
+                    self.p, linkA=self.robot.left_foot.link_id)
+                current_pattern = [left_collision[0], right_collision[0]]
+
+                # right_collision, left_collision = self.robot.right_foot.state, self.robot.right_foot.state
+                # left_footx = self.robot.left_foot_traveled()
+                # right_footx = self.robot.right_foot_traveled()
+                left_foot_dist = self.robot.left_foot_traveled()
+                right_foot_dist = self.robot.right_foot_traveled()
+                fitness = fitness + self.state_machine(left_collision[0], right_collision[0], left_foot_dist,right_foot_dist)
+                print("current fitness:",fitness)
+
+                if left_foot_dist >=right_foot_dist:
+                    current_switch_flag = b'left_front'
+                else:
+                    current_switch_flag = b'right_front'
+
+                if current_pattern != self.robot.collision_pattern and current_pattern != [0,0]:
+                    self.robot.collision_pattern=current_pattern
+                    pattern_count = 0
+                else:
+                    pattern_count += 1 # if keep one foot on the ground, stop and punish
+                if current_switch_flag != self.robot.switch_flag:
+                    self.robot.switch_flag = current_switch_flag
+                    switch_count = 0
+                else:
+                    switch_count += 1 # if keep right or left lef front, stop and punish
+
 
                 # calculate torques and apply torques to robots
                 torques = self.controller.update()
+                print("torque:",torques)
 
                 self.robot.step(torques, step_sim=False)
                 # robot.step(step_sim=False)
@@ -130,31 +199,7 @@ class bipedal_EActrl():
                 # EA
                 self.accum_torque = self.Accum_Torques(torques)
 
-                right_collision = self.robot.has_contact(
-                    self.p, linkA=self.robot.right_foot.link_id)
-                left_collision = self.robot.has_contact(
-                    self.p, linkA=self.robot.left_foot.link_id)
-                current_pattern = [left_collision[0], right_collision[0]]
 
-                left_foot_dist = self.robot.left_foot_traveled()
-                right_foot_dist = self.robot.right_foot_traveled()
-                if left_foot_dist >=right_foot_dist:
-                    current_switch_flag = b'left_front'
-                else:
-                    current_switch_flag = b'right_front'
-
-                if current_pattern != self.robot.collision_pattern and current_pattern != [0,0]:
-                    fitness = fitness + 1
-                    self.robot.collision_pattern=current_pattern
-                    pattern_count = 0
-                else:
-                    pattern_count += 1
-                if current_switch_flag != self.robot.switch_flag:
-                    fitness = fitness + 50
-                    self.robot.switch_flag = current_switch_flag
-                    switch_count = 0
-                else:
-                    switch_count += 1
                 i += 1
                 dist_traveled = self.robot.get_dist_traveled()
                 if dist_traveled > self.robot.max_distance:
