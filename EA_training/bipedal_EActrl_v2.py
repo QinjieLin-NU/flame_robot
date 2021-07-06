@@ -141,7 +141,7 @@ class bipedal_EActrl_v2():
         while traj_id<1070:
             collision_left = self.robot.has_contact(self.p, linkA=self.robot.left_foot.link_id)
             collision_right = self.robot.has_contact(self.p, linkA=self.robot.right_foot.link_id)
-            if traj_id > 1020 and collision_left[0]==1 and collision_right[0]==0:
+            if traj_id > 900 and collision_left[0]==1 and collision_right[0]==0:
                 break
             self.robot.step_down(select_traj,traj_id)
             traj_id += 1
