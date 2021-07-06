@@ -164,11 +164,12 @@ while(traj_id<1500):
     array = p.getLinkState(bodyUniqueId=humanoid, linkIndex=2)
     linkWorldPos = array[0]
     print("<<<<<<<<linkworldPosition:", traj_id)
+    print("left foot:", )
     posx.append(linkWorldPos[0])
     posy.append(linkWorldPos[1])
     # p.stepSimulation()
     traj_id += 1
-    time.sleep(0.001)
+    time.sleep(0.0001)
     # time.sleep(1 / 240.)
 xpoint = range(1500)
 plt.plot(xpoint, posx, label = 'x')
