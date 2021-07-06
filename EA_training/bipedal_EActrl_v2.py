@@ -150,7 +150,7 @@ class bipedal_EActrl_v2():
                 self.p, linkA=self.robot.right_foot.link_id)
             left_collision = self.robot.has_contact(
                 self.p, linkA=self.robot.left_foot.link_id)
-            print(right_collision[0],left_collision[0])
+            # print(right_collision[0],left_collision[0])
             # collision = self.robot.has_contact(self.p,linkA=self.robot.left_foot.link_id)
             # if collision[0]==1:
             #     break
