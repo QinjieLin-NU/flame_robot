@@ -23,7 +23,7 @@ class bipedal_EActrl():
         # self.max_dist = 0.001
         self.max_torque = 2000000 #checked! 50000000
         self.accum_torque = 0.001
-        self.max_distance = 10
+        self.max_distance = 50
         self.next_state_list = {
             "LeftGroundFront_RightStandBack": "LeftGroundBack_RightStandFront",
             "LeftGroundBack_RightStandFront": "LeftGroundBack_RightGroundFront",
@@ -84,7 +84,6 @@ class bipedal_EActrl():
             energy_remaining = self.max_torque - self.accum_torque
             energy_per_meter = self.accum_torque / self.max_distance
             distTraveled = self.max_distance + (energy_remaining / energy_per_meter)
-            self.max_distance = distTraveled
 
         fitness = distTraveled * multiplier
         return fitness
