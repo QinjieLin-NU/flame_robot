@@ -21,7 +21,7 @@ class bipedal_EActrl_v2():
         self.punish = 0
         self.controller = EA_weights_Controller(self.robot,self.weights)
         # self.max_dist = 0.001
-        self.max_torque = 50000000 #checked!
+        self.max_torque = 500000 #checked! 2000000
         self.accum_torque = 0.001
         self.next_state_list = {
             "LeftGroundFront_RightStandBack": "LeftGroundBack_RightStandFront",

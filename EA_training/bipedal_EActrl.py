@@ -21,8 +21,9 @@ class bipedal_EActrl():
         self.punish = 0
         self.controller = EA_weights_Controller(self.robot,self.weights)
         # self.max_dist = 0.001
-        self.max_torque = 50000000 #checked!
+        self.max_torque = 2000000 #checked! 50000000
         self.accum_torque = 0.001
+        self.max_distance = 10
         self.next_state_list = {
             "LeftGroundFront_RightStandBack": "LeftGroundBack_RightStandFront",
             "LeftGroundBack_RightStandFront": "LeftGroundBack_RightGroundFront",
@@ -79,11 +80,11 @@ class bipedal_EActrl():
         energy_remaining = 0.0
         energy_per_meter = 0.0
 
-        if distTraveled > self.robot.max_distance:
+        if distTraveled >= self.max_distance:
             energy_remaining = self.max_torque - self.accum_torque
-            energy_per_meter = self.accum_torque / self.robot.max_distance
-            distTraveled = self.robot.max_distance + (energy_remaining / energy_per_meter)
-            self.robot.max_distance = distTraveled
+            energy_per_meter = self.accum_torque / self.max_distance
+            distTraveled = self.max_distance + (energy_remaining / energy_per_meter)
+            self.max_distance = distTraveled
 
         fitness = distTraveled * multiplier
         return fitness
@@ -106,14 +107,29 @@ class bipedal_EActrl():
 
     def check_flag(self,pattern_count,switch_count):
         # check if we need to stop
+        # check if the walking pattern is wrong
         right_foot_collision, right_foot_collision_front, right_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.right_foot.link_id)
         left_foot_collision,left_foot_collision_front, left_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.left_foot.link_id)
-        if pattern_count > 500:
+        if pattern_count > 1000:
             self.fall_flag = True
             self.punish += -5000
-        if switch_count > 500:
+        if switch_count > 1000:
             self.fall_flag = True
             self.punish += -5000
+        # check if the energy is consumed
+        if self.accum_torque >= self.max_torque:
+            self.fall_flag = True
+
+        # check if the walking distance is finished
+        distTraveled = self.robot.get_dist_traveled()
+        if distTraveled >= self.max_distance:
+            self.fall_flag = True
+
+        # check if the speed is too fast
+        vel = self.robot.get_vel()
+        if vel > 2:
+            self.fall_flag = True
+            self.punish += -2000
 
         # check if fly
         if (right_foot_collision == 0) and (left_foot_collision == 0):
@@ -201,9 +217,7 @@ class bipedal_EActrl():
 
 
                 i += 1
-                dist_traveled = self.robot.get_dist_traveled()
-                if dist_traveled > self.robot.max_distance:
-                    self.robot.max_distance = dist_traveled
+
 
         fitness = fitness + self.fitness() + self.punish
         return fitness
