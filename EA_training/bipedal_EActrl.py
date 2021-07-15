@@ -129,7 +129,8 @@ class bipedal_EActrl():
             vel = 0
         else:
             vel = self.robot.get_vel(t)
-        if vel > 2:
+            print("velocity:",vel)
+        if vel > 2 and t > 5:
             self.fall_flag = True
             self.punish += -2000
 
