@@ -1,6 +1,6 @@
 import numpy as np
 import random
-from bipedal_EActrl_v2 import bipedal_EActrl_v2
+from bipedal_EActrl import bipedal_EActrl
 import matplotlib.pyplot as plt
 from pybullet_EA_env import PybulletEnv
 # import pandas as pd
@@ -78,7 +78,7 @@ def select(children_array):
 
 def get_fitness(child,robot):
     # child:1x196; return: child's fitness
-    ea_trial = bipedal_EActrl_v2(child,robot)
+    ea_trial = bipedal_EActrl(child,robot)
     fitness =  ea_trial.move()
     return fitness
 
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     history_fitness_max = []
     history_fitness_aver = []
-    robot = PybulletEnv(gravity=-10, dt=0.0001, file_path="../urdf/simbicon_urdf/flame5.urdf")
+    robot = PybulletEnv(gravity=-10, dt=0.01, file_path="../urdf/simbicon_urdf/flame5.urdf")
     for i in range(N_GENERATION):
         print(i, " generation")
         children_array = np.ones((CHILDREN_SIZE,197))
