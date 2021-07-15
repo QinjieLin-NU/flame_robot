@@ -104,7 +104,7 @@ class bipedal_EActrl():
         else:
             return 1
 
-    def check_flag(self,pattern_count,switch_count):
+    def check_flag(self,pattern_count,switch_count,t):
         # check if we need to stop
         # check if the walking pattern is wrong
         right_foot_collision, right_foot_collision_front, right_foot_collision_back = self.robot.has_contact(self.p, linkA=self.robot.right_foot.link_id)
@@ -125,7 +125,7 @@ class bipedal_EActrl():
             self.fall_flag = True
 
         # check if the speed is too fast
-        vel = self.robot.get_vel()
+        vel = self.robot.get_vel(t)
         if vel > 2:
             self.fall_flag = True
             self.punish += -2000
@@ -161,7 +161,8 @@ class bipedal_EActrl():
             if collision[0]==1:
                 break
         while (i < 100000):
-            self.check_flag(pattern_count,switch_count)
+            accum_time = self.robot.dt * i
+            self.check_flag(pattern_count,switch_count,accum_time)
             if self.fall_flag:
                 # self.fitness()
                 break

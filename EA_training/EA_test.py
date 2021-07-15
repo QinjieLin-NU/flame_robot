@@ -7,8 +7,8 @@ import numpy as np
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
-    weight = read_csv("result_6.csv")
-    weight = weight[1,0:-1]
+    weight = read_csv("result_7.csv")
+    weight = weight[0,0:-1]
     parent0 = np.reshape(weight,(1,196))
     print(parent0,type(parent0))
     dt = 0.01
@@ -40,8 +40,11 @@ if __name__ == "__main__":
         time.sleep(dt)
         robot.update_state()
 
+
         i += 1
+        vel = robot.get_vel(dt*i)
         print(torques)
+        print('====vel=======:',vel,robot.get_dist_traveled(),dt*i)
         # print("left:", robot.left_foot.state, "front:", robot.left_foot.front_state, "back:",
         #       robot.left_foot.back_state)
         # print("right:", robot.right_foot.state, "front:", robot.right_foot.front_state, "back:",

@@ -87,25 +87,14 @@ p.setTimeStep(dt)
 planeId = p.loadURDF("plane.urdf")
 cubeStartPos = [0, 0, 0.86]
 cubeStartOrientation = p.getQuaternionFromEuler([0., 0, 0])
-humanoid = p.loadURDF("/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame5.urdf", cubeStartPos, cubeStartOrientation, useFixedBase=1)
+humanoid = p.loadURDF("/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame4.urdf", cubeStartPos, cubeStartOrientation, useFixedBase=1)
 
 # add step down:
 test_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 0])
 test_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.2,1,0.05])
 test_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
-goal_traj = np.loadtxt("/Users/pingy/PycharmProjects/flame_robot/traj_control/allTraj.txt") # [6001 * 4] matrix, kneeL-11,kneeR-3,HipL-10,HipR-2
-
-select_traj = np.zeros((2655,8))
-select_traj[:, 0] = goal_traj[:, 2]
-select_traj[:, 1] = goal_traj[:, 2]
-for i in range(2422):
-    select_traj[i, 0] = -goal_traj[i,2]/2
-for i in range(2422):
-    select_traj[i, 1] = goal_traj[i,2]/2
-
-for i in range(6):
-    select_traj[:, 2+i] = goal_traj[:, 3+i]
+hip_left_traj = np.loadtxt("hip_left.csv") # [6001 * 4] matrix, kneeL-11,kneeR-3,HipL-10,HipR-2
 
 # traj_jointIds = [15,1,16,2,17,3,18,4]
 traj_jointIds = [11,3,12,4,13,5,14,6]

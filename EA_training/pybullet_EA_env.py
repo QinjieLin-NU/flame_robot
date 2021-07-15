@@ -438,15 +438,19 @@ class PybulletEnv():
         return paramIds, jointIds
 
     def get_dist_traveled(self):
-        array = self.p.getLinkState(bodyUniqueId=self.humanoid, linkIndex=3) # (2, b'torso_to_z', 0, 9, 8, 1, 0.0, 0.0, 10.0, -10.0, 0.0, 1000.0, b'body', (0.0, 1.0, 0.0), (0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 1.0), 1),,(3, b'jointHipR', 0, 10, 9, 1, 0.01, 0.0, -0.174533, 0.0, 90.0, 10.0, b'hipCylinderR', (1.0, 0.0, 0.0), (-0.00672, -0.00244, -0.22599999999999998), (0.0, 0.0, 0.0, 1.0), 2)
+        array = self.p.getLinkState(bodyUniqueId=self.humanoid, linkIndex=2) # (2, b'torso_to_z', 0, 9, 8, 1, 0.0, 0.0, 10.0, -10.0, 0.0, 1000.0, b'body', (0.0, 1.0, 0.0), (0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 1.0), 1),,(3, b'jointHipR', 0, 10, 9, 1, 0.01, 0.0, -0.174533, 0.0, 90.0, 10.0, b'hipCylinderR', (1.0, 0.0, 0.0), (-0.00672, -0.00244, -0.22599999999999998), (0.0, 0.0, 0.0, 1.0), 2)
         linkWorldPos = array[0]
         posx = linkWorldPos[0]
         return posx
 
-    def get_vel(self):
-        array = self.p.getLinkState(bodyUniqueId=self.humanoid, linkIndex=3)
-        link_vel = array[1]
-        velx = link_vel[0]
+    def get_vel(self,t):
+        # array = self.p.getLinkState(bodyUniqueId=self.humanoid, linkIndex=2)
+        # link_vel = array[1]
+        # velx = link_vel[0]
+        array = self.p.getLinkState(bodyUniqueId=self.humanoid, linkIndex=2) # (2, b'torso_to_z', 0, 9, 8, 1, 0.0, 0.0, 10.0, -10.0, 0.0, 1000.0, b'body', (0.0, 1.0, 0.0), (0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 1.0), 1),,(3, b'jointHipR', 0, 10, 9, 1, 0.01, 0.0, -0.174533, 0.0, 90.0, 10.0, b'hipCylinderR', (1.0, 0.0, 0.0), (-0.00672, -0.00244, -0.22599999999999998), (0.0, 0.0, 0.0, 1.0), 2)
+        linkWorldPos = array[0]
+        posx = linkWorldPos[0]
+        velx = posx/t
         return velx
 
     def left_foot_traveled(self):
