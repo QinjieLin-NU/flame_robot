@@ -125,7 +125,10 @@ class bipedal_EActrl():
             self.fall_flag = True
 
         # check if the speed is too fast
-        vel = self.robot.get_vel(t)
+        if t==0:
+            vel = 0
+        else:
+            vel = self.robot.get_vel(t)
         if vel > 2:
             self.fall_flag = True
             self.punish += -2000

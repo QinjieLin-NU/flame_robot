@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f310497e-85fb-45b5-94cc-21f13c70d550" name="Default Changelist" comment="test">
-      <change afterPath="$PROJECT_DIR$/EA_training/result_7.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generate_trajectory/hip.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generate_trajectory/hip_right.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generate_trajectory/test_trajectory.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/generate_trajectory/traj_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EA_training/EA_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/EA_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/tutorial.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/tutorial.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
