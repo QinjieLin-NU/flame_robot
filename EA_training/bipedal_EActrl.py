@@ -23,7 +23,7 @@ class bipedal_EActrl():
         # self.max_dist = 0.001
         self.max_torque = 2000000 #checked! 50000000
         self.accum_torque = 0.001
-        self.max_distance = 50
+        self.max_distance = 100
         self.next_state_list = {
             "LeftGroundFront_RightStandBack": "LeftGroundBack_RightStandFront",
             "LeftGroundBack_RightStandFront": "LeftGroundBack_RightGroundFront",
@@ -130,7 +130,7 @@ class bipedal_EActrl():
         else:
             vel = self.robot.get_vel(t)
             print("velocity:",vel)
-        if vel > 2 and t > 5:
+        if vel > 2 and t > 1:
             self.fall_flag = True
             self.punish += -2000
 

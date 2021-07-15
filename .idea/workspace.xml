@@ -4,7 +4,6 @@
     <list default="true" id="f310497e-85fb-45b5-94cc-21f13c70d550" name="Default Changelist" comment="test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/results/temp_gen.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/results/temp_gen.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,7 +36,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.EA_test">
+  <component name="RunManager" selected="Python.EA">
     <configuration name="EA" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -147,8 +146,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.EA_test" />
         <item itemvalue="Python.EA" />
+        <item itemvalue="Python.EA_test" />
         <item itemvalue="Python.traj_test" />
         <item itemvalue="Python tests.pytest in test_trajectory.py" />
         <item itemvalue="Python.hip" />
