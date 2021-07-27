@@ -107,7 +107,7 @@
         <child link="upperLegCylinderR"/>
         <origin xyz="0 -0.0830 -0.0250" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
-        <limit effort="90" lower="-0.698132" upper="+1.047" velocity="10"/>
+        <limit effort="90" lower="-1.047" upper="+0.698132" velocity="10"/>
         <dynamics damping="0.173402366366"/>
     </joint>
 
@@ -232,7 +232,7 @@
         <child link="upperLegCylinderL"/>
         <origin xyz="0 0.0830 -0.0250" rpy="0 -0.5 0"/>
         <axis xyz="0 1 0"/>
-        <limit effort="10" lower="-0.174533" upper="+0.174533" velocity="10"/>
+        <limit effort="10" lower="-0.523599" upper="+1.22173" velocity="10"/>
         <dynamics damping="0.173402366366"/>
     </joint>
 
@@ -438,7 +438,7 @@
                 <box size="0.16 0.13 0.02"/>
             </geometry>
             <origin xyz="0.04 0 -0.01" rpy="0 0 0"/>
-            <contact_coefficient mu="0.5"  resitution="0"  k_p="1.0593"  k_d="0.0005" />
+            <contact_coefficient mu="0.5"  resitution="0"  k_p="0"  k_d="0.0005" />
         </collision>
     </link>
 
@@ -556,7 +556,7 @@
                 <box size="0.16 0.13 0.02"/>
             </geometry>
             <origin xyz="0.04 0 -0.01" rpy="0 0 0"/>
-            <contact_coefficient mu="0.5"  resitution="0"  k_p="1.0593"  k_d="0.0005" />
+            <contact_coefficient mu="0.5"  resitution="0"  k_p="0"  k_d="0.0005" />
         </collision>
     </link>
 

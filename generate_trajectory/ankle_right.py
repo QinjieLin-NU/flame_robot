@@ -6,19 +6,23 @@ def cal_k(P0,P1):
     return k
 p0 = [0, 0]
 
-p1 = [2, np.radians(20)]
-p2 = [5, np.radians(40)]
-k1 = cal_k(p1,p2)
-p3 = [6, np.radians(40)]
+p1 = [2, np.radians(0)]
+p1_5 = [3.5,np.radians(-30)]
+p2 = [5, np.radians(10)]
+p3 = [6, np.radians(5)]
+k1 = cal_k(p1,p1_5)
+k1_5 = cal_k(p1_5,p2)
 k2 = cal_k(p2,p3)
-p4 = [7, np.radians(50)]
+p4 = [7, np.radians(5)]
 k3 = cal_k(p3,p4)
-p5 = [10, np.radians(0.0001)]
-k4 = cal_k(p4,p5)
-p6 = [11, np.radians(20)]
+p4_5 = [8.5, np.radians(0)]
+k4 = cal_k(p4,p4_5)
+p5 = [10, np.radians(-5)]
+k4_5 = cal_k(p4_5,p5)
+p6 = [11, np.radians(-10)]
 k5 = cal_k(p5,p6)
 
-p7 = [12, np.radians(20)] # +9
+p7 = [12, np.radians(0)] # +9
 k6 = cal_k(p6,p7)
 
 def func(P0,P1,t):
@@ -39,8 +43,11 @@ for t in t_range:
     if t >= p0[0] and t < p1[0]:
         theta = func(p0,p1,t)
         theta_list.append(theta)
-    elif t >= p1[0] and t < p2[0]:
-        theta = func(p1,p2,t)
+    elif t >= p1[0] and t < p1_5[0]:
+        theta = func(p1,p1_5,t)
+        theta_list.append(theta)
+    elif t >= p1_5[0] and t < p2[0]:
+        theta = func(p1_5,p2,t)
         theta_list.append(theta)
     elif t >= p2[0] and t < p3[0]:
         theta = func(p2,p3,t)
@@ -48,8 +55,11 @@ for t in t_range:
     elif t >= p3[0] and t < p4[0]:
         theta = func(p3,p4,t)
         theta_list.append(theta)
-    elif t >= p4[0] and t < p5[0]:
-        theta = func(p4,p5,t)
+    elif t >= p4[0] and t < p4_5[0]:
+        theta = func(p4,p4_5,t)
+        theta_list.append(theta)
+    elif t >= p4_5[0] and t < p5[0]:
+        theta = func(p4_5,p5,t)
         theta_list.append(theta)
     elif t >= p5[0] and t < p6[0]:
         theta = func(p5,p6,t)
@@ -57,10 +67,15 @@ for t in t_range:
     elif t >= p6[0] and t < p7[0]:
         theta = func(p6,p7,t)
         theta_list.append(theta)
-    elif remain >= p1[0] and remain < p2[0]:
+    elif remain >= p1[0] and remain < p1_5[0]:
         p1_x = p1[0] + t // 10 * 10
         p1_copy = [p1_x,p1[1]]
         theta = func2(p1_copy,k1,t)
+        theta_list.append(theta)
+    elif remain >= p1_5[0] and remain < p2[0]:
+        p1_5_x = p1_5[0] + t // 10 * 10
+        p1_5_copy = [p1_5_x,p1_5[1]]
+        theta = func2(p1_5_copy,k1_5,t)
         theta_list.append(theta)
     elif remain >= p2[0] and remain < p3[0]:
         p2_x = p2[0] + t // 10 * 10
@@ -72,10 +87,15 @@ for t in t_range:
         p3_copy = [p3_x,p3[1]]
         theta = func2(p3_copy,k3,t)
         theta_list.append(theta)
-    elif remain >= p4[0] and remain < p5[0]:
+    elif remain >= p4[0] and remain < p4_5[0]:
         p4_x = p4[0] + t // 10 * 10
         p4_copy = [p4_x,p4[1]]
         theta = func2(p4_copy,k4,t)
+        theta_list.append(theta)
+    elif remain >= p4_5[0] and remain < p5[0]:
+        p4_5_x = p4_5[0] + t // 10 * 10
+        p4_5_copy = [p4_5_x,p4_5[1]]
+        theta = func2(p4_5_copy,k4_5,t)
         theta_list.append(theta)
     elif remain >= p5[0] and remain < p6[0]:
         p5_x = p5[0]%10 + t // 10 * 10
@@ -89,7 +109,7 @@ for t in t_range:
         theta_list.append(theta)
 
 print(theta_list)
-np.savetxt('./hip_left.csv',theta_list, delimiter=',')
+np.savetxt('./ankle_right.csv',theta_list, delimiter=',')
 xpoint = t_range
 plt.plot(t_range, theta_list, label = 'x')
 plt.show()

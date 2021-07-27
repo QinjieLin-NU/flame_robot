@@ -85,9 +85,9 @@ p.resetSimulation()
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
 planeId = p.loadURDF("plane.urdf")
-cubeStartPos = [0, 0, 0.86]
+cubeStartPos = [0, 0, 0.87]#0.86
 cubeStartOrientation = p.getQuaternionFromEuler([0., 0, 0])
-humanoid = p.loadURDF("/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame5.urdf", cubeStartPos, cubeStartOrientation, useFixedBase=1)
+humanoid = p.loadURDF("/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame5.urdf", cubeStartPos, cubeStartOrientation, useFixedBase=0)
 
 # add step down:
 test_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 0])

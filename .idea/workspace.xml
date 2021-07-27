@@ -2,9 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f310497e-85fb-45b5-94cc-21f13c70d550" name="Default Changelist" comment="test">
+      <change afterPath="$PROJECT_DIR$/EA_training/results_9.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/generate_trajectory/ankle_left.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/generate_trajectory/ankle_right.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/generate_trajectory/knee_left.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/generate_trajectory/knee_right.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised learning/bipedal_EActrl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised learning/calTorque.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised learning/pybullet_EA_env.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/supervised learning/train.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA_training/EA_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/EA_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/results/temp_gen.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/results/temp_gen.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/tutorial.py" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/tutorial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generate_trajectory/hip.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_trajectory/hip.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generate_trajectory/hip_left.csv" beforeDir="false" afterPath="$PROJECT_DIR$/generate_trajectory/hip_left.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generate_trajectory/hip_right.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_trajectory/hip_right.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generate_trajectory/traj_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_trajectory/traj_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/urdf/simbicon_urdf/flame5.urdf" beforeDir="false" afterPath="$PROJECT_DIR$/urdf/simbicon_urdf/flame5.urdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,28 +51,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.EA">
-    <configuration name="EA" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="flame_robot" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EA_training" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EA_training/EA.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="Python.traj_test">
     <configuration name="EA_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -79,7 +73,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="hip" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="ankle_left" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -91,7 +85,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/generate_trajectory/hip.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/generate_trajectory/ankle_left.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ankle_right" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="flame_robot" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/generate_trajectory" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/generate_trajectory/ankle_right.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -138,19 +153,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.hip" />
-      <item itemvalue="Python tests.pytest in test_trajectory.py" />
       <item itemvalue="Python.traj_test" />
       <item itemvalue="Python.EA_test" />
-      <item itemvalue="Python.EA" />
+      <item itemvalue="Python.ankle_left" />
+      <item itemvalue="Python.ankle_right" />
+      <item itemvalue="Python tests.pytest in test_trajectory.py" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.EA" />
-        <item itemvalue="Python.EA_test" />
         <item itemvalue="Python.traj_test" />
         <item itemvalue="Python tests.pytest in test_trajectory.py" />
-        <item itemvalue="Python.hip" />
+        <item itemvalue="Python.ankle_right" />
+        <item itemvalue="Python.ankle_left" />
+        <item itemvalue="Python.EA_test" />
       </list>
     </recent_temporary>
   </component>
@@ -244,6 +259,41 @@
           <url>file://$PROJECT_DIR$/EA_training/pybullet_EA_env.py</url>
           <line>452</line>
           <option name="timeStamp" value="47" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generate_trajectory/hip_right.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generate_trajectory/hip_right.py</url>
+          <line>64</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generate_trajectory/hip_right.py</url>
+          <line>69</line>
+          <option name="timeStamp" value="58" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generate_trajectory/hip_right.py</url>
+          <line>74</line>
+          <option name="timeStamp" value="59" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generate_trajectory/hip_right.py</url>
+          <line>79</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generate_trajectory/hip_right.py</url>
+          <line>84</line>
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/generate_trajectory/hip.py</url>
+          <line>79</line>
+          <option name="timeStamp" value="62" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

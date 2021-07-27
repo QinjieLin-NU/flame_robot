@@ -77,6 +77,7 @@ GRAVITY = -9.8
 dt = 0.01
 iters = 2000
 import pybullet_data
+from envs.pybullet_env import PybulletEnv
 
 physicsClient = p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())
@@ -85,21 +86,26 @@ p.resetSimulation()
 p.setGravity(0, 0, GRAVITY)
 p.setTimeStep(dt)
 planeId = p.loadURDF("plane.urdf")
-cubeStartPos = [0, 0, 0.86]
+cubeStartPos = [0, 0, 0.8]
 cubeStartOrientation = p.getQuaternionFromEuler([0., 0, 0])
-humanoid = p.loadURDF("/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame3.urdf", cubeStartPos, cubeStartOrientation, useFixedBase=1)
+humanoid = p.loadURDF("/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame5.urdf", cubeStartPos, cubeStartOrientation, useFixedBase=0)
+# humanoid2 = PybulletEnv(GRAVITY,dt)
+# # add step down:
+# test_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 0])
+# test_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.2,1,0.05])
+# test_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
-# add step down:
-test_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 0])
-test_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.2,1,0.05])
-test_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
-
-hip_left_traj = np.loadtxt("hip_left.csv") # [6001 * 4] matrix, kneeL-11,kneeR-3,HipL-10,HipR-2
+knee_left_traj = np.loadtxt("knee_left.csv") # 13
+knee_right_traj = np.loadtxt("knee_right.csv") # 5
+hip_left_traj = np.loadtxt("hip_left.csv") # 12
+hip_right_traj = np.loadtxt("hip_right.csv") # 4
+ankle_left_traj = np.loadtxt("ankle_left.csv") # 14
+ankle_right_traj = np.loadtxt("ankle_right.csv") # 6
 
 traj_id = 0
 #disable the default velocity motors
 #and set some position control with small force to emulate joint friction/return to a rest pose
-jointFrictionForce = 1
+jointFrictionForce = 500
 for joint in range(p.getNumJoints(humanoid)):
   p.setJointMotorControl2(humanoid, joint, p.POSITION_CONTROL, force=jointFrictionForce)
 
@@ -111,12 +117,85 @@ import time
 p.setRealTimeSimulation(0)
 
 
-while(traj_id<100000):
+def has_contact(bullet_client, linkA):
+    """
+    return: 0 means no contact
+    ##collision_front: when link pos_X is bigger than contact pos_X, collision happens in the back of link
+    ##collision_back: when link pos_X is smaller than contact pos_X, collision happens in the front of link
+    Currently, we calculate the relative position of contact point to the local fram, and then decide back and front
+    according to the relative position along x axis
+    This assumption is based on the robot move along the x axis, if not, the front and back judgement is wrong
+
+    """
+    collision = 0
+    collision_front = 0
+    collision_back = 0
+    if len(bullet_client.getContactPoints(humanoid, planeId, linkIndexA=linkA)) == 0:
+        return 0
+    else:
+        collision = 1
+        link_info = bullet_client.getLinkState(humanoid, linkA)
+        contact_info = bullet_client.getContactPoints(humanoid, planeId, linkIndexA=linkA)
+        link_pos = link_info[0]
+        link_quar = link_info[1]
+        contact_posOnA = contact_info[0][5]
+        contact_qua = (1, 0, 0, 0)
+        link_pos_invert, link_quar_invert = bullet_client.invertTransform(link_pos, link_quar)
+        rel_pos, rel_qua = bullet_client.multiplyTransforms(link_pos_invert, link_quar_invert, contact_posOnA,
+                                                            contact_qua)
+        # print("relative position: ",rel_pos)
+        if (rel_pos[0] > 0):
+            collision_front = 1
+        else:
+            collision_back = 1
+        # this is the second version judgment
+        # if((link_pos[0] - contact_posOnA[0])> 0):
+        #     collision_back = 1
+        # else:
+        #     collision_front = 1
+        # print("link world position :",link_info[0],"contact point world position",contact_posOnA)
+        # this is the first verision judgment
+        # joint_angle = self.__dict__[leg_direction+'_ankleY'].q
+        # if(joint_angle>=0):
+        #     collision_front =1
+        # else:
+        #     collision_back = 1
+        return collision
+
+left_foot_list = []
+right_foot_list = []
+while(traj_id<15000):
     p.setGravity(0, 0, GRAVITY)
-    jointId = 16
-    print(hip_left_traj[traj_id],end="\n")
-    p.setJointMotorControl2(humanoid, jointId, p.POSITION_CONTROL, targetPosition=hip_left_traj[traj_id], force=140.)
+    hip_right_Id = 4
+    hip_left_Id = 12
+    knee_left_id = 13
+    knee_right_id = 5
+    ankle_left_id = 14
+    ankle_right_id = 6
+
+    p.setJointMotorControl2(humanoid, hip_left_Id, p.POSITION_CONTROL, targetPosition=hip_left_traj[traj_id], force=140.)
+    p.setJointMotorControl2(humanoid, hip_right_Id, p.POSITION_CONTROL, targetPosition=hip_right_traj[traj_id], force=140.)
+    p.setJointMotorControl2(humanoid, knee_left_id, p.POSITION_CONTROL, targetPosition=knee_left_traj[traj_id], force=140.)
+    p.setJointMotorControl2(humanoid, knee_right_id, p.POSITION_CONTROL, targetPosition=knee_right_traj[traj_id], force=140.)
+    p.setJointMotorControl2(humanoid, ankle_left_id, p.POSITION_CONTROL, targetPosition=ankle_left_traj[traj_id], force=140.)
+    p.setJointMotorControl2(humanoid, ankle_right_id, p.POSITION_CONTROL, targetPosition=ankle_right_traj[traj_id], force=140.)
+
     p.stepSimulation()
     traj_id += 1
-    time.sleep(0.1)
+    time.sleep(0.01)
+    left_foot= has_contact(p,15)
+    left_foot_list.append(left_foot)
+    right_foot = has_contact(p,7)
+    right_foot_list.append(right_foot)
+    if left_foot==0 and right_foot==0:
+        print("both 0!!!!!!")
+    if left_foot==1 and right_foot==1:
+        print("both 1!!!!!!====================")
+    print("right foot:",has_contact(p,7))
+    print("left_foot:",has_contact(p,15))
     # time.sleep(1 / 240.)
+
+xpoint = range(15000)
+plt.plot(xpoint, left_foot_list, label = 'x')
+plt.plot(xpoint, right_foot_list, label = 'y')
+plt.show()
