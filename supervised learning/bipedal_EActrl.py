@@ -7,6 +7,8 @@ import pybullet
 import pybullet_data
 import time
 import numpy as np
+import math
+import os
 
 class bipedal_EActrl():
     def __init__(self, weights,robot):
@@ -23,6 +25,7 @@ class bipedal_EActrl():
         # self.max_dist = 0.001
         self.max_torque = 2000000 #checked! 50000000
         self.accum_torque = 0.001
+        self.accum_err = 0
         self.max_distance = 100
         self.next_state_list = {
             "LeftGroundFront_RightStandBack": "LeftGroundBack_RightStandFront",
@@ -36,7 +39,7 @@ class bipedal_EActrl():
         self.next_reward_colliionStates = self.next_state_list["LeftGroundFront_RightStandBack"]  # [[1,1]]
 
     def Accum_Torques(self, torques):
-        C1 = abs(torques[0]) * self.dt  # centerHip_torque
+        # C1 = abs(torques[0]) * self.dt  # centerHip_torque
         C2 = abs(torques[1]) * self.dt  # rightHip_torque
         C3 = abs(torques[2]) * self.dt  # rightKnee_torque
         C4 = abs(torques[3]) * self.dt  # rightAnkleY_torque
@@ -45,6 +48,23 @@ class bipedal_EActrl():
         C7 = abs(torques[6]) * self.dt  # leftAnkleY_torque
         self.accum_torque = self.accum_torque + C1 + C2 + C3 + C4 + C5 + C6 + C7
         return self.accum_torque
+
+    def Accum_Err(self, traj_id, traj):
+        # err0 = math.pow((self.robot.right_hip.q - traj[0, traj_id]), 2)
+        # err1 = math.pow((self.robot.right_hip.q - traj[1, traj_id]), 2)
+        # err2 = math.pow((self.robot.right_hip.q - traj[2, traj_id]), 2)
+        # err3 = math.pow((self.robot.right_hip.q - traj[3, traj_id]), 2)
+        # err4 = math.pow((self.robot.right_hip.q - traj[4, traj_id]), 2)
+        # err5 = math.pow((self.robot.right_hip.q - traj[5, traj_id]), 2)
+        err0 = abs(self.robot.left_knee.q - traj[0][traj_id])
+        err1 = abs(self.robot.right_knee.q - traj[1][traj_id])
+        err2 = abs(self.robot.left_hip.q - traj[2][traj_id])
+        err3 = abs(self.robot.right_hip.q - traj[3][traj_id])
+        err4 = abs(self.robot.left_ankleY.q - traj[4][traj_id])
+        err5 = abs(self.robot.right_ankleY.q - traj[5][traj_id])
+        self.accum_err = self.accum_err + (err5 + err4 + err3 + err2 + err1 + err0)/6
+        print("accum_err:",self.accum_err)
+
 
     def get_collision_state(self,left_foot_ground,right_foot_ground,left_footx,right_footx):
         current_collision_state =  "Left%s%s_Right%s%s"%("Ground" if left_foot_ground else "Stand", "Front" if (left_footx > right_footx) else "Back", "Ground" if right_foot_ground else "Stand", "Front" if (left_footx < right_footx) else "Back")
@@ -74,26 +94,8 @@ class bipedal_EActrl():
         return reward
 
     def fitness(self):
-        multiplier = 1.0
-
-        distTraveled = self.robot.get_dist_traveled()
-        energy_remaining = 0.0
-        energy_per_meter = 0.0
-
-        if distTraveled >= self.max_distance:
-            energy_remaining = self.max_torque - self.accum_torque
-            energy_per_meter = self.accum_torque / self.max_distance
-            distTraveled = self.max_distance + (energy_remaining / energy_per_meter)
-
-        fitness = distTraveled * multiplier
+        fitness = self.accum_err
         return fitness
-
-    # def if_fall(self,fall_flag):
-    #     if fall_flag == True:
-    #         self.fitness()
-    #         break
-    #     if fall_flag == False:
-    #         return 0
 
     def has_collision(self,bodyA,linkA):
         """
@@ -146,82 +148,47 @@ class bipedal_EActrl():
 
 
     def move(self):
-        i = 0
         traj_id = 0
-
-        time.sleep(2.0)
-
         fitness = 0
         self.robot.reset(disable_gui=False, disable_velControl=True, add_debug=False)
-        select_traj = self.robot.step_down_init()
+
+        # path1 = os.path.abspath('..')
+        knee_left_traj = np.loadtxt("../generate_trajectory/knee_left.csv")  # 13
+        knee_right_traj = np.loadtxt("../generate_trajectory/knee_right.csv")  # 5
+        hip_left_traj = np.loadtxt("../generate_trajectory/hip_left.csv")  # 12
+        hip_right_traj = np.loadtxt("../generate_trajectory/hip_right.csv")  # 4
+        ankle_left_traj = np.loadtxt("../generate_trajectory/ankle_left.csv")  # 14
+        ankle_right_traj = np.loadtxt("../generate_trajectory/ankle_right.csv")  # 6
+        traj = [knee_left_traj,knee_right_traj,hip_left_traj,hip_right_traj,ankle_left_traj,ankle_right_traj]
+
         # self.plane = self.p.loadURDF("plane.urdf")
-        pattern_count = 0
-        switch_count = 0
-        while traj_id<1500:
-            self.robot.step_down(select_traj,traj_id)
+
+        while (traj_id < 2000):
+            print("round:", traj_id)
+
+            # calculate torques and apply torques to robots
+            torques = self.controller.update()
+            print("torque:", torques)
+
+            self.robot.step(torques, step_sim=False)
+            # robot.step(step_sim=False)
+
+            # step simulation id needed and update state of robot
+            self.robot.p.stepSimulation()
+
+            time.sleep(self.robot.dt)
+            self.robot.update_state()
+
+            # EA
+            self.Accum_Err(traj_id, traj)
+
+            right_collision = self.robot.has_contact(
+                self.p, linkA=self.robot.right_foot.link_id)
+            left_collision = self.robot.has_contact(
+                self.p, linkA=self.robot.left_foot.link_id)
+            current_pattern = [left_collision[0], right_collision[0]]
+            print(current_pattern)
+
             traj_id += 1
-            time.sleep(self.dt)
-            collision = self.robot.has_contact(self.p,linkA=self.robot.left_foot.link_id)
-            if collision[0]==1:
-                break
-        while (i < 100000):
-            accum_time = self.robot.dt * i
-            self.check_flag(pattern_count,switch_count,accum_time)
-            if self.fall_flag:
-                # self.fitness()
-                break
-            if not self.fall_flag:
-                print("round:",i)
-                right_collision = self.robot.has_contact(
-                    self.p, linkA=self.robot.right_foot.link_id)
-                left_collision = self.robot.has_contact(
-                    self.p, linkA=self.robot.left_foot.link_id)
-                current_pattern = [left_collision[0], right_collision[0]]
-
-                # right_collision, left_collision = self.robot.right_foot.state, self.robot.right_foot.state
-                # left_footx = self.robot.left_foot_traveled()
-                # right_footx = self.robot.right_foot_traveled()
-                left_foot_dist = self.robot.left_foot_traveled()
-                right_foot_dist = self.robot.right_foot_traveled()
-                fitness = fitness + self.state_machine(left_collision[0], right_collision[0], left_foot_dist,right_foot_dist)
-                print("current fitness:",fitness)
-
-                if left_foot_dist >=right_foot_dist:
-                    current_switch_flag = b'left_front'
-                else:
-                    current_switch_flag = b'right_front'
-
-                if current_pattern != self.robot.collision_pattern and current_pattern != [0,0]:
-                    self.robot.collision_pattern=current_pattern
-                    pattern_count = 0
-                else:
-                    pattern_count += 1 # if keep one foot on the ground, stop and punish
-                if current_switch_flag != self.robot.switch_flag:
-                    self.robot.switch_flag = current_switch_flag
-                    switch_count = 0
-                else:
-                    switch_count += 1 # if keep right or left lef front, stop and punish
-
-
-                # calculate torques and apply torques to robots
-                torques = self.controller.update()
-                print("torque:",torques)
-
-                self.robot.step(torques, step_sim=False)
-                # robot.step(step_sim=False)
-
-                # step simulation id needed and update state of robot
-                self.robot.p.stepSimulation()
-
-                time.sleep(self.robot.dt)
-                self.robot.update_state()
-
-                # EA
-                self.accum_torque = self.Accum_Torques(torques)
-
-
-                i += 1
-
-
-        fitness = fitness + self.fitness() + self.punish
+        fitness = self.fitness()
         return fitness

@@ -96,7 +96,7 @@ class PybulletEnv():
     flame environment in self.p
     """
 
-    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame5.urdf"):
+    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame4.urdf"):
         # physics params
         self.g = gravity
         self.dt = dt
@@ -143,19 +143,14 @@ class PybulletEnv():
         self.p.setAdditionalSearchPath(pybullet_data.getDataPath())  # to load plane.urdf
         self.plane = self.p.loadURDF("plane.urdf")
 
-        # add step down:
-        self.test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05], rgbaColor=[1, 0, 0, 1])
-        self.test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05])
-        self.test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=self.test_collision, \
-                                           baseVisualShapeIndex=self.test_visual, basePosition=[-0.15, 0, 0])
 
         # add humannoid
         # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
-        cubeStartPos = [0, 0, 0.86]
+        cubeStartPos = [0, 0, 0.8]
         cubeStartOrientation = self.p.getQuaternionFromEuler([0., 0, 0])
         # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.87])
         self.humanoid = self.p.loadURDF(self.file_path, cubeStartPos,
-                                        cubeStartOrientation, useFixedBase=0)
+                                        cubeStartOrientation, useFixedBase=1)
         # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         self.p.changeDynamics(self.humanoid, -1, linearDamping=0, angularDamping=0)
         self.p.setGravity(0, 0, self.g)
@@ -164,6 +159,11 @@ class PybulletEnv():
         if (disable_velControl):
             for joint in range(self.p.getNumJoints(self.humanoid)):
                 self.p.setJointMotorControl2(self.humanoid, joint, self.p.VELOCITY_CONTROL, force=0)
+        # disable the default velocity motors
+        # and set some position control with small force to emulate joint friction/return to a rest pose
+        # jointFrictionForce = 500
+        # for joint in range(self.p.getNumJoints(self.humanoid)):
+        #     self.p.setJointMotorControl2(self.humanoid, joint, self.p.POSITION_CONTROL, force=jointFrictionForce)
 
         self.assign_jointId()
 
@@ -263,26 +263,26 @@ class PybulletEnv():
         applied_torques: list of torques applied to [centerHip,RHip,RKnee,RAnkleY,LHip,LKnee,LAnkleY]
         step_sim: if set to False, you shoud step simulation outside this function
         """
-        centerHip_torque = applied_torques[0]
-        self.apply_torque(self.center_hipR, centerHip_torque / 2.0)
-        self.apply_torque(self.center_hipL, centerHip_torque / 2.0)
+        # centerHip_torque = applied_torques[0]
+        # self.apply_torque(self.center_hipR, centerHip_torque / 2.0)
+        # self.apply_torque(self.center_hipL, centerHip_torque / 2.0)
 
-        rightHip_torque = applied_torques[1]
+        rightHip_torque = applied_torques[0]
         self.apply_torque(self.right_hip, rightHip_torque)
 
-        righrKnee_torque = applied_torques[2]
+        righrKnee_torque = applied_torques[1]
         self.apply_torque(self.right_knee, righrKnee_torque)
 
-        rightAnkleY_torque = applied_torques[3]
+        rightAnkleY_torque = applied_torques[2]
         self.apply_torque(self.right_ankleY, rightAnkleY_torque)
 
-        leftHip_torque = applied_torques[4]
+        leftHip_torque = applied_torques[3]
         self.apply_torque(self.left_hip, leftHip_torque)
 
-        leftKnee_torque = applied_torques[5]
+        leftKnee_torque = applied_torques[4]
         self.apply_torque(self.left_knee, leftKnee_torque)
 
-        leftAnkleY_torque = applied_torques[6]
+        leftAnkleY_torque = applied_torques[5]
         self.apply_torque(self.left_ankleY, leftAnkleY_torque)
 
         # this will pybullet step simulation

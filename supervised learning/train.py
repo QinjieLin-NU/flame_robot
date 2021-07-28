@@ -68,7 +68,7 @@ def select(children_array):
     #get top 30 population as parent
     parent = np.zeros((30,196))
     print("children array after sort:",children_array,children_array.shape,type(children_array))
-    parent = children_array[-30:, 0:196]
+    parent = children_array[:30, 0:196]
     best_fitness = children_array[-1, -1]
     aver_fitness = np.mean(children_array[:, -1:])
     #remove the last column(fitness)
@@ -98,8 +98,8 @@ def reshape(weight_array):
 
 if __name__ == "__main__":
     #first generatinon
-    weight = read_csv("result_2.csv")
-    weight = weight[0,0:-1]
+    weight = read_csv("../EA_training/results_9.csv")
+    weight = weight[2,0:-1]
     parent0 = np.reshape(weight,(1,196))
     # weight = read_csv("../controllers/walkweight.csv")
     # weight = weight[:,-7:]
@@ -111,7 +111,7 @@ if __name__ == "__main__":
 
     history_fitness_max = []
     history_fitness_aver = []
-    robot = PybulletEnv(gravity=-10, dt=0.01, file_path="../urdf/simbicon_urdf/flame5.urdf")
+    robot = PybulletEnv(gravity=-10, dt=0.01, file_path="../urdf/simbicon_urdf/flame4.urdf")
     for i in range(N_GENERATION):
         print(i, " generation")
         children_array = np.ones((CHILDREN_SIZE,197))

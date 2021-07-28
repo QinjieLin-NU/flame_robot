@@ -1,114 +1,34 @@
 <?xml version="1.0" ?>
 <robot name="humanoid">
-
-	<link name="world">
-	<inertial>
-      <mass value="0"/>
-      <inertia ixx="0.2125" ixy="-0.005" ixz="0.0225" iyy="0.205" iyz="0.045" izz="0.0125"/>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-    </inertial>
-	</link>
-
-	<link name="x_prismatic">
-	 <inertial>
-      <mass value="0.01"/>
-      <inertia ixx="0.2125" ixy="-0.005" ixz="0.0225" iyy="0.205" iyz="0.045" izz="0.0125"/>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-    </inertial>
-	</link>
-
-	<joint name="x_to_world" type="prismatic">
-    <parent link="world"/>
-    <child link="x_prismatic"/>
-    <axis xyz="1 0 0"/>
-    <limit effort="0.0" lower="10" upper="-10" velocity="1000.0"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-  </joint>
-
-	<link name="z_prismatic">
-	 <inertial>
-      <mass value="0.01"/>
-      <inertia ixx="0.2125" ixy="-0.005" ixz="0.0225" iyy="0.205" iyz="0.045" izz="0.0125"/>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-    </inertial>
-	</link>
-
-	<joint name="z_to_y" type="prismatic">
-    <parent link="x_prismatic"/>
-    <child link="z_prismatic"/>
-    <axis xyz="0 0 1"/>
-     <limit effort="0.0" lower="10" upper="-10" velocity="1000.0"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-  </joint>
-
-	<joint name="torso_to_z" type="revolute">
-    <parent link="z_prismatic"/>
-    <child link="body"/>
-    <axis xyz="0 1 0"/>
-    <origin rpy="0 0 0" xyz="0 0 0"/>
-    <limit effort="0.0" lower="10" upper="-10" velocity="1000.0"/>
-  </joint>
-
-
     <link name="body">
         <visual>
             <geometry>
                 <box size="0.05 0.2 0.3"/>
             </geometry>
-            <origin xyz="0.0 0 0.15" rpy="-0.0056 -0.0021 0"/>
+            <origin xyz="0.0 0 0.0" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
         </visual>
         <inertial>
-            <mass value="5.6"/>
-            <inertia ixx="190" ixy="-0.237" ixz="2.20" iyy="194" iyz="1.42" izz="30.8"/>
-            <origin xyz="0.00135  0.00496 -0.105" rpy="0 0 0"/>
+            <mass value="5.81"/>
+            <inertia ixx="0.190" ixy="-0.000237" ixz="0.00220" iyy="0.194" iyz="0.00142" izz="0.0308"/>
+            <origin xyz="0.00672  0.00244 0.076" rpy="0 0 0"/>
         </inertial>
         <collision>
             <geometry>
                 <box size="0.05 0.2 0.3"/>
             </geometry>
-            <origin xyz="0.0 0 0.15" rpy="-0.0056 -0.0021 0"/>
+            <origin xyz="0.0 0 0.0" rpy="0 0 0"/>
         </collision>
     </link>
 
-
-    <!-- <joint name="torsoBody" type="fixed">
-        <parent link="body"/>
-        <child link="torso"/>
-        <origin xyz="0 0.0 0" rpy="0.0 0.0 0"/>
-        <axis xyz="1 0 0"/>
-        <limit effort="10" lower="-3" upper="+3" velocity="10"/>
-        <dynamics damping="0"/>
-    </joint>
-    <link name="torso">
-        <visual>
-            <geometry>
-                <cylinder length="0.04" radius="0.01"/>
-            </geometry>
-            <origin xyz="0 0 0" rpy="0 1.57 1.57"/>
-            <axis xyz="0 0 0" />
-            <material name="blue">
-                <color rgba="0.0 0.0 1.0 1.0"/>
-            </material>
-        </visual>
-        <inertial>
-            <mass value="1.0"/>
-            <inertia ixx="0" ixy="0" ixz="0.0" iyy="0" iyz="0.0" izz="0"/>
-        </inertial>
-    </link> -->
-
-
-
-
-
     <!-- ****************************Right leg joints******************************************** -->
 
-    <joint name="jointHipR" type="revolute">
+    <joint name="jointHipR" type="fixed">
         <parent link="body"/>
         <child link="hipCylinderR"/>
-        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <origin xyz="0 0.0 -0.15" rpy="0 0 0"/>
         <axis xyz="1 0 0"/>
         <limit effort="90" lower="-0.174533" upper="0" velocity="10"/>
         <dynamics damping="0.01"/>
@@ -120,7 +40,7 @@
             <geometry>
                 <cylinder length="0.04" radius="0.01"/>
             </geometry>
-            <origin xyz="0 0 0.02" rpy="0 1.57 0"/>
+            <origin xyz="0 0 0.0" rpy="0 1.57 0"/>
             <axis xyz="0 0 0" />
             <material name="red">
                 <color rgba="1 0.0 0.0 1.0"/>
@@ -137,7 +57,7 @@
         <child link="upperLegCylinderR"/>
         <origin xyz="0 -0.0830 -0.0250" rpy="0 0 0"/>
         <axis xyz="0 1 0"/>
-        <limit effort="90" lower="-0.698132" upper="+1.047" velocity="10"/>
+        <limit effort="90" lower="-1.047" upper="+0.698132" velocity="10"/>
         <dynamics damping="0.173402366366"/>
     </joint>
 
@@ -146,7 +66,7 @@
             <geometry>
                 <cylinder length="0.04" radius="0.01"/>
             </geometry>
-            <origin xyz="0 0 0.02" rpy="1.57 0 0"/>
+            <origin xyz="0 0 0" rpy="1.57 0 0"/>
             <axis xyz="0 0 0" />
             <material name="red"/>
         </visual>
@@ -194,7 +114,7 @@
             <geometry>
                 <cylinder length="0.04" radius="0.01"/>
             </geometry>
-            <origin xyz="0 0 0.02" rpy="1.57075 0 0"/>
+            <origin xyz="0 0 0" rpy="1.57075 0 0"/>
             <axis xyz="0 0 0" />
             <material name="red"/>
         </visual>
@@ -227,14 +147,13 @@
         </inertial>
     </link> -->
 
-
     <!--************************************ Left leg joints **********************************************-->
 
 
-    <joint name="jointHipL" type="revolute">
+    <joint name="jointHipL" type="fixed">
         <parent link="body"/>
         <child link="hipCylinderL"/>
-        <origin xyz="0 0.0 0.0" rpy="0 0 0"/>
+        <origin xyz="0 0.0 -0.15" rpy="0 0 0"/>
         <axis xyz="1 0 0"/>
         <limit effort="90" lower="0" upper="+0.174533" velocity="10"/>
         <dynamics damping="0.01"/>
@@ -246,7 +165,7 @@
             <geometry>
                 <cylinder length="0.04" radius="0.01"/>
             </geometry>
-            <origin xyz="0 0 0.02" rpy="0 1.57 0"/>
+            <origin xyz="0 0 0" rpy="0 1.57 0"/>
             <axis xyz="0 0 0" />
             <material name="red">
                 <color rgba="1 0.0 0.0 1.0"/>
@@ -263,7 +182,7 @@
         <child link="upperLegCylinderL"/>
         <origin xyz="0 0.0830 -0.0250" rpy="0 -0.5 0"/>
         <axis xyz="0 1 0"/>
-        <limit effort="10" lower="-0.174533" upper="+0.174533" velocity="10"/>
+        <limit effort="10" lower="-0.523599" upper="+1.22173" velocity="10"/>
         <dynamics damping="0.173402366366"/>
     </joint>
 
@@ -272,7 +191,7 @@
             <geometry>
                 <cylinder length="0.04" radius="0.01"/>
             </geometry>
-            <origin xyz="0 0 0.02" rpy="1.57 0 0"/>
+            <origin xyz="0 0 0.0" rpy="1.57 0 0"/>
             <axis xyz="0 0 0" />
             <material name="red"/>
         </visual>
@@ -294,7 +213,7 @@
     <link name="lowerlegCylinderL">
         <visual>
             <geometry>
-                <cylinder length="0.044" radius="0.01"/>
+                <cylinder length="0.04" radius="0.01"/>
             </geometry>
             <origin xyz="0 0 0" rpy="1.57075 0 0"/>
             <axis xyz="0 0 0" />
@@ -320,7 +239,7 @@
             <geometry>
                 <cylinder length="0.04" radius="0.01"/>
             </geometry>
-            <origin xyz="0 0 0.02" rpy="1.57075 0 0"/>
+            <origin xyz="0 0 0" rpy="1.57075 0 0"/>
             <axis xyz="0 0 0" />
             <material name="red"/>
         </visual>
@@ -353,9 +272,6 @@
         </inertial>
     </link> -->
 
-
-
-
     <!-- **************************************Decorations Right leg **********************************************-->
 
 
@@ -369,21 +285,21 @@
             <geometry>
                 <box size="0.02 0.0830 0.0250"/>
             </geometry>
-            <origin xyz="0 -0.0415 0.0125" rpy="0 0 0"/>
+            <origin xyz="0 -0.0415 0.0" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
         </visual>
         <inertial>
             <mass value="0.219"/>
-            <inertia ixx="414" ixy="0.149" ixz="0.00188" iyy="0.128" iyz="-0.0311" izz="0.359"/>
+            <inertia ixx="0.000414" ixy="0.0000149" ixz="0.00000188" iyy="0.000128" iyz="-0.0000311" izz="0.000395"/>
             <origin rpy="0 0 0" xyz="0.00131 -0.0515 -0.00661"/>
         </inertial>
         <collision>
             <geometry>
                 <box size="0.02 0.0830 0.0250"/>
             </geometry>
-            <origin xyz="0 -0.0415 0.0125" rpy="0 0 0"/>
+            <origin xyz="0 -0.0415 0.0" rpy="0 0 0"/>
             <!-- <contact_coefficient mu="0.0"  resitution="0"  k_p="4000"  k_d="0.01" /> -->
         </collision>
     </link>
@@ -396,23 +312,23 @@
     <link name="upperLegBridgeR">
         <visual>
             <geometry>
-                <box size="0.1 0.05 0.3155"/>
+                <box size="0.1 0.05 0.32"/>
             </geometry>
-            <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 -0.16" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
         </visual>
         <inertial>
             <mass value="1.94"/>
-            <inertia ixx="10.4" ixy="-0.00195" ixz="0.0231" iyy="9.33" iyz="-0.127" izz="1.61"/>
-            <origin xyz="-0.00154  -0.00421 -0.111" rpy="0 0 0"/>
+            <inertia ixx="0.0104" ixy="-0.00000195" ixz="0.0000231" iyy="0.00933" iyz="-0.000127" izz="0.00161"/>
+            <origin xyz="0.00154  -0.00421 -0.111" rpy="0 0 0"/>
         </inertial>
         <collision>
             <geometry>
-                <box size="0.1 0.05 0.3155"/>
+                <box size="0.1 0.05 0.32"/>
             </geometry>
-            <origin xyz="0.0005 0.007 -0.15" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 -0.16" rpy="0 0 0"/>
             <!-- <contact_coefficient mu="0.0578491069103"  resitution="0"  k_p="4000"  k_d="0.173402366366" /> -->
         </collision>
     </link>
@@ -427,21 +343,21 @@
             <geometry>
                 <box size="0.05 0.05 0.28"/>
             </geometry>
-            <origin xyz="-0.0015 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="0 0 -0.14" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
         </visual>
         <inertial>
             <mass value="0.267"/>
-            <inertia ixx="2.52" ixy="-0.000411" ixz="-0.0238" iyy="2.45" iyz="0.0366" izz="0.110"/>
-            <origin xyz="0.00135  0.00496 -0.105" rpy="0 0 0"/>
+            <inertia ixx="0.00252" ixy="-0.000000411" ixz="-0.0000238" iyy="0.00245" iyz="0.0000366" izz="0.000110"/>
+            <origin xyz="0.00153  0.00496 -0.105" rpy="0 0 0"/>
         </inertial>
         <collision>
             <geometry>
                 <box size="0.05 0.05 0.28"/>
             </geometry>
-            <origin xyz="0.0015 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="0.0 0 -0.14" rpy="0 0 0"/>
             <!-- <contact_coefficient mu="0.0960723602789"  resitution="0"  k_p="4000"  k_d="0.198431592389" /> -->
         </collision>
     </link>
@@ -464,7 +380,7 @@
         </visual>
         <inertial>
             <mass value="0.2356"/>
-            <inertia ixx="0.0952" ixy="0.00066457" ixz="0.0003989" iyy="0.5002" iyz="-0.005328" izz="0.5679"/>
+            <inertia ixx="0.0000952" ixy="0.00000066457" ixz="0.0000003989" iyy="0.0005002" iyz="-0.000005328" izz="0.0005679"/>
             <origin xyz="0.0230654545  0.0004316655 -0.0061157216" rpy="0 0 0"/>
         </inertial>
         <collision>
@@ -472,10 +388,9 @@
                 <box size="0.16 0.13 0.02"/>
             </geometry>
             <origin xyz="0.04 0 -0.01" rpy="0 0 0"/>
-            <contact_coefficient mu="0.5"  resitution="0"  k_p="1.0593"  k_d="0.0005" />
+            <contact_coefficient mu="0.5"  resitution="0"  k_p="0"  k_d="0.0005" />
         </collision>
     </link>
-
 
     <!--&lt;!&ndash; *********************************Decorations Left leg ******************************************&ndash;&gt;-->
     <joint name="fixed_hipBridgeL" type="fixed">
@@ -488,15 +403,15 @@
             <geometry>
                 <box size="0.02 0.0830 0.0250"/>
             </geometry>
-            <origin xyz="0 0.0415 0.0125" rpy="0 0 0"/>
+            <origin xyz="0 0.0415 0" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
         </visual>
         <inertial>
             <mass value="0.219"/>
-            <inertia ixx="0.414" ixy="0.0149" ixz="0.00188" iyy="0.128" iyz="-0.0311" izz="0.359"/>
-            <origin rpy="0 0 0" xyz="0.00131 -0.0515 -0.00661"/>
+            <inertia ixx="0.000414" ixy="0.0000149" ixz="-0.00000188" iyy="0.000128" iyz="0.0000311" izz="0.000359"/>
+            <origin rpy="0 0 0" xyz="-0.00131 0.0515 -0.00661"/>
         </inertial>
         <collision>
             <geometry>
@@ -515,23 +430,23 @@
     <link name="upperLegBridgeL">
         <visual>
             <geometry>
-                <box size="0.1 0.05 0.3155"/>
+                <box size="0.1 0.05 0.32"/>
             </geometry>
-            <origin xyz="0.0005 -0.007 -0.15" rpy="0 0 0"/>
+            <origin xyz="0 0 -0.16" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
         </visual>
         <inertial>
             <mass value="1.94"/>
-            <inertia ixx="10.4" ixy="-0.00195" ixz="0.0231" iyy="9.33" iyz="-0.127" izz="1.61"/>
-            <origin xyz="-0.00154  -0.00421 -0.111" rpy="0 0 0"/>
+            <inertia ixx="0.0104" ixy="0.00000286" ixz="0.0000226" iyy="0.00933" iyz="0.000325" izz="0.00165"/>
+            <origin xyz="-0.00167  0.00371 -0.111" rpy="0 0 0"/>
         </inertial>
         <collision>
             <geometry>
-                <box size="0.1 0.05 0.3155"/>
+                <box size="0.1 0.05 0.32"/>
             </geometry>
-            <origin xyz="0.0005 -0.007 -0.15" rpy="0 0 0"/>
+            <origin xyz="0 0 -0.16" rpy="0 0 0"/>
             <!-- <contact_coefficient mu="0.0578491069103"  resitution="0"  k_p="4000"  k_d="0.173402366366" /> -->
         </collision>
     </link>
@@ -546,21 +461,21 @@
             <geometry>
                 <box size="0.05 0.05 0.28"/>
             </geometry>
-            <origin xyz="0.0015 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="0 0 -0.14" rpy="0 0 0"/>
             <material name="linkColor">
                 <color rgba="1 1 1 1"/>
             </material>
         </visual>
         <inertial>
             <mass value="0.267"/>
-            <inertia ixx="2.52" ixy="-0.000411" ixz="-0.0238" iyy="2.45" iyz="0.0366" izz="0.110"/>
-            <origin xyz="0.00135  0.00496 -0.105" rpy="0 0 0"/>
+            <inertia ixx="0.00252" ixy="-0.000000411" ixz="-0.0000238" iyy="0.00245" iyz="0.0000366" izz="0.000110"/>
+            <origin xyz="0.00153  0.00496 -0.105" rpy="0 0 0"/>
         </inertial>
         <collision>
             <geometry>
                 <box size="0.05 0.05 0.28"/>
             </geometry>
-            <origin xyz="0.0015 0 -0.14" rpy="0 0 0"/>
+            <origin xyz="0 0 -0.14" rpy="0 0 0"/>
             <!-- <contact_coefficient mu="0.0960723602789"  resitution="0"  k_p="4000"  k_d="0.198431592389" /> -->
         </collision>
     </link>
@@ -583,7 +498,7 @@
         </visual>
         <inertial>
             <mass value="0.2356"/>
-            <inertia ixx="0.0952" ixy="0.00066457" ixz="0.0003989" iyy="0.5002" iyz="-0.005328" izz="0.5679"/>
+            <inertia ixx="0.0000952" ixy="0.00000066457" ixz="0.0000003989" iyy="0.0005002" iyz="-0.000005328" izz="0.0005679"/>
             <origin xyz="0.0230654545  0.0004316655 -0.0061157216" rpy="0 0 0"/>
         </inertial>
         <collision>
@@ -591,7 +506,8 @@
                 <box size="0.16 0.13 0.02"/>
             </geometry>
             <origin xyz="0.04 0 -0.01" rpy="0 0 0"/>
-            <contact_coefficient mu="0.5"  resitution="0"  k_p="1.0593"  k_d="0.0005" />
+            <contact_coefficient mu="0.5"  resitution="0"  k_p="0"  k_d="0.0005" />
         </collision>
     </link>
+
 </robot>

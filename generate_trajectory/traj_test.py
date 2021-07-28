@@ -88,24 +88,24 @@ p.setTimeStep(dt)
 planeId = p.loadURDF("plane.urdf")
 cubeStartPos = [0, 0, 0.8]
 cubeStartOrientation = p.getQuaternionFromEuler([0., 0, 0])
-humanoid = p.loadURDF("/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame5.urdf", cubeStartPos, cubeStartOrientation, useFixedBase=0)
+humanoid = p.loadURDF("/Users/pingy/PycharmProjects/flame_robot/urdf/simbicon_urdf/flame4.urdf", cubeStartPos, cubeStartOrientation, useFixedBase=1)
 # humanoid2 = PybulletEnv(GRAVITY,dt)
 # # add step down:
 # test_visual = p.createVisualShape(p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 0])
 # test_collision = p.createCollisionShape(p.GEOM_BOX, halfExtents=[0.2,1,0.05])
 # test_body = p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
 
-knee_left_traj = np.loadtxt("knee_left.csv") # 13
-knee_right_traj = np.loadtxt("knee_right.csv") # 5
-hip_left_traj = np.loadtxt("hip_left.csv") # 12
-hip_right_traj = np.loadtxt("hip_right.csv") # 4
-ankle_left_traj = np.loadtxt("ankle_left.csv") # 14
-ankle_right_traj = np.loadtxt("ankle_right.csv") # 6
+knee_left_traj = np.loadtxt("knee_left.csv") # 13  10
+knee_right_traj = np.loadtxt("knee_right.csv") # 5  2
+hip_left_traj = np.loadtxt("hip_left.csv") # 12  9
+hip_right_traj = np.loadtxt("hip_right.csv") # 4  1
+ankle_left_traj = np.loadtxt("ankle_left.csv") # 14  11
+ankle_right_traj = np.loadtxt("ankle_right.csv") # 6  3
 
 traj_id = 0
 #disable the default velocity motors
 #and set some position control with small force to emulate joint friction/return to a rest pose
-jointFrictionForce = 500
+jointFrictionForce = 1
 for joint in range(p.getNumJoints(humanoid)):
   p.setJointMotorControl2(humanoid, joint, p.POSITION_CONTROL, force=jointFrictionForce)
 
@@ -165,13 +165,14 @@ def has_contact(bullet_client, linkA):
 left_foot_list = []
 right_foot_list = []
 while(traj_id<15000):
+    print("===================",traj_id)
     p.setGravity(0, 0, GRAVITY)
-    hip_right_Id = 4
-    hip_left_Id = 12
-    knee_left_id = 13
-    knee_right_id = 5
-    ankle_left_id = 14
-    ankle_right_id = 6
+    hip_right_Id = 1
+    hip_left_Id = 9
+    knee_left_id = 10
+    knee_right_id = 2
+    ankle_left_id = 11
+    ankle_right_id = 3
 
     p.setJointMotorControl2(humanoid, hip_left_Id, p.POSITION_CONTROL, targetPosition=hip_left_traj[traj_id], force=140.)
     p.setJointMotorControl2(humanoid, hip_right_Id, p.POSITION_CONTROL, targetPosition=hip_right_traj[traj_id], force=140.)
