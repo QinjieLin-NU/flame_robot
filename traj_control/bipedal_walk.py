@@ -7,7 +7,7 @@ import pybullet_data
 p.connect(p.GUI)
 p.setAdditionalSearchPath(pybullet_data.getDataPath())  # to load plane.urdf
 p.loadURDF("plane.urdf")
-humanoid = p.loadURDF("urdf/simbicon_urdf/flame3.urdf",[0, 0, 0.85])
+humanoid = p.loadURDF("urdf/simbicon_urdf/flame5.urdf",[0, 0, 0.85])
 gravId = p.addUserDebugParameter("gravity",0.0,10,-10)
 jointIds=[]
 paramIds=[]
@@ -41,7 +41,8 @@ for j in range (p.getNumJoints(humanoid)):
     print(info)
 
 goal_traj = np.loadtxt("traj_control/trajectories.txt") # [6001 * 4] matrix, kneeL-11,kneeR-3,HipL-10,HipR-2
-traj_jointIds = [11,3,10,2]
+# traj_jointIds = [11,3,10,2]
+traj_jointIds = [13,5,12,4]
 traj_id = 0
 p.setRealTimeSimulation(1)
 p.getCameraImage(320,200)
@@ -52,14 +53,14 @@ while(1):
     traj_id +=500
     p.getCameraImage(320,200)
     p.setGravity(0,0,p.readUserDebugParameter(gravId))
-    print('        - ')
-    print('            -',0.0)
-    print('            -',goal_traj[traj_id,3])
-    print('            -',goal_traj[traj_id,1])
-    print('            -',0.0)
-    print('            -',goal_traj[traj_id,2])
-    print('            -',goal_traj[traj_id,0])
-    print('            -',0.0)
+    # print('        - ')
+    # print('            -',0.0)
+    # print('            -',goal_traj[traj_id,3])
+    # print('            -',goal_traj[traj_id,1])
+    # print('            -',0.0)
+    # print('            -',goal_traj[traj_id,2])
+    # print('            -',goal_traj[traj_id,0])
+    # print('            -',0.0)
     for i in range(len(traj_jointIds)):
         jointId = traj_jointIds[i]
         # print(jointId,goal_traj[traj_id,i],end=" ")
@@ -72,7 +73,7 @@ while(1):
         # print("base_linVel",base_linVel)
         # print("base_angVel",base_angVel)
     # print()
-    time.sleep(0.01)
+    time.sleep(0.1)
 # while(1):
 #     p.getCameraImage(320,200)
 #     p.setGravity(0,0,p.readUserDebugParameter(gravId))

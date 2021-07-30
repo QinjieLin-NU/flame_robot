@@ -44,3 +44,11 @@ register(
 	max_episode_steps=1000,
 	reward_threshold=950.0,
 	)
+
+# action including 4 torques(upper leg, knee) , 2d dimension robot
+register(
+	id='BipedalPyBulletEnv-v6',
+	entry_point='envs.bipedal_bullet_env_rl_flame5:BipedalBulletRLEnvFLAME5',
+	max_episode_steps=1000,
+	reward_threshold=950.0,
+	)

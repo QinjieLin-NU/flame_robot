@@ -136,7 +136,7 @@ class URDFBaseRobot2D():
         self.init=False 
 
         self.fall_flag = False # this will be true if robot position.z < fall_meter 
-        self.fall_meter = 0.3#0.2
+        self.fall_meter = 0.57#0.2
 
         self.link_names=["body","upperLegBridgeR","lowerLegBridgeR","ankleBridgeR","upperLegBridgeL","lowerLegBridgeL","ankleBridgeL"]
         self.link_name_id_dict = None
@@ -164,13 +164,14 @@ class URDFBaseRobot2D():
         self.plane = self.p.loadURDF("plane.urdf")
 
         #add step down:
-        # test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.1],rgbaColor=[1, 0, 0, 1])
-        # test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.1])
+        # test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05],rgbaColor=[1, 0, 0, 1])
+        # test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2,1,0.05])
         # test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=test_collision, \
         # baseVisualShapeIndex=test_visual, basePosition = [-0.15, 0, 0])
+        
 
         #add humannoid
-        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.70]) #0.70
+        self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85]) #0.70
         self.p.changeDynamics(self.humanoid,-1,linearDamping=0, angularDamping=0)
         # self.p.setGravity(0,0,self.g)
         self.p.setGravity(0,0,self.g)
@@ -188,8 +189,10 @@ class URDFBaseRobot2D():
             self.gravId = self.p.addUserDebugParameter("gravity",-10,10,0)
             self.paramIds,self.jointIds = self.get_motorId()
 
-        # for i in range(20):#+ 10*np.random.randint(low=0, high=20)):
-            # self.p.stepSimulation()
+        #wait for fall
+        for i in range(50):#+ 10*np.random.randint(low=0, high=20)):
+            self.p.stepSimulation()
+        # time.sleep(10)
         self.update_state() # add to update state when reset
 
         return
@@ -336,6 +339,8 @@ class URDFBaseRobot2D():
         self.torso.set_state(torso_ori,torso_angVel)
         if(self.torso.torso_pos[2]<self.fall_meter):
             self.fall_flag = True
+        elif(self.torso.torso_pos[2]>1.5):
+            self.fall_flag = True #fly
         else:
             self.fall_flag = False
         #["body","upperLegBridgeR","lowerLegBridgeR","ankleBridgeR","upperLegBridgeL","lowerLegBridgeL","ankleBridgeL"]

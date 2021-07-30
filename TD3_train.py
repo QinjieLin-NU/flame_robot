@@ -20,12 +20,13 @@ start_timestep=1e4
 std_noise=0.2#0.02
 
 # env = gym.make('Walker2DBulletEnv-v0')
-env = gym.make('BipedalPyBulletEnv-v5')
-env.render(mode="realtime")
-file_prefix = "biped-v5-2d-11"
+env = gym.make('BipedalPyBulletEnv-v6')
+# env.render(mode="realtime")
+env.render(mode="fast")
+file_prefix = "biped-v6-2d-17"
 
 # Set seeds
-seed = 12345
+seed = 12345#12345
 env.seed(seed)
 torch.manual_seed(seed)
 np.random.seed(seed)
