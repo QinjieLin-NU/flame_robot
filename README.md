@@ -31,6 +31,13 @@ export MESA_GL_VERSION_OVERRIDE=3.3
 python TD3_controller.py
 ```
 
+sample code
+```
+export MESA_GL_VERSION_OVERRIDE=3.3 
+export PYTHONPATH="."
+python example/exp3.py
+```
+
 ## simbicon controller 
 
 use the controller in the [refer link](https://github.com/Anmol6/locomotion) to control the robot
