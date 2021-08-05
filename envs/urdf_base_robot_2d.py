@@ -76,6 +76,7 @@ class FlameFoot():
         self.front_state = 0
         self.back_state  = 0
         self.xyz = [0.0,0.0,0.0]
+        self.rpy= [0.0,0.0,0.0]
         return
 
     def set_state(self,collision_state,front_collision = 0,back_collision = 0):
@@ -100,6 +101,11 @@ class FlameFoot():
         get position of correponding link. here we only set ankle position
         """
         self.xyz = [x,y,z]
+    def set_rpy(self,r,p,y):
+        """
+        get rpy of correponding link. here we only set ankle position
+        """
+        self.rpy = [r,p,y]
 
     
 
@@ -346,6 +352,9 @@ class URDFBaseRobot2D():
         #["body","upperLegBridgeR","lowerLegBridgeR","ankleBridgeR","upperLegBridgeL","lowerLegBridgeL","ankleBridgeL"]
         self.right_foot.set_position(x=self.links_xyz[9],y=self.links_xyz[10],z=self.links_xyz[11])
         self.left_foot.set_position(x=self.links_xyz[-3],y=self.links_xyz[-2],z=self.links_xyz[-1])
+        self.right_foot.set_rpy(r=self.link_rpy[9],p=self.link_rpy[10],y=self.link_rpy[11])
+        self.left_foot.set_rpy(r=self.link_rpy[-3],p=self.link_rpy[-2],y=self.link_rpy[-1])
+        
         return
     
     def has_contact(self, bullet_client, bodyA, bodyB, linkA,leg_direction):
@@ -433,7 +442,6 @@ class URDFBaseRobot2D():
             link_id = info[0]
             link_name = info[12].decode('UTF-8')
             link_name_id_dict.update({link_name:link_id})
-            # print(info)
         # for link_name in self.link_names:
             # print(link_name,link_name_id_dict[link_name])
         return link_name_id_dict
@@ -449,23 +457,39 @@ class URDFBaseRobot2D():
         link_rpy=[]
         link_Vrpy = []
         for link_name in self.link_names:
-            link_id = self.link_name_id_dict[link_name]
-            link_state = self.p.getLinkState(self.humanoid, link_id, computeLinkVelocity=1)
-            x,y,z = link_state[0][0],link_state[0][1],link_state[0][2]
-            xv,yv,zv = link_state[-2][0],link_state[-2][1],link_state[-2][2]
-            r,p,yaw = link_state[1][0],link_state[1][1],link_state[1][2]
-            rv,pv,yawV = link_state[-1][0],link_state[-1][1],link_state[-1][2]
-            link_states += [x,y,z,xv,yv,zv]
-            link_xyz += [x,y,z]
-            link_Vxyz += [xv,yv,zv]
-            link_rpy +=[r,p,yaw]
-            link_Vrpy += [rv,pv,yawV]
+            #TODO haven't tested
+            try:
+                link_id = self.link_name_id_dict[link_name]
+                link_state = self.p.getLinkState(self.humanoid, link_id, computeLinkVelocity=1)
+                x,y,z = link_state[0][0],link_state[0][1],link_state[0][2]
+                xv,yv,zv = link_state[-2][0],link_state[-2][1],link_state[-2][2]
+                r,p,yaw = self.p.getEulerFromQuaternion(link_state[1])
+                rv,pv,yawV = link_state[-1][0],link_state[-1][1],link_state[-1][2]
+                link_states += [x,y,z,xv,yv,zv]
+                link_xyz += [x,y,z]
+                link_Vxyz += [xv,yv,zv]
+                link_rpy +=[r,p,yaw]
+                link_Vrpy += [rv,pv,yawV]
+            except:
+                # if link id can't be found, assume it as humnoid base
+                _pos, _ori = self.p.getBasePositionAndOrientation(self.humanoid)
+                _posVel, _oriVel = self.p.getBaseVelocity(self.humanoid)
+                x,y,z = _pos[0],_pos[1],_pos[2]
+                xv,yv,zv = _posVel[0],_posVel[1],_posVel[2]
+                r,p,yaw = self.p.getEulerFromQuaternion(_ori)
+                rv,pv,yawV = _oriVel[0], _oriVel[1], _oriVel[2]
+                link_states += [x,y,z,xv,yv,zv]
+                link_xyz += [x,y,z]
+                link_Vxyz += [xv,yv,zv]
+                link_rpy +=[r,p,yaw]
+                link_Vrpy += [rv,pv,yawV]
             #draw line for debug
-            # self.pos = [x,y,z]
-            # if (self.hasPrevPoses[link_name]==1):
-            #     self.p.addUserDebugLine(self.prevPoses[link_name],self.pos,[0,0,0.3],1,15)
-            # self.hasPrevPoses[link_name] = 1	
-            # self.prevPoses[link_name]=self.pos
+            # if(link_name == "ankleBridgeL"):
+            #     self.pos = [x,y,z]
+            #     if (self.hasPrevPoses[link_name]==1):
+            #         self.p.addUserDebugLine(self.prevPoses[link_name],self.pos,[0,0,0.3],1,15)
+            #     self.hasPrevPoses[link_name] = 1	
+            #     self.prevPoses[link_name]=self.pos
 
         return link_xyz,link_Vxyz,link_rpy,link_Vrpy
 

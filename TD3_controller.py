@@ -16,9 +16,9 @@ from TD3_control.TwinDelayed import TD3, device
 # pybullet.connect(pybullet.DIRECT)
 
 # env = gym.make('BipedalPyBulletEnv-v5')
-env = gym.make('BipedalPyBulletEnv-v6')
+env = gym.make('BipedalPyBulletEnv-v8')
 env.render(mode="realtime")
-file_prefix = "biped-v6-2d-17"#"biped-v5-2d-11"
+file_prefix = "biped-v8-2d-8"#"biped-v5-2d-11"
 # Set seeds
 seed = 12345
 env.seed(seed)
@@ -28,6 +28,7 @@ np.random.seed(seed)
 state_size = env.observation_space.shape[0]
 action_size=env.action_space.shape[0]
 action_high= float(env.action_space.high[0])
+print("load file:",file_prefix)
 print('state_size: ', state_size, ', action_size: ', action_size, ', action_high: ', action_high)
     
 agent = TD3(state_dim=state_size, action_dim=action_size, max_action=action_high)
@@ -67,9 +68,7 @@ def play(env, agent, n_episodes):
         
         while True:
             action = agent.select_action(np.array(state))
-            # env.render()
-            # time.sleep(0.01)
-            # print("action:",action,"state:",state)
+            time.sleep(0.05)
             
             next_state, reward, done, _ = env.step(action)
             state = next_state

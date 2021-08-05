@@ -12,7 +12,7 @@ p.loadURDF("plane.urdf")
 # humanoid = p.loadURDF("urdf/simbicon_urdf/biped2d.urdf",[0, 0, 1.2])
 # humanoid = p.loadURDF("urdf/simbicon_urdf/humanoid_nohead.urdf",[0, 0, 0.31])
 # humanoid = p.loadURDF("urdf/simbicon_urdf/flame.urdf",[0, 0, 1.0])
-humanoid = p.loadURDF("urdf/simbicon_urdf/flame3.urdf",[0, 0, 1.5])#flame3 0.9
+humanoid = p.loadURDF("urdf/simbicon_urdf/flame7.urdf",[0, 0, 1.5])#flame3 0.9
 # humanoid = p.loadURDF("urdf/simbicon_urdf/demo.urdf")
 # gravId = p.addUserDebugParameter("gravity",-10,10,-10)
 gravId = p.addUserDebugParameter("gravity",-10,10,0)

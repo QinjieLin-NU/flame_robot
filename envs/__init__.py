@@ -45,10 +45,42 @@ register(
 	reward_threshold=950.0,
 	)
 
-# action including 4 torques(upper leg, knee) , 2d dimension robot
+# action including 4 torques(upper leg, knee) , 2d dimension robot, not swing base 
 register(
 	id='BipedalPyBulletEnv-v6',
 	entry_point='envs.bipedal_bullet_env_rl_flame5:BipedalBulletRLEnvFLAME5',
+	max_episode_steps=1000,
+	reward_threshold=950.0,
+	)
+
+# action including 4 torques(upper leg, knee) , 2d dimension robot, not swing base
+register(
+	id='BipedalPyBulletEnv-v7',
+	entry_point='envs.bipedal_bullet_env_rl_flame7:BipedalBulletRLEnvFLAME7',
+	max_episode_steps=1000,
+	reward_threshold=950.0,
+	)
+
+# action including 4 torques(upper leg, knee) , 2d dimension robot, not swing base, revolute but not action ankle joint
+register(
+	id='BipedalPyBulletEnv-v8',
+	entry_point='envs.bipedal_bullet_env_rl_flame8:BipedalBulletRLEnvFLAME8',
+	max_episode_steps=1000,
+	reward_threshold=950.0,
+	)
+
+# action including 4 torques(upper leg, knee) , 2d dimension robot, not swing base, action 7
+register(
+	id='BipedalPyBulletEnv-v9',
+	entry_point='envs.bipedal_bullet_env_rl_flame8_a7:BipedalBulletRLEnvFLAME8A7',
+	max_episode_steps=1000,
+	reward_threshold=950.0,
+	)
+
+# action including 4 torques(upper leg, knee) , 3d dimension robot, not swing base, action 4
+register(
+	id='BipedalPyBulletEnv-v10',
+	entry_point='envs.bipedal_bullet_env_rl_flame10:BipedalBulletRLEnvFLAME10',
 	max_episode_steps=1000,
 	reward_threshold=950.0,
 	)

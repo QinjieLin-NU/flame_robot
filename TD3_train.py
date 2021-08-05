@@ -20,13 +20,14 @@ start_timestep=1e4
 std_noise=0.2#0.02
 
 # env = gym.make('Walker2DBulletEnv-v0')
-env = gym.make('BipedalPyBulletEnv-v6')
+env = gym.make('BipedalPyBulletEnv-v10')
 # env.render(mode="realtime")
 env.render(mode="fast")
-file_prefix = "biped-v6-2d-17"
+file_prefix = "biped-v10-2d-3"
+total_episode = 3000 #3000
 
 # Set seeds
-seed = 12345#12345
+seed = 34512 # 12345 23451 345121
 env.seed(seed)
 torch.manual_seed(seed)
 np.random.seed(seed)
@@ -132,7 +133,7 @@ def twin_ddd_train(n_episodes=15000, save_every=10, print_env=10):
 
     return scores_array, avg_scores_array
 
-scores, avg_scores = twin_ddd_train(n_episodes=1500)
+scores, avg_scores = twin_ddd_train(n_episodes=total_episode)#1500
 
 save(agent, file_prefix, 'TD3_control/dir_Walker2D_002')
 

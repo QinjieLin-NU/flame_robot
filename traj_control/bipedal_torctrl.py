@@ -4,7 +4,7 @@ from calTorque import multijointController
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
-    robot = PybulletEnv(gravity=0.0,dt=0.01,file_path="urdf/simbicon_urdf/flame3.urdf")
+    robot = PybulletEnv(gravity=0.0,dt=0.01,file_path="urdf/simbicon_urdf/flame7.urdf")
     robot.reset(disable_velControl=True,add_debug=False)
     controller = multijointController(robot)
     i=0
