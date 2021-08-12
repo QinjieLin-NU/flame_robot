@@ -147,7 +147,7 @@ class PybulletEnv():
         self.test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05], rgbaColor=[1, 0, 0, 1])
         self.test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05])
         self.test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=self.test_collision, \
-                                           baseVisualShapeIndex=self.test_visual, basePosition=[-0.15, 0, 0])
+                                           baseVisualShapeIndex=self.test_visual, basePosition=[0, 0, 0])
 
         # add humannoid
         # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
