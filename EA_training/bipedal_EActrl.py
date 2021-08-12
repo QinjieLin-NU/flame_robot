@@ -157,16 +157,19 @@ class bipedal_EActrl():
         # self.plane = self.p.loadURDF("plane.urdf")
         pattern_count = 0
         switch_count = 0
-        while traj_id<1500:
-            self.robot.step_down(select_traj,traj_id)
-            traj_id += 1
-            time.sleep(self.dt)
-            collision = self.robot.has_contact(self.p,linkA=self.robot.left_foot.link_id)
-            if collision[0]==1:
-                break
+        # while traj_id<1500:
+        #     self.robot.step_down(select_traj,traj_id)
+        #     traj_id += 1
+        #     time.sleep(self.dt)
+        #     collision = self.robot.has_contact(self.p,linkA=self.robot.left_foot.link_id)
+        #     if collision[0]==1:
+        #         break
+
         while (i < 100000):
+
             accum_time = self.robot.dt * i
-            self.check_flag(pattern_count,switch_count,accum_time)
+            if accum_time > 1:
+               self.check_flag(pattern_count,switch_count,accum_time)
             if self.fall_flag:
                 # self.fitness()
                 break

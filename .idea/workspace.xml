@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="f310497e-85fb-45b5-94cc-21f13c70d550" name="Default Changelist" comment="test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA_training/calTorque.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/calTorque.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/pybullet_EA_env.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EA_training/results/temp_gen.csv" beforeDir="false" afterPath="$PROJECT_DIR$/EA_training/results/temp_gen.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +38,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
-  <component name="RunManager" selected="Python.EA">
+  <component name="RunManager" selected="Python.pybullet_EA_env">
     <configuration name="EA" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -78,7 +81,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="bipedal_eactrl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="bipedal_EActrl" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="flame_robot" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -86,11 +89,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EA_training" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/bipedal_eactrl.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EA_training/bipedal_EActrl.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -143,18 +146,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.traj_test" />
-      <item itemvalue="Python.bipedal_eactrl" />
       <item itemvalue="Python.EA_test" />
       <item itemvalue="Python.EA" />
       <item itemvalue="Python.pybullet_EA_env" />
+      <item itemvalue="Python.bipedal_EActrl" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.EA" />
         <item itemvalue="Python.pybullet_EA_env" />
+        <item itemvalue="Python.EA" />
+        <item itemvalue="Python.bipedal_EActrl" />
         <item itemvalue="Python.traj_test" />
         <item itemvalue="Python.EA_test" />
-        <item itemvalue="Python.bipedal_eactrl" />
       </list>
     </recent_temporary>
   </component>
@@ -208,26 +211,6 @@
           <url>file://$PROJECT_DIR$/EA_training/bipedal_EActrl_v2.py</url>
           <line>174</line>
           <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EA_training/bipedal_EActrl.py</url>
-          <line>134</line>
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EA_training/bipedal_EActrl.py</url>
-          <line>133</line>
-          <option name="timeStamp" value="41" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EA_training/bipedal_EActrl.py</url>
-          <line>132</line>
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/EA_training/bipedal_EActrl.py</url>
-          <line>127</line>
-          <option name="timeStamp" value="43" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EA_training/pybullet_EA_env.py</url>
