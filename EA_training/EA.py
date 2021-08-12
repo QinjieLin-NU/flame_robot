@@ -111,13 +111,13 @@ if __name__ == "__main__":
 
     history_fitness_max = []
     history_fitness_aver = []
-    robot = PybulletEnv(gravity=-10, dt=0.01, file_path="../urdf/simbicon_urdf/flame5.urdf")
+    robot = PybulletEnv(gravity=-10, dt=0.01, file_path="../urdf/simbicon_urdf/flame8.urdf")
     for i in range(N_GENERATION):
         print(i, " generation")
         children_array = np.ones((CHILDREN_SIZE,197))
         for j in range(CHILDREN_SIZE):
             child_indv = crossover(parent_array)
-            child_indv = mutate(child_indv,0)
+            child_indv = mutate(child_indv,1)
             # child_indv 1x196
             np.savetxt('results/temp_gen.csv',child_indv,delimiter=',')
             fitness = get_fitness(child_indv,robot)

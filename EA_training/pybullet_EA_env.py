@@ -96,7 +96,7 @@ class PybulletEnv():
     flame environment in self.p
     """
 
-    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame5.urdf"):
+    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame8.urdf"):
         # physics params
         self.g = gravity
         self.dt = dt

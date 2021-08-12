@@ -117,7 +117,7 @@ if __name__ == "__main__":
         children_array = np.ones((CHILDREN_SIZE,197))
         for j in range(CHILDREN_SIZE):
             child_indv = crossover(parent_array)
-            child_indv = mutate(child_indv,0)
+            child_indv = mutate(child_indv,1)
             # child_indv 1x196
             np.savetxt('results/temp_gen.csv',child_indv,delimiter=',')
             fitness = get_fitness(child_indv,robot)
