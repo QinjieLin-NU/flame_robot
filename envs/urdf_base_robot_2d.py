@@ -382,7 +382,8 @@ class URDFBaseRobot2D():
             contact_qua = (1,0,0,0)
             link_pos_invert,link_quar_invert = bullet_client.invertTransform(link_pos,link_quar) 
             rel_pos,rel_qua=bullet_client.multiplyTransforms(link_pos_invert,link_quar_invert,contact_posOnA,contact_qua)
-            # print("relative position: ",rel_pos)
+            # dynamics_info = self.p.getDynamicsInfo(bodyB,-1)
+            # print("dynamics info: ",dynamics_info)
             if(rel_pos[0]>0):
                 collision_front = 1
             else:

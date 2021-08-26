@@ -69,10 +69,10 @@ register(
 	reward_threshold=950.0,
 	)
 
-# action including 4 torques(upper leg, knee) , 2d dimension robot, not swing base, action 7
+# action including 6 torques(upper leg, knee) , 2d dimension robot, not swing base, action 6
 register(
 	id='BipedalPyBulletEnv-v9',
-	entry_point='envs.bipedal_bullet_env_rl_flame8_a7:BipedalBulletRLEnvFLAME8A7',
+	entry_point='envs.bipedal_bullet_env_rl_flame8_a6:BipedalBulletRLEnvFLAME8A6',
 	max_episode_steps=1000,
 	reward_threshold=950.0,
 	)
@@ -81,6 +81,13 @@ register(
 register(
 	id='BipedalPyBulletEnv-v10',
 	entry_point='envs.bipedal_bullet_env_rl_flame10:BipedalBulletRLEnvFLAME10',
+	max_episode_steps=1000,
+	reward_threshold=950.0,
+	)
+# action including 6 torques(upper leg, knee) , 3d dimension robot, not swing base, action 4
+register(
+	id='BipedalPyBulletEnv-v11',
+	entry_point='envs.bipedal_bullet_env_rl_flame10_a6:BipedalBulletRLEnvFLAME10A6',
 	max_episode_steps=1000,
 	reward_threshold=950.0,
 	)
