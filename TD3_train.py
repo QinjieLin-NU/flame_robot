@@ -11,7 +11,8 @@ import os
 import envs 
 
 import time
-from TD3_control.TwinDelayed import Actor, Critic, ReplayBuffer, TD3
+# from TD3_control.TwinDelayed import Actor, Critic, ReplayBuffer, TD3
+from TD3_control.TwinDelayedCustom import Actor, Critic, ReplayBuffer, TD3
 from collections import deque
 import itertools as it
 
@@ -20,14 +21,14 @@ start_timestep=1e4
 std_noise=0.2#0.02
 
 # env = gym.make('Walker2DBulletEnv-v0')
-env = gym.make('BipedalPyBulletEnv-v10')
+env = gym.make('BipedalPyBulletEnv-v9')
 # env.render(mode="realtime")
 env.render(mode="fast")
-file_prefix = "biped-v10-2d-3"
-total_episode = 3000 #3000
+file_prefix = "biped-v9-2d-14"
+total_episode = 10000 #3000 1500
 
 # Set seeds
-seed = 34512 # 12345 23451 345121
+seed = 23451 # 12345 23451 345121
 env.seed(seed)
 torch.manual_seed(seed)
 np.random.seed(seed)
@@ -149,7 +150,7 @@ plt.plot(np.arange(1, len(avg_scores)+1), avg_scores, label="Avg on 100 episodes
 plt.legend(bbox_to_anchor=(1.05, 1)) 
 plt.ylabel('Score')
 plt.xlabel('Episodes #')
-plt.savefig("TD3_control/%s.png"%file_prefix)
+plt.savefig("TD3_control/figures/%s.png"%file_prefix)
 plt.show()
 
 from collections import deque

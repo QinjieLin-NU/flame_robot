@@ -10,7 +10,7 @@ from ray.tune.logger import pretty_print
 import gym
 import time
 
-env_name = 'BipedalPyBulletEnv-v11'
+env_name = 'BipedalPyBulletEnv-v9'
 # instantiate env class
 def env_creator(env_config):
     import envs
@@ -33,7 +33,7 @@ config["train_batch_size"] = 25600#320000
 config["batch_mode"] = "complete_episodes"
 config["observation_filter"]  = "MeanStdFilter"
 trainer = ppo.PPOTrainer(config=config, env="my_env")
-restore_path = "example/model/exp4/checkpoint-9886"
+restore_path = "example/model/exp5/checkpoint-3256"
 trainer.restore(restore_path) 
 
 # run until episode ends
@@ -45,7 +45,7 @@ for i in range(100):
     obs = env.reset()
     while not done:
         action = trainer.compute_action(obs)
-        # print(action)
+        print(action)
         obs, reward, done, info = env.step(action)
         episode_reward += reward
         time.sleep(0.1)

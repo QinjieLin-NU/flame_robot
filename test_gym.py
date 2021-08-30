@@ -3,13 +3,13 @@ import envs
 import time 
 import numpy as np
 if __name__ == "__main__":
-    env=gym.make("BipedalPyBulletEnv-v10")
+    env=gym.make("BipedalPyBulletEnv-v11")
     env.render(mode="realtime")
     for i_episode in range(20):
         env.reset()
         for t in range(1000):
             action = env.action_space.sample()
-            # action = np.zeros(7,)
+            action = np.zeros(7,)
             observation,reward,done,info = env.step(action)
             # print(observation)
             # print(observation,reward,done,info)
