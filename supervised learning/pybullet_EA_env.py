@@ -96,7 +96,7 @@ class PybulletEnv():
     flame environment in self.p
     """
 
-    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame4.urdf"):
+    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame8.urdf"):
         # physics params
         self.g = gravity
         self.dt = dt
@@ -146,11 +146,11 @@ class PybulletEnv():
 
         # add humannoid
         # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
-        cubeStartPos = [0, 0, 0.8]
+        cubeStartPos = [0, 0, 0.85]
         cubeStartOrientation = self.p.getQuaternionFromEuler([0., 0, 0])
         # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.87])
         self.humanoid = self.p.loadURDF(self.file_path, cubeStartPos,
-                                        cubeStartOrientation, useFixedBase=1)
+                                        cubeStartOrientation, useFixedBase=0)
         # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.85])
         self.p.changeDynamics(self.humanoid, -1, linearDamping=0, angularDamping=0)
         self.p.setGravity(0, 0, self.g)
