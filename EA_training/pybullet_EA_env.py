@@ -96,7 +96,7 @@ class PybulletEnv():
     flame environment in self.p
     """
 
-    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame5.urdf"):
+    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame8.urdf"):
         # physics params
         self.g = gravity
         self.dt = dt
@@ -144,14 +144,14 @@ class PybulletEnv():
         self.plane = self.p.loadURDF("plane.urdf")
 
         # add step down:
-        self.test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05], rgbaColor=[1, 0, 0, 1])
-        self.test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05])
-        self.test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=self.test_collision, \
-                                           baseVisualShapeIndex=self.test_visual, basePosition=[-0.15, 0, 0])
+        # self.test_visual = self.p.createVisualShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05], rgbaColor=[1, 0, 0, 1])
+        # self.test_collision = self.p.createCollisionShape(self.p.GEOM_BOX, halfExtents=[0.2, 1, 0.05])
+        # self.test_body = self.p.createMultiBody(baseMass=0, baseCollisionShapeIndex=self.test_collision, \
+        #                                    baseVisualShapeIndex=self.test_visual, basePosition=[0, 0, 0])
 
         # add humannoid
         # self.humanoid = self.p.loadURDF(self.file_path,[1.0, 1.0, 0.67])
-        cubeStartPos = [0, 0, 0.86]
+        cubeStartPos = [0, 0, 0.8]#0.86
         cubeStartOrientation = self.p.getQuaternionFromEuler([0., 0, 0])
         # self.humanoid = self.p.loadURDF(self.file_path,[0, 0, 0.87])
         self.humanoid = self.p.loadURDF(self.file_path, cubeStartPos,

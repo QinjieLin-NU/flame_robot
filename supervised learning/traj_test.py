@@ -1,35 +1,26 @@
 from pybullet_EA_env import PybulletEnv
 import time
 from calTorque import EA_weights_Controller
-from EA import read_csv,reshape
+from train import read_csv,reshape
 import pybullet as p
 import numpy as np
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
-    weight = read_csv("results_9.csv")
-    weight = weight[2,0:-1]
+    weight = read_csv("results_1.csv")
+    weight = weight[1,0:-1]
     parent0 = np.reshape(weight,(1,196))
     print(parent0,type(parent0))
     dt = 0.01
-    robot = PybulletEnv(gravity=-10.0, dt=0.01,file_path="../urdf/simbicon_urdf/flame5.urdf")
+    robot = PybulletEnv(gravity=-10.0, dt=0.01,file_path="../urdf/simbicon_urdf/flame4.urdf")
     robot.reset(disable_velControl=True, add_debug=False)
     controller = EA_weights_Controller(robot,parent0)
     i = 0
     traj_id = 0
     fitness = 0
-    select_traj = robot.step_down_init()
-    time.sleep(5)
-    # self.plane = self.p.loadURDF("plane.urdf")
-    while traj_id < 1500:
-        robot.step_down(select_traj, traj_id)
-        traj_id += 1
-        time.sleep(dt)
-        collision = robot.has_contact(p, linkA=robot.left_foot.link_id)
-        if collision[0] == 1:
-            break
-    while (i < 100000):
+    while (traj_id < 2000):
         # calculate torques and apply torques to robots
+        print("step:",traj_id)
         torques = controller.update()
         # print("torques",torques)
 
@@ -42,10 +33,11 @@ if __name__ == "__main__":
         robot.update_state()
 
 
-        i += 1
-        vel = robot.get_vel(dt*i)
+
+        traj_id += 1
+        # vel = robot.get_vel(dt*i)
         print(torques)
-        print('====vel=======:',vel,robot.get_dist_traveled(),dt*i)
+        # print('====vel=======:',vel,robot.get_dist_traveled(),dt*i)
         # print("left:", robot.left_foot.state, "front:", robot.left_foot.front_state, "back:",
         #       robot.left_foot.back_state)
         # print("right:", robot.right_foot.state, "front:", robot.right_foot.front_state, "back:",

@@ -161,8 +161,8 @@ class EA_weights_Controller():
         return qd_ref
 
     def MaxMinNormalization(self,Y,Max,Min):
-        def_max_tau = 50
-        def_min_tau = -50
+        def_max_tau = 30
+        def_min_tau = -30
         k = (def_max_tau - def_min_tau)/(Max-Min)
         nor_Y = def_min_tau + k*(Y-Min)
         return nor_Y
