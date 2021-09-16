@@ -33,14 +33,11 @@ config["train_batch_size"] = 25600#320000
 config["batch_mode"] = "complete_episodes"
 config["observation_filter"]  = "MeanStdFilter"
 trainer = ppo.PPOTrainer(config=config, env="my_env")
-restore_path = "/root/ray_results/PPO_my_env_2021-09-08_15-12-414y838g69/checkpoint_005331/checkpoint-5331"
-restore_path = "/root/ray_results/PPO_my_env_2021-09-08_15-12-31fl6coe4w/checkpoint_005296/checkpoint-5296"
-restore_path = "/root/ray_results/PPO_my_env_2021-09-08_15-12-414y838g69/checkpoint_000161/checkpoint-161"
-restore_path = "/root/ray_results/PPO_my_env_2021-09-09_15-34-199xv1v3a3/checkpoint_000041/checkpoint-41"
-restore_path = "/root/ray_results/PPO_my_env_2021-09-09_15-45-406ir47p19/checkpoint_000186/checkpoint-186" #0.02
-restore_path = "/root/ray_results/PPO_my_env_2021-09-09_16-36-09wgez4p5d/checkpoint_000601/checkpoint-601" #0.5
-restore_path = "/root/ray_results/PPO_my_env_2021-09-09_16-36-32hs_5l0u6/checkpoint_000616/checkpoint-616" #1.0
-restore_path = "/root/ray_results/PPO_my_env_2021-09-09_16-36-41a2z0p0r8/checkpoint_000616/checkpoint-616"
+# restore_path = "example/model/stand3/checkpoint-5296"
+# restore_path = "example/model/stand2/checkpoint-186" #0.02
+restore_path = "example/model/stand1/checkpoint-8046"
+restore_path = "/root/ray_results/PPO_my_env_2021-09-16_04-54-24y01_6msn/checkpoint_000241/checkpoint-241"#greate
+restore_path = "/root/ray_results/PPO_BipedalPyBulletEnv-v12_2021-09-16_04-56-48fjb9h5fn/checkpoint_000231/checkpoint-231"#good
 trainer.restore(restore_path) 
 
 # run until episode ends

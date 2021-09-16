@@ -9,10 +9,11 @@ import gym
 import pickle
 
 #register env
+env_name = 'BipedalPyBulletEnv-v12'
 def env_creator(env_config):
     import envs
-    return gym.make('BipedalPyBulletEnv-v12')   # return an env instance
-register_env("my_env", env_creator)
+    return gym.make(env_name)   # return an env instance
+register_env(env_name, env_creator)
 
 #trainer config
 ray.init()
@@ -28,7 +29,7 @@ config["sgd_minibatch_size"] = 2560 #32768
 config["train_batch_size"] = 25600 #3200000
 config["batch_mode"] = "complete_episodes"
 config["observation_filter"]  = "MeanStdFilter"
-trainer = ppo.PPOTrainer(config=config, env="my_env")
+trainer = ppo.PPOTrainer(config=config, env=env_name)
 
 # Can optionally call trainer.restore(path) to load a checkpoint.
 # Perform one iteration of training the policy with PPO

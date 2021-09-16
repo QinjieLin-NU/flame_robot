@@ -202,6 +202,15 @@ class BipedalBulletRLEnvFLAME10Stand(BipedalBaseEnv):
         else:
             return -3
 
+        #body r p y
+        body_rpy = self.robot.torso.torso_ori
+        body_pitch = body_rpy[1]
+        pitch_threshold = 0.3
+        pitch_reward = 0.5  #0.2 #0.02
+        if np.abs(body_pitch) > pitch_threshold :
+            pitch_reward = 0.0
+        # print(body_pitch,pitch_reward)
+
         #double stand reward, implemented inside 
         # double_stand_reward = 0.0
         # right_collision,left_collision = self.robot.right_foot.state,self.robot.left_foot.state
@@ -245,6 +254,6 @@ class BipedalBulletRLEnvFLAME10Stand(BipedalBaseEnv):
         alive_bonus =  alive*self.robot.dt*alive_rate
         
 
-        self.rewards=[walk_progress_cost,alive_bonus,speed_reward,knee_reward,parallelfoot_reward]
+        self.rewards=[walk_progress_cost,alive_bonus,speed_reward,knee_reward,parallelfoot_reward,pitch_reward]
 
         return  sum(self.rewards)
