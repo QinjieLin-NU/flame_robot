@@ -11,7 +11,7 @@ import pickle
 #register env
 def env_creator(env_config):
     import envs
-    return gym.make('BipedalPyBulletEnv-v9')   # return an env instance
+    return gym.make('BipedalPyBulletEnv-v12')   # return an env instance
 register_env("my_env", env_creator)
 
 #trainer config
@@ -20,7 +20,7 @@ config = ppo.DEFAULT_CONFIG.copy()
 config["num_gpus"] = 0
 config["num_workers"] = 20
 config["framework"] = "torch"
-config["seed"] = 12345
+config["seed"] = 321
 config["num_sgd_iter"] = 10 #20
 config["kl_coeff"]=1.0
 config["lr"] = 0.0001 #0.0001

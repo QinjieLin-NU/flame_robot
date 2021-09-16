@@ -3,7 +3,7 @@ import envs
 import time 
 import numpy as np
 if __name__ == "__main__":
-    env=gym.make("BipedalPyBulletEnv-v11")
+    env=gym.make("BipedalPyBulletEnv-v12")
     env.render(mode="realtime")
     for i_episode in range(20):
         env.reset()

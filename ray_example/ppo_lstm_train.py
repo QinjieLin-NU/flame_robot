@@ -11,7 +11,7 @@ import pickle
 #register env
 def env_creator(env_config):
     import envs
-    return gym.make('BipedalPyBulletEnv-v11')   # return an env instance
+    return gym.make('BipedalPyBulletEnv-v12')   # return an env instance
 register_env("my_env", env_creator)
 
 #trainer config

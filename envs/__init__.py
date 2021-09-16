@@ -91,3 +91,11 @@ register(
 	max_episode_steps=1000,
 	reward_threshold=950.0,
 	)
+
+# action including 6 torques(upper leg, knee) , 3d dimension robot, not swing base, action6
+register(
+	id='BipedalPyBulletEnv-v12',
+	entry_point='envs.bipedal_bullet_env_rl_flame10_stand:BipedalBulletRLEnvFLAME10Stand',
+	max_episode_steps=1000,
+	reward_threshold=950.0,
+	)
