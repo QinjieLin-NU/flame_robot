@@ -153,17 +153,33 @@ class bipedal_EActrl():
         self.robot.reset(disable_gui=False, disable_velControl=True, add_debug=False)
 
         # path1 = os.path.abspath('..')
-        knee_left_traj = np.loadtxt("../generate_trajectory/knee_left.csv")  # 13
-        knee_right_traj = np.loadtxt("../generate_trajectory/knee_right.csv")  # 5
-        hip_left_traj = np.loadtxt("../generate_trajectory/hip_left.csv")  # 12
-        hip_right_traj = np.loadtxt("../generate_trajectory/hip_right.csv")  # 4
-        ankle_left_traj = np.loadtxt("../generate_trajectory/ankle_left.csv")  # 14
-        ankle_right_traj = np.loadtxt("../generate_trajectory/ankle_right.csv")  # 6
-        traj = [knee_left_traj,knee_right_traj,hip_left_traj,hip_right_traj,ankle_left_traj,ankle_right_traj]
+        # knee_left_traj = np.loadtxt("../generate_trajectory/knee_left.csv")  # 13
+        # knee_right_traj = np.loadtxt("../generate_trajectory/knee_right.csv")  # 5
+        # hip_left_traj = np.loadtxt("../generate_trajectory/hip_left.csv")  # 12
+        # hip_right_traj = np.loadtxt("../generate_trajectory/hip_right.csv")  # 4
+        # ankle_left_traj = np.loadtxt("../generate_trajectory/ankle_left.csv")  # 14
+        # ankle_right_traj = np.loadtxt("../generate_trajectory/ankle_right.csv")  # 6
+        # traj = [knee_left_traj,knee_right_traj,hip_left_traj,hip_right_traj,ankle_left_traj,ankle_right_traj]
+        theta_list = np.loadtxt("theta.csv", delimiter=',')
+        theta_list = np.array(theta_list)
+        hip_right_traj = theta_list[:,1]
+        knee_right_traj = theta_list[:,2]
+        ankle_right_traj = theta_list[:,3]
+        hip_left_traj = theta_list[:,4]
+        knee_left_traj = theta_list[:,5]
+        ankle_left_traj = theta_list[:,6]
 
+          
+        # knee_left_tau = np.loadtxt("torque.csv")  # 13
+        # knee_right_tau = np.loadtxt("../generate_trajectory/knee_right.csv")  # 5
+        # hip_left_tau = np.loadtxt("../generate_trajectory/hip_left.csv")  # 12
+        # hip_right_tau = np.loadtxt("../generate_trajectory/hip_right.csv")  # 4
+        # ankle_left_tau = np.loadtxt("../generate_trajectory/ankle_left.csv")  # 14
+        # ankle_right_tau = np.loadtxt("../generate_trajectory/ankle_right.csv")  # 6
+        traj = [knee_left_traj,knee_right_traj,hip_left_traj,hip_right_traj,ankle_left_traj,ankle_right_traj]
         # self.plane = self.p.loadURDF("plane.urdf")
 
-        while (traj_id < 2000):
+        while (traj_id < 300):
             print("round:", traj_id)
 
             # calculate torques and apply torques to robots
