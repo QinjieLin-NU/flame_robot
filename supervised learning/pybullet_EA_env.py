@@ -96,7 +96,7 @@ class PybulletEnv():
     flame environment in self.p
     """
 
-    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame8.urdf"):
+    def __init__(self, gravity=-10.0, dt=0.01, file_path="../urdf/simbicon_urdf/flame9.urdf"):
         # physics params
         self.g = gravity
         self.dt = dt
@@ -263,9 +263,9 @@ class PybulletEnv():
         applied_torques: list of torques applied to [centerHip,RHip,RKnee,RAnkleY,LHip,LKnee,LAnkleY]
         step_sim: if set to False, you shoud step simulation outside this function
         """
-        # centerHip_torque = applied_torques[0]
-        # self.apply_torque(self.center_hipR, centerHip_torque / 2.0)
-        # self.apply_torque(self.center_hipL, centerHip_torque / 2.0)
+        centerHip_torque = applied_torques[0]
+        self.apply_torque(self.center_hipR, centerHip_torque / 2.0)
+        self.apply_torque(self.center_hipL, centerHip_torque / 2.0)
 
         rightHip_torque = applied_torques[0]
         self.apply_torque(self.right_hip, rightHip_torque)
@@ -484,27 +484,27 @@ class PybulletEnv():
             self.p.stepSimulation()
 
 
-if __name__ == "__main__":
-    robot = PybulletEnv(gravity=-10.0, dt=0.01)
-    robot.reset(disable_velControl=True)
-    for j in range(200):
-        robot.p.resetSimulation()
-        # robot.reset(disable_velControl=True)
-        print(j, end=" ")
-        for i in range(20):
-            # torques = applied torques
-            torque = [-1.0, -0.8, -0.8, +0.8, 0.8, 0.8, 0.8]
-            robot.step(torque, step_sim=False)
-            robot.p.stepSimulation()
-            time.sleep(robot.dt)
-    robot.update_state()
-    print("center hip q and qd:", robot.center_hip.q, robot.center_hip.qd)
-    print("right hip q and qd:", robot.right_hip.q, robot.right_hip.qd)
-    print("right knee q and qd:", robot.right_knee.q, robot.right_knee.qd)
-    print("right ankleY q and qd:", robot.right_ankleY.q, robot.right_ankleY.qd)
-    print("left hip q and qd:", robot.left_hip.q, robot.left_hip.qd)
-    print("left knee q and qd:", robot.left_knee.q, robot.left_knee.qd)
-    print("left ankleY q and qd:", robot.left_ankleY.q, robot.left_ankleY.qd)
-    print("left foot state:", robot.left_foot.state)
-    print("right foot state:", robot.right_foot.state)
-    time.sleep(10)
+# if __name__ == "__main__":
+#     robot = PybulletEnv(gravity=-10.0, dt=0.01)
+#     robot.reset(disable_velControl=True)
+#     for j in range(200):
+#         robot.p.resetSimulation()
+#         # robot.reset(disable_velControl=True)
+#         print(j, end=" ")
+#         for i in range(20):
+#             # torques = applied torques
+#             torque = [-1.0, -0.8, -0.8, +0.8, 0.8, 0.8, 0.8]
+#             robot.step(torque, step_sim=False)
+#             robot.p.stepSimulation()
+#             time.sleep(robot.dt)
+#     robot.update_state()
+#     print("center hip q and qd:", robot.center_hip.q, robot.center_hip.qd)
+#     print("right hip q and qd:", robot.right_hip.q, robot.right_hip.qd)
+#     print("right knee q and qd:", robot.right_knee.q, robot.right_knee.qd)
+#     print("right ankleY q and qd:", robot.right_ankleY.q, robot.right_ankleY.qd)
+#     print("left hip q and qd:", robot.left_hip.q, robot.left_hip.qd)
+#     print("left knee q and qd:", robot.left_knee.q, robot.left_knee.qd)
+#     print("left ankleY q and qd:", robot.left_ankleY.q, robot.left_ankleY.qd)
+#     print("left foot state:", robot.left_foot.state)
+#     print("right foot state:", robot.right_foot.state)
+#     time.sleep(10)

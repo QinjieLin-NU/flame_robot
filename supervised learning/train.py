@@ -5,9 +5,10 @@ import matplotlib.pyplot as plt
 from pybullet_EA_env import PybulletEnv
 # import pandas as pd
 import csv
+import ray
 
 #parent is an array of 300x196(28*7)
-N_GENERATION = 150
+N_GENERATION = 300
 CHILDREN_SIZE = 150 #150
 DNA_SIZE = 196
 # fitness function
@@ -60,15 +61,16 @@ def crossover(parents):
 
 #choose top 30 of population
 def select(children_array):
-    #sort by fitness
-    print("children array before sort：",children_array, children_array.shape, type(children_array))
+
+
+
     children_array = children_array[children_array[:, -1].argsort()]
     # np.reshape(children_array,(40,197))
     # sorted(children_array, key=lambda x:x[196])
     #get top 30 population as parent
     parent = np.zeros((30,196))
     print("children array after sort:",children_array,children_array.shape,type(children_array))
-    parent = children_array[:30, 0:196]
+    parent = children_array[30:, 0:196]
     best_fitness = children_array[-1, -1]
     aver_fitness = np.mean(children_array[:, -1:])
     #remove the last column(fitness)
@@ -95,11 +97,25 @@ def reshape(weight_array):
             reshape_array.append(item)
     return np.reshape(reshape_array, (1,196))
 
+@ray.remote
+def get_children(parent_array, robot):
+    child_indv = crossover(parent_array)
+    child_indv = mutate(child_indv,1)
+    # child_indv 1x196
+    np.savetxt('results/temp_gen.csv',child_indv,delimiter=',')
+    fitness = get_fitness(child_indv,robot)
+    print("fitness:",fitness)
+    children_array[j,-1:] = fitness
+    children_array[j,0:-1] = child_indv[0,:]
+    # print(children_array[j,:])
+    return children_array
+
 
 if __name__ == "__main__":
     #first generatinon
-    weight = read_csv("../EA_training/results_9.csv")
-    weight = weight[2,0:-1]
+    ray.init(ignore_reinit_error=True)
+    weight = read_csv("results_1.csv")
+    weight = weight[0,0:-1]
     parent0 = np.reshape(weight,(1,196))
     # weight = read_csv("../controllers/walkweight.csv")
     # weight = weight[:,-7:]
@@ -111,20 +127,12 @@ if __name__ == "__main__":
 
     history_fitness_max = []
     history_fitness_aver = []
-    robot = PybulletEnv(gravity=-10, dt=0.01, file_path="../urdf/simbicon_urdf/flame8.urdf")
+    robot = PybulletEnv(gravity=-10, dt=0.01, file_path="../urdf/simbicon_urdf/flame9.urdf")
     for i in range(N_GENERATION):
         print(i, " generation")
         children_array = np.ones((CHILDREN_SIZE,197))
-        for j in range(CHILDREN_SIZE):
-            child_indv = crossover(parent_array)
-            child_indv = mutate(child_indv,2)
-            # child_indv 1x196
-            np.savetxt('results/temp_gen.csv',child_indv,delimiter=',')
-            fitness = get_fitness(child_indv,robot)
-            print("fitness:",fitness)
-            children_array[j,-1:] = fitness
-            children_array[j,0:-1] = child_indv[0,:]
-            # print(children_array[j,:])
+        children_array = [get_children.remote(parent_array,robot) for j in range(CHILDREN_SIZE)]
+        children_array = ray.get(children_array)
         # parent_array 30x196
         print(children_array)
         parent_array, best_fitness, aver_fitness, children_array = select(children_array)
