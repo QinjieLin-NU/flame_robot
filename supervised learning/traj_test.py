@@ -7,13 +7,13 @@ import numpy as np
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
-    weight = read_csv("results_1.csv")
-    weight = weight[1,0:-1]
+    weight = read_csv("results_3_3d.csv")
+    weight = weight[0,0:-1]
     parent0 = np.reshape(weight,(1,196))
     print(parent0,type(parent0))
     dt = 0.01
-    robot = PybulletEnv(gravity=-10.0, dt=0.01,file_path="../urdf/simbicon_urdf/flame4.urdf")
-    robot.reset(disable_velControl=True, add_debug=False)
+    robot = PybulletEnv(gravity=-10.0, dt=0.01,file_path="../urdf/simbicon_urdf/flame8.urdf")
+    robot.reset(disable_gui=False, disable_velControl=True, add_debug=False)
     controller = EA_weights_Controller(robot,parent0)
     i = 0
     traj_id = 0

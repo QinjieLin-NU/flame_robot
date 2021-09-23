@@ -128,7 +128,7 @@ class PybulletEnv():
         self.bias = 0
         return
 
-    def reset(self, disable_gui=False, disable_velControl=True, add_debug=False):
+    def reset(self, disable_gui=True, disable_velControl=True, add_debug=False):
         if(not self.init):
             if disable_gui:
                 self.physics_client = self.p.connect(self.p.DIRECT)

@@ -7,8 +7,8 @@ import numpy as np
 # from calTorque import cal_Torque
 
 if __name__ == "__main__":
-    weight = read_csv("results_10.csv")
-    weight = weight[1,0:-1]
+    weight = read_csv("results_11.csv")
+    weight = weight[3,0:-1]
     parent0 = np.reshape(weight,(1,196))
     print(parent0,type(parent0))
     dt = 0.1

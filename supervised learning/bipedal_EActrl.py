@@ -39,7 +39,7 @@ class bipedal_EActrl():
         self.next_reward_colliionStates = self.next_state_list["LeftGroundFront_RightStandBack"]  # [[1,1]]
 
     def Accum_Torques(self, torques):
-        # C1 = abs(torques[0]) * self.dt  # centerHip_torque
+        C1 = abs(torques[0]) * self.dt  # centerHip_torque
         C2 = abs(torques[1]) * self.dt  # rightHip_torque
         C3 = abs(torques[2]) * self.dt  # rightKnee_torque
         C4 = abs(torques[3]) * self.dt  # rightAnkleY_torque
@@ -56,13 +56,15 @@ class bipedal_EActrl():
         # err3 = math.pow((self.robot.right_hip.q - traj[3, traj_id]), 2)
         # err4 = math.pow((self.robot.right_hip.q - traj[4, traj_id]), 2)
         # err5 = math.pow((self.robot.right_hip.q - traj[5, traj_id]), 2)
-        err0 = abs(self.robot.left_knee.q - traj[0][traj_id])
-        err1 = abs(self.robot.right_knee.q - traj[1][traj_id])
-        err2 = abs(self.robot.left_hip.q - traj[2][traj_id])
-        err3 = abs(self.robot.right_hip.q - traj[3][traj_id])
-        err4 = abs(self.robot.left_ankleY.q - traj[4][traj_id])
-        err5 = abs(self.robot.right_ankleY.q - traj[5][traj_id])
-        self.accum_err = self.accum_err + (err5 + err4 + err3 + err2 + err1 + err0)/6
+        err0 = abs(self.robot.center_hip.q - traj[0][traj_id])
+        err1 = abs(self.robot.left_knee.q - traj[1][traj_id])
+        err2 = abs(self.robot.right_knee.q - traj[2][traj_id])
+        err3 = abs(self.robot.left_hip.q - traj[3][traj_id])
+        err4 = abs(self.robot.right_hip.q - traj[4][traj_id])
+        err5 = abs(self.robot.left_ankleY.q - traj[5][traj_id])
+        err6 = abs(self.robot.right_ankleY.q - traj[6][traj_id])
+
+        self.accum_err = self.accum_err + (err6 + err5 + err4 + err3 + err2 + err1 + err0)/6
         print("accum_err:",self.accum_err)
 
 
@@ -150,7 +152,7 @@ class bipedal_EActrl():
     def move(self):
         traj_id = 0
         fitness = 0
-        self.robot.reset(disable_gui=False, disable_velControl=True, add_debug=False)
+        self.robot.reset(disable_gui=True, disable_velControl=True, add_debug=False)
 
         # path1 = os.path.abspath('..')
         # knee_left_traj = np.loadtxt("../generate_trajectory/knee_left.csv")  # 13
@@ -160,8 +162,9 @@ class bipedal_EActrl():
         # ankle_left_traj = np.loadtxt("../generate_trajectory/ankle_left.csv")  # 14
         # ankle_right_traj = np.loadtxt("../generate_trajectory/ankle_right.csv")  # 6
         # traj = [knee_left_traj,knee_right_traj,hip_left_traj,hip_right_traj,ankle_left_traj,ankle_right_traj]
-        theta_list = np.loadtxt("theta.csv", delimiter=',')
+        theta_list = np.loadtxt("theta_3d.csv", delimiter=',')
         theta_list = np.array(theta_list)
+        center_hip_traj = theta_list[:,0]
         hip_right_traj = theta_list[:,1]
         knee_right_traj = theta_list[:,2]
         ankle_right_traj = theta_list[:,3]
@@ -176,7 +179,7 @@ class bipedal_EActrl():
         # hip_right_tau = np.loadtxt("../generate_trajectory/hip_right.csv")  # 4
         # ankle_left_tau = np.loadtxt("../generate_trajectory/ankle_left.csv")  # 14
         # ankle_right_tau = np.loadtxt("../generate_trajectory/ankle_right.csv")  # 6
-        traj = [knee_left_traj,knee_right_traj,hip_left_traj,hip_right_traj,ankle_left_traj,ankle_right_traj]
+        traj = [center_hip_traj,knee_left_traj,knee_right_traj,hip_left_traj,hip_right_traj,ankle_left_traj,ankle_right_traj]
         # self.plane = self.p.loadURDF("plane.urdf")
 
         while (traj_id < 300):

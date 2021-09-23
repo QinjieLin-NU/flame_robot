@@ -9,7 +9,8 @@ import ray
 
 #parent is an array of 300x196(28*7)
 N_GENERATION = 300
-CHILDREN_SIZE = 150 #150
+CHILDREN_SIZE = 35 #150
+new_CHILDREN_SIZE = 145
 DNA_SIZE = 196
 # fitness function
 # distance measured by hip
@@ -61,21 +62,21 @@ def crossover(parents):
 
 #choose top 30 of population
 def select(children_array):
-
-
-
+    #from top to bottom is smallest to highest
+    print("=========================",type(children_array))
     children_array = children_array[children_array[:, -1].argsort()]
     # np.reshape(children_array,(40,197))
     # sorted(children_array, key=lambda x:x[196])
     #get top 30 population as parent
     parent = np.zeros((30,196))
     print("children array after sort:",children_array,children_array.shape,type(children_array))
-    parent = children_array[30:, 0:196]
-    best_fitness = children_array[-1, -1]
+    parent = children_array[0:30, 0:196]
+    top_parent = children_array[0:5, 0:196]
+    best_fitness = children_array[0, -1]
     aver_fitness = np.mean(children_array[:, -1:])
     #remove the last column(fitness)
     # parent = np.delete(parent, 196, axis=1)
-    return parent, best_fitness, aver_fitness, children_array
+    return top_parent, parent, best_fitness, aver_fitness, children_array
 
 
 def get_fitness(child,robot):
@@ -97,24 +98,28 @@ def reshape(weight_array):
             reshape_array.append(item)
     return np.reshape(reshape_array, (1,196))
 
-@ray.remote
-def get_children(parent_array, robot):
-    child_indv = crossover(parent_array)
-    child_indv = mutate(child_indv,1)
-    # child_indv 1x196
+# @ray.remote
+def get_children(parent_array, robot,top_parent,j):
+    if j < 5:
+        child_indv = np.ones((1,196))
+        child_indv[0,:] = top_parent[j,:]
+    else:
+        child_indv = crossover(parent_array)
+        child_indv = mutate(child_indv,1)
+     # child_indv 1x196s
     np.savetxt('results/temp_gen.csv',child_indv,delimiter=',')
     fitness = get_fitness(child_indv,robot)
     print("fitness:",fitness)
-    children_array[j,-1:] = fitness
-    children_array[j,0:-1] = child_indv[0,:]
+    child_final = np.zeros((197))
+    child_final[-1:] = fitness
+    child_final[0:-1] = child_indv[0,:]
     # print(children_array[j,:])
-    return children_array
-
+    return child_final
 
 if __name__ == "__main__":
     #first generatinon
-    ray.init(ignore_reinit_error=True)
-    weight = read_csv("results_1.csv")
+    # ray.init(ignore_reinit_error=True)
+    weight = read_csv("results_3_3d.csv")
     weight = weight[0,0:-1]
     parent0 = np.reshape(weight,(1,196))
     # weight = read_csv("../controllers/walkweight.csv")
@@ -130,12 +135,25 @@ if __name__ == "__main__":
     robot = PybulletEnv(gravity=-10, dt=0.01, file_path="../urdf/simbicon_urdf/flame9.urdf")
     for i in range(N_GENERATION):
         print(i, " generation")
+        # generate parents
+        if i==0:
+            parent_array = parent_array
+            top_parent = parent_array[0:5,:]
+        else:
+            parent_array = new_parent_array
         children_array = np.ones((CHILDREN_SIZE,197))
-        children_array = [get_children.remote(parent_array,robot) for j in range(CHILDREN_SIZE)]
-        children_array = ray.get(children_array)
+        children_list = [get_children(parent_array,robot,top_parent,j) for j in range(CHILDREN_SIZE)]
+        # children_list = ray.get(children_list)
+        # for num in range(len(children_list)):
+        #     children_array[num+5,:] = children_list[num]
+        # for num in range(5):
+        #     children_array[num,:] = top_parent[num]
+        # children_list = [get_children(parent_array,robot) for j in range(CHILDREN_SIZE)]
+        for num in range(len(children_list)):
+            children_array[num,:] = children_list[num]
         # parent_array 30x196
         print(children_array)
-        parent_array, best_fitness, aver_fitness, children_array = select(children_array)
+        top_parent, new_parent_array, best_fitness, aver_fitness, children_array = select(children_array)
         print("parent array:",parent_array)
         print("best fitness:",best_fitness)
         print("average fitness:",aver_fitness)

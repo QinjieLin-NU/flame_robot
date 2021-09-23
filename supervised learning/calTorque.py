@@ -235,7 +235,7 @@ class EA_weights_Controller():
             leftAnkleY_torque = swing_ankle_tau
             rightAnkleY_torque = stance_ankle_tau
 
-        torques = [rightHip_torque, rightKnee_torque, rightAnkleY_torque, leftHip_torque,
+        torques = [centerHip_torque, rightHip_torque, rightKnee_torque, rightAnkleY_torque, leftHip_torque,
                    leftKnee_torque, leftAnkleY_torque]
 
         # normarlization
